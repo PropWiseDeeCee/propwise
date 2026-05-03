@@ -119,6 +119,44 @@ function calculateRegistration(price) {
 }
 
 // ==============================
+// Hidden Charges Engine
+// ==============================
+function calculateHiddenCharges(price, type) {
+  let charges = {
+    legal: 50000,
+    maintenance: 0,
+    gst: 0,
+    other: 30000
+  };
+
+  if (type === "apartment") {
+    charges.maintenance = price * 0.02;
+    charges.gst = price * 0.05;
+  }
+
+  if (type === "villa") {
+    charges.maintenance = price * 0.025;
+    charges.gst = price * 0.05;
+  }
+
+  if (type === "plot") {
+    charges.maintenance = 0;
+    charges.gst = 0;
+  }
+
+  const total =
+    charges.legal +
+    charges.maintenance +
+    charges.gst +
+    charges.other;
+
+  return {
+    breakdown: charges,
+    total: Math.round(total)
+  };
+}
+
+// ==============================
 // EMI
 // ==============================
 function calculateEMI(principal) {
