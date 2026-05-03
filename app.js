@@ -173,8 +173,11 @@ function calculateEMI(principal) {
 // COMPARE
 // ==============================
 function compareAdvanced() {
-  const aName = document.getElementById("aName").value || "Property A";
-  const bName = document.getElementById("bName").value || "Property B";
+  // ==============================
+  // INPUTS
+  // ==============================
+  const aName = document.getElementById("aName")?.value || "Property A";
+  const bName = document.getElementById("bName")?.value || "Property B";
 
   const aBase = getNumber("aPrice");
   const aCharges = getNumber("aCharges");
@@ -187,27 +190,32 @@ function compareAdvanced() {
 
   const state = document.getElementById("state")?.value || "KA";
 
-  // 👉 Registration
+  // ==============================
+  // VALIDATION
+  // ==============================
+  if (aBase === 0 && bBase === 0) {
+    alert("Please enter property values");
+    return;
+  }
+
+  // ==============================
+  // CALCULATIONS
+  // ==============================
   const aReg = calculateRegistration(aBase);
   const bReg = calculateRegistration(bBase);
 
-  // 👉 Hidden Charges
   const aHidden = calculateHiddenCharges(aBase, aType);
   const bHidden = calculateHiddenCharges(bBase, bType);
 
-  // 👉 Total Cost
   const aTotal = aBase + aCharges + aReg + aHidden.total;
   const bTotal = bBase + bCharges + bReg + bHidden.total;
-
-  if (aTotal === 0 && bTotal === 0) {
-    alert("Enter values");
-    return;
-  }
 
   const diff = Math.abs(aTotal - bTotal);
   const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
 
-  // 👉 Winner
+  // ==============================
+  // WINNER
+  // ==============================
   let winner = "";
   if (aTotal < bTotal) {
     winner = `${aName} is cheaper by ₹${diff.toLocaleString()}`;
@@ -217,7 +225,9 @@ function compareAdvanced() {
     winner = "Both properties cost the same";
   }
 
-  // 👉 State Label
+  // ==============================
+  // STATE LABEL
+  // ==============================
   const stateNames = {
     KA: "Karnataka",
     MH: "Maharashtra",
@@ -228,7 +238,9 @@ function compareAdvanced() {
 
   const stateLabel = stateNames[state] || state;
 
-  // 👉 RESULT UI
+  // ==============================
+  // RESULT UI (ONLY HTML HERE)
+  // ==============================
   document.getElementById("resultDetails").innerHTML = `
     <h4 style="margin-bottom:10px;">${winner}</h4>
 
@@ -263,7 +275,9 @@ function compareAdvanced() {
     </div>
   `;
 
-  // 👉 EMI
+  // ==============================
+  // EMI
+  // ==============================
   const emiA = calculateEMI(aTotal);
   const emiB = calculateEMI(bTotal);
 
@@ -273,9 +287,14 @@ function compareAdvanced() {
     ${bName}: ₹${emiB.toLocaleString()} / month
   `;
 
+  // ==============================
+  // SHOW RESULT
+  // ==============================
   document.getElementById("resultCard").style.display = "block";
 
-  // 👉 SAVE READY DATA
+  // ==============================
+  // SAVE DATA
+  // ==============================
   window._lastComparison = {
     a_name: aName,
     b_name: bName,
@@ -286,32 +305,6 @@ function compareAdvanced() {
     b_type: bType
   };
 }
-// ==============================
-// SAVE
-// ==============================
-async function save() {
-  const user = await getUser();
-  if (!user) return alert("Login first");
-
-  if (!window._lastComparison) {
-    alert("Run comparison first");
-    return;
-  }
-
-  const { error } = await supabaseClient.from("comparisons").insert([
-    {
-      user_id: user.id,
-      a_name: window._lastComparison.a_name,
-      a_cost: window._lastComparison.a_total,
-      b_name: window._lastComparison.b_name,
-      b_cost: window._lastComparison.b_total
-    }
-  ]);
-
-  if (error) alert(error.message);
-  else alert("Saved successfully");
-}
-
 // ==============================
 // DASHBOARD
 // ==============================
