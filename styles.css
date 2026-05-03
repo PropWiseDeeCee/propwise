@@ -1,23 +1,33 @@
-body {
-  font-family: 'Inter', sans-serif;
+/* RESET */
+* {
   margin: 0;
-  background: #f9fafb;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8fafc;
+  color: #111827;
+}
+
+/* NAVBAR */
 .navbar {
   background: white;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .nav-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: auto;
   display: flex;
-  padding: 15px;
+  padding: 16px 20px;
+  align-items: center;
 }
 
 .logo {
   font-weight: 600;
+  font-size: 16px;
 }
 
 .nav-links {
@@ -25,29 +35,80 @@ body {
 }
 
 .nav-links a {
-  margin-left: 15px;
+  margin-left: 20px;
   text-decoration: none;
-  color: #333;
+  color: #374151;
+  font-size: 14px;
 }
 
+/* LAYOUT */
 .container {
-  max-width: 700px;
+  max-width: 1000px;
   margin: 40px auto;
+  padding: 0 20px;
 }
 
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* CARD */
 .card {
   background: white;
-  padding: 25px;
-  border-radius: 10px;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.03);
 }
 
-input, button {
+/* INPUT */
+input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
 }
 
+/* BUTTON */
 button {
-  background: black;
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #111827;
   color: white;
+  cursor: pointer;
+}
+
+/* RESULT */
+.result-card {
+  margin-top: 20px;
+  background: #111827;
+  color: white;
+}
+
+.winner {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #22c55e;
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+/* DASHBOARD */
+.item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
 }
