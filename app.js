@@ -100,8 +100,22 @@ function getNumber(id) {
 // ==============================
 // REGISTRATION ENGINE
 // ==============================
+function getRegistrationRate() {
+  const state = document.getElementById("state")?.value || "KA";
+
+  const rates = {
+    KA: 0.06, // Karnataka
+    MH: 0.06, // Maharashtra
+    TN: 0.07, // Tamil Nadu
+    TS: 0.06, // Telangana
+    DL: 0.06  // Delhi
+  };
+
+  return rates[state] || 0.06;
+}
+
 function calculateRegistration(price) {
-  return Math.round(price * 0.06);
+  return Math.round(price * getRegistrationRate());
 }
 
 // ==============================
