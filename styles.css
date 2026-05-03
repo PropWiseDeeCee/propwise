@@ -112,3 +112,9 @@ button {
   padding: 12px;
   border-bottom: 1px solid #eee;
 }
+
+
+.card span {
+  font-size: 13px;
+  font-weight: 500;
+}
