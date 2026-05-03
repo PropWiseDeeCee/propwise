@@ -1,48 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Compare</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare - PropWise India</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
   <script defer src="app.js"></script>
 </head>
 
 <body onload="initPage(true)">
 
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <span id="nav-right"></span>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">PropWise India</div>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <span id="nav-right"></span>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<div class="container">
+  <!-- CONTENT -->
+  <div class="container">
 
-  <div class="card">
-    <h2>Compare Properties</h2>
+    <h2 style="margin-bottom: 20px;">Compare Properties</h2>
 
-    <input id="aName" placeholder="Property A">
-    <input id="aPrice" placeholder="A base price">
-    <input id="aCharges" placeholder="A charges">
+    <div class="grid">
 
-    <input id="bName" placeholder="Property B">
-    <input id="bPrice" placeholder="B base price">
-    <input id="bCharges" placeholder="B charges">
+      <!-- Property A -->
+      <div class="card">
+        <h3>Property A</h3>
+        <input id="aName" placeholder="Property name">
+        <input id="aPrice" placeholder="Base price">
+        <input id="aCharges" placeholder="Additional charges">
+      </div>
+
+      <!-- Property B -->
+      <div class="card">
+        <h3>Property B</h3>
+        <input id="bName" placeholder="Property name">
+        <input id="bPrice" placeholder="Base price">
+        <input id="bCharges" placeholder="Additional charges">
+      </div>
+
+    </div>
 
     <button onclick="compareAdvanced()">Compare</button>
-    <button onclick="save()">Save</button>
-  </div>
+    <button onclick="save()">Save Comparison</button>
 
-  <div id="resultCard" class="card" style="display:none;">
-    <div id="resultDetails"></div>
-    <div id="emiResult"></div>
-  </div>
+    <!-- RESULT -->
+    <div id="resultCard" class="card result-card" style="display:none;">
+      <div id="resultDetails"></div>
+      <div id="emiResult" style="margin-top:15px;"></div>
+    </div>
 
-</div>
+  </div>
 
 </body>
 </html>
