@@ -241,7 +241,7 @@ function compareAdvanced() {
   // ==============================
   // RESULT UI (ONLY HTML HERE)
   // ==============================
-  document.getElementById("resultDetails").innerHTML = `
+  const resultEl = document.getElementById("resultDetails"); if (!resultEl) return;  resultEl.innerHTML = `
     <h4 style="margin-bottom:10px;">${winner}</h4>
 
     <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
