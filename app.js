@@ -2,9 +2,8 @@
 // CONFIG (REPLACE)
 // ==============================
 const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw"; // keep your key
+const SUPABASE_KEY = "YOUR_KEY";
 
-// ✅ FIXED INIT (important)
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -20,13 +19,9 @@ async function signUp() {
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
 
-  if (!email || !password) {
-    alert("Enter email and password");
-    return;
-  }
+  if (!email || !password) return alert("Enter email and password");
 
   const { error } = await supabaseClient.auth.signUp({ email, password });
-
   if (error) alert(error.message);
   else alert("Signup successful. Now login.");
 }
@@ -35,20 +30,10 @@ async function signIn() {
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
 
-  console.log("Login attempt:", email);
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    console.error(error.message);
-    alert(error.message);
-  } else {
-    console.log("Login success");
-    window.location.href = "dashboard.html";
-  }
+  if (error) alert(error.message);
+  else window.location.href = "dashboard.html";
 }
 
 async function logout() {
@@ -65,21 +50,11 @@ async function updateNavbar() {
 
   if (!nav) return;
 
-  if (user) {
-    nav.innerHTML = `
-      <span style="margin-right:10px; font-size:13px;">
-        ${user.email}
-      </span>
-      <a href="#" onclick="logout()">Logout</a>
-    `;
-  } else {
-    nav.innerHTML = `<a href="login.html">Login</a>`;
-  }
+  nav.innerHTML = user
+    ? `<span>${user.email}</span> <a href="#" onclick="logout()">Logout</a>`
+    : `<a href="login.html">Login</a>`;
 }
 
-// ==============================
-// PROTECT ROUTES
-// ==============================
 async function requireAuth() {
   const user = await getUser();
   if (!user) window.location.href = "login.html";
@@ -98,20 +73,18 @@ function getNumber(id) {
 }
 
 // ==============================
-// REGISTRATION ENGINE
+// REGISTRATION
 // ==============================
 function getRegistrationRate() {
   const state = document.getElementById("state")?.value || "KA";
 
-  const rates = {
-    KA: 0.06, // Karnataka
-    MH: 0.06, // Maharashtra
-    TN: 0.07, // Tamil Nadu
-    TS: 0.06, // Telangana
-    DL: 0.06  // Delhi
-  };
-
-  return rates[state] || 0.06;
+  return {
+    KA: 0.06,
+    MH: 0.06,
+    TN: 0.07,
+    TS: 0.06,
+    DL: 0.06
+  }[state] || 0.06;
 }
 
 function calculateRegistration(price) {
@@ -119,7 +92,7 @@ function calculateRegistration(price) {
 }
 
 // ==============================
-// Hidden Charges Engine
+// HIDDEN CHARGES
 // ==============================
 function calculateHiddenCharges(price, type) {
   let charges = {
@@ -139,20 +112,11 @@ function calculateHiddenCharges(price, type) {
     charges.gst = price * 0.05;
   }
 
-  if (type === "plot") {
-    charges.maintenance = 0;
-    charges.gst = 0;
-  }
-
-  const total =
-    charges.legal +
-    charges.maintenance +
-    charges.gst +
-    charges.other;
-
   return {
     breakdown: charges,
-    total: Math.round(total)
+    total: Math.round(
+      charges.legal + charges.maintenance + charges.gst + charges.other
+    )
   };
 }
 
@@ -170,19 +134,50 @@ function calculateEMI(principal) {
 }
 
 // ==============================
+// INSIGHT ENGINE
+// ==============================
+function generateInsights(base, total, hidden, type) {
+  const insights = [];
+  const extraPercent = ((total - base) / base) * 100;
+
+  if (extraPercent > 10) {
+    insights.push(`⚠️ Total cost is ~${extraPercent.toFixed(1)}% higher than base price`);
+  }
+
+  if (hidden.breakdown.gst > 0) {
+    insights.push("💡 GST applicable (under-construction)");
+  }
+
+  if (hidden.breakdown.maintenance > 100000) {
+    insights.push("⚠️ High maintenance cost");
+  }
+
+  if (type === "plot") {
+    insights.push("💡 Lower hidden costs (no GST)");
+  }
+
+  return insights;
+}
+
+// ==============================
+// TOGGLE
+// ==============================
+function toggleDetails(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+// ==============================
 // COMPARE
 // ==============================
 function compareAdvanced() {
-  // ==============================
-  // INPUTS
-  // ==============================
   const aName = document.getElementById("aName")?.value || "Property A";
   const bName = document.getElementById("bName")?.value || "Property B";
 
   const aBase = getNumber("aPrice");
-  const aCharges = getNumber("aCharges");
-
   const bBase = getNumber("bPrice");
+  const aCharges = getNumber("aCharges");
   const bCharges = getNumber("bCharges");
 
   const aType = document.getElementById("aType")?.value || "apartment";
@@ -190,17 +185,8 @@ function compareAdvanced() {
 
   const state = document.getElementById("state")?.value || "KA";
 
-  // ==============================
-  // VALIDATION
-  // ==============================
-  if (aBase === 0 && bBase === 0) {
-    alert("Please enter property values");
-    return;
-  }
+  if (aBase === 0 && bBase === 0) return alert("Enter values");
 
-  // ==============================
-  // CALCULATIONS
-  // ==============================
   const aReg = calculateRegistration(aBase);
   const bReg = calculateRegistration(bBase);
 
@@ -213,220 +199,63 @@ function compareAdvanced() {
   const diff = Math.abs(aTotal - bTotal);
   const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
 
-  const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
-  const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
+  const winner =
+    aTotal < bTotal
+      ? `${aName} is cheaper by ₹${diff.toLocaleString()}`
+      : `${bName} is cheaper by ₹${diff.toLocaleString()}`;
 
-  // ==============================
-  // WINNER
-  // ==============================
-  let winner = "";
-  if (aTotal < bTotal) {
-    winner = `${aName} is cheaper by ₹${diff.toLocaleString()}`;
-  } else if (bTotal < aTotal) {
-    winner = `${bName} is cheaper by ₹${diff.toLocaleString()}`;
-  } else {
-    winner = "Both properties cost the same";
-  }
-
-  // ==============================
-  // STATE LABEL
-  // ==============================
-  const stateNames = {
+  const stateLabel = {
     KA: "Karnataka",
     MH: "Maharashtra",
     TN: "Tamil Nadu",
     TS: "Telangana",
     DL: "Delhi"
-  };
+  }[state] || state;
 
-  const stateLabel = stateNames[state] || state;
+  const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
+  const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
 
-// ==============================
-// RESULT UI (WITH INSIGHTS)
-// ==============================
-const resultEl = document.getElementById("resultDetails");
-if (!resultEl) return;
+  const resultEl = document.getElementById("resultDetails");
+  if (!resultEl) return;
 
-// Generate insights
-const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
-const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
+  resultEl.innerHTML = `
+    <h4>${winner}</h4>
 
-resultEl.innerHTML = `
-  <h4 style="margin-bottom:10px;">${winner}</h4>
-
-  <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
-    Includes registration + hidden charges (${stateLabel})
-  </div>
-
-  <!-- PROPERTY A -->
-  <div style="margin-bottom:15px;">
-    <strong>${aName}</strong><br>
-    Base: ₹${aBase.toLocaleString()}<br>
-    Charges: ₹${aCharges.toLocaleString()}<br>
-    Registration: ₹${aReg.toLocaleString()}<br>
-
-    <div style="margin-top:8px;">
-      <span onclick="toggleDetails('aDetails')" style="cursor:pointer; color:#2563eb;">
-        ▶ View Hidden Charges
-      </span>
-
-      <div id="aDetails" style="display:none; margin-top:8px; padding:10px; background:#f9fafb; border-radius:8px;">
-        Legal: ₹${aHidden.breakdown.legal.toLocaleString()}<br>
-        GST: ₹${Math.round(aHidden.breakdown.gst).toLocaleString()}<br>
-        Maintenance: ₹${Math.round(aHidden.breakdown.maintenance).toLocaleString()}<br>
-        Other: ₹${aHidden.breakdown.other.toLocaleString()}
-      </div>
-    </div>
-
-    <b>Total: ₹${aTotal.toLocaleString()}</b>
-  </div>
-
-  <hr>
-
-  <!-- PROPERTY B -->
-  <div style="margin-bottom:15px;">
-    <strong>${bName}</strong><br>
-    Base: ₹${bBase.toLocaleString()}<br>
-    Charges: ₹${bCharges.toLocaleString()}<br>
-    Registration: ₹${bReg.toLocaleString()}<br>
-
-    <div style="margin-top:8px;">
-      <span onclick="toggleDetails('bDetails')" style="cursor:pointer; color:#2563eb;">
-        ▶ View Hidden Charges
-      </span>
-
-      <div id="bDetails" style="display:none; margin-top:8px; padding:10px; background:#f9fafb; border-radius:8px;">
-        Legal: ₹${bHidden.breakdown.legal.toLocaleString()}<br>
-        GST: ₹${Math.round(bHidden.breakdown.gst).toLocaleString()}<br>
-        Maintenance: ₹${Math.round(bHidden.breakdown.maintenance).toLocaleString()}<br>
-        Other: ₹${bHidden.breakdown.other.toLocaleString()}
-      </div>
-    </div>
-
-    <b>Total: ₹${bTotal.toLocaleString()}</b>
-  </div>
-
-  <hr>
-
-  <div style="font-weight:500;">
-    Difference: ${percent}%
-  </div>
-
-  <!-- INSIGHTS SECTION -->
-  <div style="
-    margin-top:20px;
-    padding:12px;
-    background:#fff7ed;
-    border-radius:8px;
-    font-size:14px;
-  ">
-    <strong>💡 Insights</strong><br><br>
-
-    <div>
-      <strong>${aName}</strong><br>
-      ${aInsights.length ? aInsights.map(i => `• ${i}`).join("<br>") : "No major concerns"}
+    <div style="color:#6b7280;">
+      Includes registration + hidden charges (${stateLabel})
     </div>
 
     <br>
 
-    <div>
-      <strong>${bName}</strong><br>
-      ${bInsights.length ? bInsights.map(i => `• ${i}`).join("<br>") : "No major concerns"}
+    <strong>${aName}</strong><br>
+    Total: ₹${aTotal.toLocaleString()}<br><br>
+
+    <strong>${bName}</strong><br>
+    Total: ₹${bTotal.toLocaleString()}
+
+    <hr>
+
+    <div><b>Difference: ${percent}%</b></div>
+
+    <div style="margin-top:15px; background:#fff7ed; padding:10px;">
+      <strong>Insights</strong><br><br>
+
+      ${aName}:<br>
+      ${aInsights.map(i => `• ${i}`).join("<br>")}<br><br>
+
+      ${bName}:<br>
+      ${bInsights.map(i => `• ${i}`).join("<br>")}
     </div>
-  </div>
-`;
-
-  
-  // ==============================
-  // EMI
-  // ==============================
-  const emiA = calculateEMI(aTotal);
-  const emiB = calculateEMI(bTotal);
-
-  document.getElementById("emiResult").innerHTML = `
-    <h4>Estimated EMI (20 yrs @ 8%)</h4>
-    ${aName}: ₹${emiA.toLocaleString()} / month<br>
-    ${bName}: ₹${emiB.toLocaleString()} / month
   `;
-  // =============================
-  // Insight Engine
-  // ============================
-  function generateInsights(aBase, aTotal, aHidden, type) {
-  const insights = [];
 
-  const extraPercent = ((aTotal - aBase) / aBase) * 100;
-
-  // 🔥 Cost inflation insight
-  if (extraPercent > 10) {
-    insights.push(`⚠️ Total cost is ~${extraPercent.toFixed(1)}% higher than base price`);
-  }
-
-  // 💡 GST warning
-  if (aHidden.breakdown.gst > 0) {
-    insights.push("💡 GST is applicable (likely under-construction property)");
-  }
-
-  // 🏦 Maintenance insight
-  if (aHidden.breakdown.maintenance > 100000) {
-    insights.push("⚠️ High maintenance cost — check builder justification");
-  }
-
-  // 🏗️ Property type insight
-  if (type === "plot") {
-    insights.push("💡 No GST or maintenance — lower hidden costs");
-  }
-
-  return insights;
-}
-
-  // ==============================
-  // SHOW RESULT
-  // ==============================
   document.getElementById("resultCard").style.display = "block";
-  // ==============================
-// LOGIN PROMPT (NON-INTRUSIVE)
-// ==============================
-getUser().then(user => {
-  if (!user) {
-    document.getElementById("resultDetails").innerHTML += `
-      <div style="
-        margin-top:15px;
-        padding:12px;
-        background:#f3f4f6;
-        border-radius:8px;
-        font-size:14px;
-      ">
-        💾 Login to save this comparison and track your properties
-      </div>
-    `;
-  }
-});
 
-  // ==============================
-  // SAVE DATA
-  // ==============================
   window._lastComparison = {
     a_name: aName,
     b_name: bName,
     a_total: aTotal,
-    b_total: bTotal,
-    state: stateLabel,
-    a_type: aType,
-    b_type: bType
+    b_total: bTotal
   };
-}
-// =============================
-// Add toggle funtion
-// =============================
-function toggleDetails(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  if (el.style.display === "none") {
-    el.style.display = "block";
-  } else {
-    el.style.display = "none";
-  }
 }
 
 // ==============================
@@ -436,31 +265,18 @@ async function save() {
   const user = await getUser();
 
   if (!user) {
-    alert("Please login to save and track your comparisons.");
     window.location.href = "login.html";
     return;
   }
 
-  if (!window._lastComparison) {
-    alert("Run comparison first");
-    return;
-  }
+  if (!window._lastComparison) return alert("Run comparison first");
 
-  const { error } = await supabaseClient.from("comparisons").insert([
-    {
-      user_id: user.id,
-      a_name: window._lastComparison.a_name,
-      a_cost: window._lastComparison.a_total,
-      b_name: window._lastComparison.b_name,
-      b_cost: window._lastComparison.b_total
-    }
-  ]);
+  await supabaseClient.from("comparisons").insert([{
+    user_id: user.id,
+    ...window._lastComparison
+  }]);
 
-  if (error) {
-    alert(error.message);
-  } else {
-    alert("Saved successfully!");
-  }
+  alert("Saved!");
 }
 
 // ==============================
@@ -473,20 +289,14 @@ async function loadDashboard() {
   const { data } = await supabaseClient
     .from("comparisons")
     .select("*")
-    .eq("user_id", user.id)
-    .order("id", { ascending: false });
+    .eq("user_id", user.id);
 
   const container = document.getElementById("list");
 
-  if (!data.length) {
-    container.innerHTML = "<p>No saved comparisons yet.</p>";
-    return;
-  }
-
   container.innerHTML = data.map(d => `
-    <div class="card" style="margin-bottom:10px;">
-      <strong>${d.a_name}</strong> vs <strong>${d.b_name}</strong><br>
-      ₹${d.a_cost.toLocaleString()} vs ₹${d.b_cost.toLocaleString()}
+    <div class="card">
+      ${d.a_name} vs ${d.b_name}<br>
+      ₹${d.a_total} vs ₹${d.b_total}
     </div>
   `).join("");
 }
