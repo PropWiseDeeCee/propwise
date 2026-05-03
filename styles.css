@@ -1,57 +1,101 @@
-body {
-  font-family: Inter, Arial, sans-serif;
+/* RESET */
+* {
   margin: 0;
-  background: #f8fafc;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f9fafb;
   color: #111827;
 }
 
-/* HEADER */
-header {
+/* NAVBAR */
+.navbar {
   background: white;
   border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
 }
 
-.nav {
+.nav-container {
   max-width: 1100px;
   margin: auto;
   display: flex;
   align-items: center;
-  padding: 14px 20px;
+  padding: 16px 20px;
 }
 
-.brand {
+.logo {
   font-weight: 700;
   font-size: 18px;
   margin-right: auto;
 }
 
-.nav a {
-  margin-left: 18px;
+.nav-links a {
+  margin-left: 24px;
   text-decoration: none;
   color: #374151;
   font-size: 14px;
+  font-weight: 500;
 }
 
-.nav a:hover {
+.nav-links a:hover {
   color: black;
 }
 
-/* CONTAINER */
+/* HERO */
+.hero {
+  max-width: 1100px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 28px;
+}
+
+/* BUTTON */
+.btn-primary {
+  background: #111827;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #d1d5db;
+  color: #111827;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* CONTENT */
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 40px auto;
   padding: 0 20px;
 }
 
-/* CARD */
 .card {
   background: white;
-  padding: 28px;
-  border-radius: 16px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
 }
 
 /* FORM */
@@ -61,6 +105,7 @@ input {
   margin-top: 12px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
+  font-size: 14px;
 }
 
 button {
@@ -69,17 +114,14 @@ button {
   margin-top: 12px;
   border-radius: 10px;
   border: none;
-  background: #111827;
-  color: white;
   cursor: pointer;
+  font-weight: 500;
 }
 
-button.secondary {
-  background: white;
-  color: #111827;
-  border: 1px solid #d1d5db;
-}
-
-h2 {
-  margin-top: 0;
+/* RESULT */
+.result-box {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f3f4f6;
+  border-radius: 10px;
 }
