@@ -74,10 +74,36 @@
     <button onclick="save()">Save Comparison</button>
 
     <!-- RESULT -->
-    <div id="resultCard" class="card result-card" style="display:none;">
-      <div id="resultDetails"></div>
-      <div id="emiResult" style="margin-top:15px;"></div>
-    </div>
+    const state = document.getElementById("state").value;
+
+document.getElementById("resultDetails").innerHTML = `
+  <h4>${winner}</h4>
+
+  <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
+    Based on ${state} registration rules
+  </div>
+
+  <div>
+    <strong>${aName}</strong><br>
+    Base: ₹${aBase.toLocaleString()}<br>
+    Charges: ₹${aCharges.toLocaleString()}<br>
+    Registration: ₹${aReg.toLocaleString()}<br>
+    <b>Total: ₹${aTotal.toLocaleString()}</b>
+  </div>
+
+  <hr>
+
+  <div>
+    <strong>${bName}</strong><br>
+    Base: ₹${bBase.toLocaleString()}<br>
+    Charges: ₹${bCharges.toLocaleString()}<br>
+    Registration: ₹${bReg.toLocaleString()}<br>
+    <b>Total: ₹${bTotal.toLocaleString()}</b>
+  </div>
+
+  <hr>
+  Difference: ${percent}%
+`;
 
   </div>
 
