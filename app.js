@@ -241,11 +241,15 @@ function compareAdvanced() {
 
   const stateLabel = stateNames[state] || state;
 
-  // ==============================
-  // RESULT UI (ONLY HTML HERE)
-  // ==============================
-  const resultEl = document.getElementById("resultDetails");
+// ==============================
+// RESULT UI (WITH INSIGHTS)
+// ==============================
+const resultEl = document.getElementById("resultDetails");
 if (!resultEl) return;
+
+// Generate insights
+const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
+const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
 
 resultEl.innerHTML = `
   <h4 style="margin-bottom:10px;">${winner}</h4>
@@ -307,7 +311,32 @@ resultEl.innerHTML = `
   <div style="font-weight:500;">
     Difference: ${percent}%
   </div>
+
+  <!-- INSIGHTS SECTION -->
+  <div style="
+    margin-top:20px;
+    padding:12px;
+    background:#fff7ed;
+    border-radius:8px;
+    font-size:14px;
+  ">
+    <strong>💡 Insights</strong><br><br>
+
+    <div>
+      <strong>${aName}</strong><br>
+      ${aInsights.length ? aInsights.map(i => `• ${i}`).join("<br>") : "No major concerns"}
+    </div>
+
+    <br>
+
+    <div>
+      <strong>${bName}</strong><br>
+      ${bInsights.length ? bInsights.map(i => `• ${i}`).join("<br>") : "No major concerns"}
+    </div>
+  </div>
 `;
+
+  
   // ==============================
   // EMI
   // ==============================
