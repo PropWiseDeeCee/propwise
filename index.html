@@ -2,433 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PropWise India</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    body { font-family: Inter, Arial, sans-serif; margin: 0; color: #1f2937; background: #f8fafc; }
-    header { background: rgba(255,255,255,0.95); border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; backdrop-filter: blur(8px); }
-    .nav { max-width: 1160px; margin: 0 auto; display: flex; gap: 20px; align-items: center; }
-    .brand { font-weight: 700; font-size: 20px; margin-right: auto; }
-    .nav a { text-decoration: none; color: #374151; font-size: 14px; }
-    .container { max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; }
-    .page { display: none; }
-    .page.active { display: block; }
-    .hero { background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); border: 1px solid #e5e7eb; border-radius: 20px; padding: 34px; margin-bottom: 24px; }
-    .hero h1 { margin: 0 0 10px; font-size: 34px; }
-    .hero p { max-width: 700px; }
-    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-    .tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 22px; }
-    .tool-card { padding: 18px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; }
-    .tool-card h3 { margin-top: 0; }
-    input, select, button { width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; }
-    button { cursor: pointer; background: #111827; color: white; border: none; }
-    button.secondary { background: #fff; color: #111827; border: 1px solid #d1d5db; }
-    .muted { color: #6b7280; font-size: 14px; }
-    .result-box { margin-top: 16px; padding: 14px; border-radius: 12px; background: #f8fafc; border: 1px solid #e5e7eb; }
-    .ad-slot { border: 1px dashed #cbd5e1; border-radius: 14px; padding: 18px; text-align: center; color: #64748b; font-size: 13px; background: #fff; }
-    .saved-item { padding: 12px 0; border-bottom: 1px solid #eef2f7; }
-    .badge { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 999px; background: #eef2ff; color: #4338ca; margin-bottom: 10px; }
+    body { font-family: Arial; margin:0; background:#f7f7f7; }
+    header { padding:15px; background:white; border-bottom:1px solid #ddd; }
+    nav a { margin-right:15px; cursor:pointer; }
+    .container { padding:20px; max-width:900px; margin:auto; }
+    .card { background:white; padding:20px; border-radius:10px; margin-bottom:20px; }
+    input, button { padding:10px; margin:5px 0; width:100%; }
+    button { cursor:pointer; }
+    .page { display:none; }
+    .active { display:block; }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="nav">
-      <div class="brand">PropWise India</div>
-      <a href="#" onclick="showPage('home')">Home</a>
-      <a href="#" onclick="showPage('calculator')">Calculator</a>
-      <a href="#" onclick="showPage('compare')">Compare</a>
-      <a href="#" onclick="showPage('dashboard')">Dashboard</a>
-      <a href="#" onclick="showPage('login')">Login</a>
-      <a href="#" onclick="showPage('admin')">Admin</a>
-      <a href="#" onclick="showPage('guides')">Guides</a>
-    </div>
-  </header>
 
-  <div class="container">
-    <section id="home" class="page active">
-      <div class="hero">
-        <div class="badge">India homebuyer decision workspace</div>
-        <h1>Make smarter property-buying decisions across India</h1>
-        <p class="muted">Estimate the real cost of apartments, villas, and plots. Compare options side by side. Save important buying decisions for later.</p>
-      </div>
+<header>
+  <strong>PropWise India</strong>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('calculator')">Calculator</a>
+    <a onclick="showPage('compare')">Compare</a>
+    <a onclick="showPage('dashboard')">Dashboard</a>
+    <a onclick="showPage('login')">Login</a>
+    <a onclick="showPage('admin')">Admin</a>
+  </nav>
+</header>
 
-      <div class="tools">
-        <div class="tool-card">
-          <h3>True Cost Calculator</h3>
-          <p class="muted">Understand acquisition cost beyond the quoted price.</p>
-        </div>
-        <div class="tool-card">
-          <h3>Property Comparison</h3>
-          <p class="muted">See which option needs less cash now and costs less later.</p>
-        </div>
-        <div class="tool-card">
-          <h3>Saved Decision Dashboard</h3>
-          <p class="muted">Keep track of shortlisted properties and revisit comparisons.</p>
-        </div>
-      </div>
+<div class="container">
 
-      <div class="ad-slot">Reserved space for future ad placement</div>
-    </section>
-
-    <section id="calculator" class="page">
-      <div class="card">
-        <h2>Property Cost Calculator</h2>
-        <div class="grid">
-          <select id="state" onchange="updateCities()">
-            <option value="KA">Karnataka</option>
-            <option value="MH">Maharashtra</option>
-            <option value="TN">Tamil Nadu</option>
-            <option value="TS">Telangana</option>
-            <option value="OTHER">Other</option>
-          </select>
-          <select id="city"></select>
-          <select id="ptype" onchange="togglePropertyFields()">
-            <option>Apartment</option>
-            <option>Villa</option>
-            <option>Plot</option>
-          </select>
-          <input id="basePrice" type="number" placeholder="Base price" />
-          <input id="charges" type="number" placeholder="Other charges" />
-          <input id="parking" type="number" placeholder="Parking (apartment/villa)" />
-          <input id="corpus" type="number" placeholder="Corpus / maintenance" />
-        </div>
-        <div style="margin-top:12px;"><button onclick="calculate()">Calculate</button></div>
-        <div id="calcResult" class="result-box"></div>
-      </div>
-    </section>
-
-    <section id="compare" class="page">
-      <div class="card">
-        <h2>Compare Two Properties</h2>
-        <div class="grid">
-          <input id="aName" placeholder="Property A name" />
-          <input id="aBase" type="number" placeholder="Property A base price" />
-          <input id="aCharges" type="number" placeholder="Property A other charges" />
-          <input id="aDown" type="number" placeholder="Property A down payment" />
-          <input id="aRate" type="number" placeholder="Property A interest %" value="8.5" />
-          <input id="aTenure" type="number" placeholder="Property A tenure years" value="20" />
-          <input id="aSize" type="number" placeholder="Property A size (sq ft)" />
-
-          <input id="bName" placeholder="Property B name" />
-          <input id="bBase" type="number" placeholder="Property B base price" />
-          <input id="bCharges" type="number" placeholder="Property B other charges" />
-          <input id="bDown" type="number" placeholder="Property B down payment" />
-          <input id="bRate" type="number" placeholder="Property B interest %" value="8.5" />
-          <input id="bTenure" type="number" placeholder="Property B tenure years" value="20" />
-          <input id="bSize" type="number" placeholder="Property B size (sq ft)" />
-        </div>
-        <div style="display:flex; gap:10px; margin-top:12px;">
-          <button onclick="compareProperties()">Compare</button>
-          <button class="secondary" onclick="saveComparison()">Save Comparison</button>
-        </div>
-        <div id="compareResult" class="result-box"></div>
-      </div>
-      <div class="ad-slot">Reserved space for comparison page ads</div>
-    </section>
-
-    <section id="dashboard" class="page">
-      <div class="card">
-        <h2>Saved Comparisons</h2>
-        <div id="savedComparisons"></div>
-      </div>
-    </section>
-
-    <section id="guides" class="page">
-      <div class="card">
-        <div class="badge">Property buying guide</div>
-        <h1>Registration Charges in Bengaluru for Apartments, Villas, and Plots (2026 Guide)</h1>
-        <p class="muted">Understand stamp duty, registration fees, and common buyer-side costs before purchasing property in Bengaluru.</p>
-
-        <h2>Why registration charges matter</h2>
-        <p>When buying property in Bengaluru, the advertised price is rarely the final cash outflow. Buyers should account for registration-related costs, documentation charges, and other transaction expenses before budgeting the total acquisition cost.</p>
-
-        <h2>What buyers usually pay beyond the quoted price</h2>
-        <ul>
-          <li>Stamp duty</li>
-          <li>Registration fee</li>
-          <li>Legal verification charges</li>
-          <li>Documentation charges</li>
-          <li>Corpus fund</li>
-          <li>Parking charges</li>
-          <li>Advance maintenance</li>
-        </ul>
-
-        <h2>Apartment buyers in Bengaluru</h2>
-        <p>For apartment purchases, the total outflow can be meaningfully higher than the base agreement value because builders often separate charges such as parking, corpus fund, and maintenance-related deposits.</p>
-
-        <h2>Villa buyers in Bengaluru</h2>
-        <p>Villa transactions may include land-related and site-related cost components. Buyers should review the full acquisition cost rather than only the headline project price.</p>
-
-        <h2>Plot buyers in Bengaluru</h2>
-        <p>Plot purchases can appear simpler, but legal verification, layout documentation, and compliance checks can still materially affect the total cost.</p>
-
-        <h2>Simple example</h2>
-        <p>If a property is quoted at ₹90 lakh, your actual outflow may also include registration-related costs, parking, corpus fund, and documentation fees. The true buying cost can therefore be noticeably higher than the brochure price.</p>
-
-        <h2>How to compare property cost properly</h2>
-        <p>Before booking, compare the base price, total acquisition cost, immediate cash outflow, and likely EMI impact. This gives a clearer decision framework than comparing only the headline price.</p>
-
-        <div class="result-box" style="margin-top:18px;">
-          <strong>Use PropWise India</strong>
-          <div class="muted" style="margin-top:6px;">Use the calculator and comparison tools to estimate real buying cost for apartments, villas, and plots in Bengaluru and across India.</div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:20px;">
-        <div class="badge">Property comparison guide</div>
-        <h1>Apartment vs Villa Total Cost in Bengaluru (2026 Guide)</h1>
-        <p class="muted">A realistic comparison of long-term ownership cost before buying property in Bengaluru.</p>
-
-        <h2>Why headline prices can be misleading</h2>
-        <p>Two properties in Bengaluru can appear similarly priced but still have very different ownership costs. The brochure number often hides charges that materially affect the real acquisition cost.</p>
-
-        <h2>Typical apartment cost components</h2>
-        <ul>
-          <li>Base agreement value</li>
-          <li>Stamp duty and registration</li>
-          <li>Parking charges</li>
-          <li>Corpus fund</li>
-          <li>Advance maintenance</li>
-          <li>Society-related recurring expenses</li>
-        </ul>
-
-        <h2>Typical villa cost components</h2>
-        <ul>
-          <li>Land component</li>
-          <li>Construction component</li>
-          <li>Registration-related charges</li>
-          <li>Site development costs where applicable</li>
-          <li>Maintenance depending on community format</li>
-        </ul>
-
-        <h2>Where apartments may look cheaper</h2>
-        <p>Apartments often have a lower headline entry point, but recurring maintenance, parking, and one-time deposits can increase the effective cost over time.</p>
-
-        <h2>Where villas may look expensive but differ in value</h2>
-        <p>Villas often carry a higher upfront cost, but the land component can materially change how buyers evaluate long-term value versus apartment ownership.</p>
-
-        <h2>A simple buyer example</h2>
-        <p>An apartment quoted at ₹95 lakh and a villa quoted at ₹1.15 crore may initially appear far apart. Once parking, corpus fund, registration, and financing impact are included, the actual decision may be closer than the brochure numbers suggest.</p>
-
-        <h2>What smart buyers compare</h2>
-        <p>Before booking, compare total acquisition cost, immediate cash outflow, likely EMI, and effective cost per sq ft — not just the quoted project price.</p>
-
-        <div class="result-box" style="margin-top:18px;">
-          <strong>Compare before you buy</strong>
-          <div class="muted" style="margin-top:6px;">Use PropWise India to compare apartment and villa buying cost side by side before making a decision.</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="admin" class="page">
-      <div class="card">
-        <h2>Admin Console</h2>
-        <p class="muted">Lightweight local admin controls for the free-hosted version.</p>
-        <div class="result-box">
-          <strong>Production-ready notes</strong>
-          <div class="muted" style="margin-top:6px;">Authentication can be connected to Supabase free tier later. Current local save logic can be swapped to cloud persistence with the same comparison payload.</div>
-        </div>
-        <div class="grid">
-          <button onclick="exportComparisons()">Export saved comparisons</button>
-          <button onclick="clearComparisons()">Clear saved comparisons</button>
-        </div>
-        <div style="height:16px"></div>
-        <h3>Admin Settings</h3>
-        <div class="grid">
-          <input id="adminNewCity" placeholder="Add city to selected state" />
-          <button onclick="addCityToState()">Add City</button>
-          <input id="adminStateRate" type="number" placeholder="Update state charge %" />
-          <button onclick="updateStateRate()">Update State Charge</button>
-        </div>
-        <div style="height:16px"></div>
-        <h3>Usage Snapshot</h3>
-        <div id="adminStats" class="result-box"></div>
-        <div id="adminResult" class="result-box"></div>
-      </div>
-    </section>
-
-    <section id="login" class="page">
-      
-      <div class="card" style="max-width:420px;">
-        <h2>Login / Sign Up</h2>
-        <input placeholder="Email" />
-        <div style="height:10px"></div>
-        <input type="password" placeholder="Password" />
-        <div style="height:12px"></div>
-        <button>Continue</button>
-        <p class="muted">Ready to connect to a free-tier auth backend later.</p>
-        <div class="result-box">
-          <strong>Free-tier auth wiring</strong>
-          <div class="muted" style="margin-top:6px;">Use Supabase Auth free tier for signup/login. Replace local browser-only save with authenticated user-level saved comparisons.</div>
-        </div>
-      </div>
-    </section>
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="card">
+    <h2>Welcome to PropWise India</h2>
+    <p>Compare property costs and make smarter buying decisions.</p>
   </div>
+</div>
 
-  <script>
-    const cityMap = {
-      KA: ['Bengaluru', 'Mysuru', 'Mangaluru'],
-      MH: ['Mumbai', 'Pune', 'Nagpur'],
-      TN: ['Chennai', 'Coimbatore', 'Madurai'],
-      TS: ['Hyderabad', 'Warangal', 'Khammam'],
-      OTHER: ['Select City']
-    };
+<!-- CALCULATOR -->
+<div id="calculator" class="page">
+  <div class="card">
+    <h2>Property Cost Calculator</h2>
+    <input id="basePrice" placeholder="Base price"/>
+    <input id="charges" placeholder="Extra charges"/>
+    <button onclick="calculate()">Calculate</button>
+    <div id="calcResult"></div>
+  </div>
+</div>
 
-    function showPage(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const target = document.getElementById(id);
-      if (target) target.classList.add('active');
-    }
+<!-- COMPARE -->
+<div id="compare" class="page">
+  <div class="card">
+    <h2>Compare Properties</h2>
 
-    function updateCities() {
-      const stateEl = document.getElementById('state');
-      const cityEl = document.getElementById('city');
-      if (!stateEl || !cityEl) return;
+    <input id="aName" placeholder="Property A name"/>
+    <input id="aBase" placeholder="A base price"/>
+    <input id="aCharges" placeholder="A charges"/>
 
-      const state = stateEl.value;
-      cityEl.innerHTML = '';
-      (cityMap[state] || ['Select City']).forEach(c => {
-        const option = document.createElement('option');
-        option.textContent = c;
-        option.value = c;
-        cityEl.appendChild(option);
-      });
-    }
+    <input id="bName" placeholder="Property B name"/>
+    <input id="bBase" placeholder="B base price"/>
+    <input id="bCharges" placeholder="B charges"/>
 
-    function togglePropertyFields() {
-      const typeEl = document.getElementById('ptype');
-      const parking = document.getElementById('parking');
-      const corpus = document.getElementById('corpus');
-      if (!typeEl || !parking || !corpus) return;
+    <button onclick="compareProperties()">Compare</button>
+    <button onclick="saveComparison()">Save</button>
 
-      const type = typeEl.value;
-      parking.style.display = type === 'Plot' ? 'none' : '';
-      corpus.style.display = type === 'Apartment' ? '' : 'none';
-    }
+    <div id="compareResult"></div>
+  </div>
+</div>
 
-    function calculate() {
-      const type = document.getElementById('ptype').value;
-      const base = parseFloat(document.getElementById('basePrice').value || 0);
-      const charges = parseFloat(document.getElementById('charges').value || 0);
-      const parking = parseFloat(document.getElementById('parking').value || 0);
-      const corpus = parseFloat(document.getElementById('corpus').value || 0);
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+  <div class="card">
+    <h2>Your Saved Comparisons</h2>
+    <div id="savedComparisons"></div>
+  </div>
+</div>
 
-      let total = base + charges;
-      let note = 'Includes base price and declared additional charges.';
+<!-- LOGIN -->
+<div id="login" class="page">
+  <div class="card">
+    <h2>Login / Signup</h2>
 
-      if (type === 'Apartment') {
-        total += parking + corpus;
-        note = 'Apartment logic includes parking and corpus assumptions.';
-      } else if (type === 'Villa') {
-        total += parking;
-        note = 'Villa logic includes parking assumptions.';
-      } else {
-        note = 'Plot logic excludes apartment-style recurring charges.';
-      }
+    <input id="loginEmail" placeholder="Email"/>
+    <input id="loginPassword" type="password" placeholder="Password"/>
 
-      document.getElementById('calcResult').innerHTML = `<strong>Total estimated cost: ₹${new Intl.NumberFormat('en-IN').format(Math.round(total))}</strong><div class="muted">${note}</div>`;
-    }
+    <button onclick="signIn()">Login</button>
+    <button onclick="signUp()">Sign Up</button>
+  </div>
+</div>
 
-    function propertyMetrics(prefix) {
-      const base = parseFloat(document.getElementById(prefix + 'Base').value || 0);
-      const charges = parseFloat(document.getElementById(prefix + 'Charges').value || 0);
-      const down = parseFloat(document.getElementById(prefix + 'Down').value || 0);
-      const annualRate = parseFloat(document.getElementById(prefix + 'Rate').value || 8.5);
-      const tenureYears = parseFloat(document.getElementById(prefix + 'Tenure').value || 20);
-      const size = parseFloat(document.getElementById(prefix + 'Size').value || 0);
+<!-- ADMIN -->
+<div id="admin" class="page">
+  <div class="card">
+    <h2>Admin</h2>
+    <button onclick="loadAdminStats()">Load Stats</button>
+    <div id="adminStats"></div>
+  </div>
+</div>
 
-      const total = base + charges;
-      const loan = Math.max(total - down, 0);
-      const r = annualRate / 100 / 12;
-      const n = tenureYears * 12;
+</div>
 
-      let emi = 0;
-      if (loan > 0 && r > 0 && n > 0) {
-        emi = loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-      }
+<script>
+const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw";
 
-      return {
-        total,
-        loan,
-        emi,
-        perSqft: size > 0 ? total / size : 0
-      };
-    }
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function compareProperties() {
-      const aName = document.getElementById('aName').value || 'Property A';
-      const bName = document.getElementById('bName').value || 'Property B';
-      const a = propertyMetrics('a');
-      const b = propertyMetrics('b');
-      const better = a.total <= b.total ? aName : bName;
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-      document.getElementById('compareResult').innerHTML = `
-        <strong>${better}</strong> has the lower total acquisition cost.
-        <div class="muted" style="margin-top:10px;"><strong>${aName}</strong>: Total ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.total))}, EMI ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.emi))}, ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.perSqft))}/sq ft</div>
-        <div class="muted" style="margin-top:8px;"><strong>${bName}</strong>: Total ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.total))}, EMI ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.emi))}, ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.perSqft))}/sq ft</div>
-      `;
-    }
+function calculate() {
+  const base = Number(document.getElementById('basePrice').value || 0);
+  const charges = Number(document.getElementById('charges').value || 0);
+  document.getElementById('calcResult').innerText =
+    "Total: ₹" + (base + charges);
+}
 
-    function saveComparison() {
-      const aName = document.getElementById('aName').value || 'Property A';
-      const bName = document.getElementById('bName').value || 'Property B';
-      const a = propertyMetrics('a');
-      const b = propertyMetrics('b');
+function propertyMetrics(prefix) {
+  const base = Number(document.getElementById(prefix + 'Base').value || 0);
+  const charges = Number(document.getElementById(prefix + 'Charges').value || 0);
+  return { total: base + charges };
+}
 
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
-      comparisons.unshift({ aName, aCost: a.total, bName, bCost: b.total, createdAt: new Date().toLocaleString() });
-      localStorage.setItem('propwise_comparisons', JSON.stringify(comparisons));
-      loadSavedComparisons();
-      loadAdminStats();
-      showPage('dashboard');
-    }
+function compareProperties() {
+  const a = propertyMetrics('a');
+  const b = propertyMetrics('b');
 
-    function loadSavedComparisons() {
-      const container = document.getElementById('savedComparisons');
-      if (!container) return;
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
-      container.innerHTML = comparisons.length ? comparisons.map(item => `<div class="saved-item"><strong>${item.aName}</strong> (₹${new Intl.NumberFormat('en-IN').format(Math.round(item.aCost))}) vs <strong>${item.bName}</strong> (₹${new Intl.NumberFormat('en-IN').format(Math.round(item.bCost))})<div class="muted">Saved on ${item.createdAt}</div></div>`).join('') : '<p class="muted">No saved comparisons yet.</p>';
-    }
+  document.getElementById('compareResult').innerText =
+    a.total < b.total ? "Property A is cheaper" : "Property B is cheaper";
+}
 
-    function exportComparisons() {
-      const data = localStorage.getItem('propwise_comparisons') || '[]';
-      document.getElementById('adminResult').innerHTML = `<pre style="white-space:pre-wrap;">${data}</pre>`;
-    }
+/* AUTH */
+async function signUp() {
+  const email = loginEmail.value;
+  const password = loginPassword.value;
 
-    function clearComparisons() {
-      localStorage.removeItem('propwise_comparisons');
-      loadSavedComparisons();
-      loadAdminStats();
-      document.getElementById('adminResult').innerHTML = '<span class="muted">Saved comparisons cleared.</span>';
-    }
+  const { error } = await supabaseClient.auth.signUp({ email, password });
+  alert(error ? error.message : "Signup success");
+}
 
-    function addCityToState() {
-      const state = document.getElementById('state').value;
-      const newCity = document.getElementById('adminNewCity').value.trim();
-      if (newCity && !cityMap[state].includes(newCity)) cityMap[state].push(newCity);
-      updateCities();
-      document.getElementById('adminNewCity').value = '';
-    }
+async function signIn() {
+  const email = loginEmail.value;
+  const password = loginPassword.value;
 
-    function updateStateRate() {
-      const state = document.getElementById('state').value;
-      const rate = parseFloat(document.getElementById('adminStateRate').value || 0);
-      localStorage.setItem(`propwise_rate_${state}`, String(rate));
-      document.getElementById('adminStateRate').value = '';
-    }
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-    function loadAdminStats() {
-      const container = document.getElementById('adminStats');
-      if (!container) return;
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
-      container.innerHTML = `<div><strong>Total saved comparisons:</strong> ${comparisons.length}</div>`;
-    }
-
-    updateCities();
-    togglePropertyFields();
+  if (error) alert(error.message);
+  else {
+    alert("Logged in");
+    showPage('dashboard');
     loadSavedComparisons();
-    loadAdminStats();
-  </script>
+  }
+}
+
+/* SAVE */
+async function saveComparison() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return alert("Login first");
+
+  const aName = aName.value || 'A';
+  const bName = bName.value || 'B';
+
+  const a = propertyMetrics('a');
+  const b = propertyMetrics('b');
+
+  await supabaseClient.from('comparisons').insert([
+    { user_id: user.id, a_name: aName, a_cost: a.total, b_name: bName, b_cost: b.total }
+  ]);
+
+  alert("Saved!");
+  loadSavedComparisons();
+}
+
+/* LOAD */
+async function loadSavedComparisons() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return;
+
+  const { data } = await supabaseClient
+    .from('comparisons')
+    .select('*')
+    .eq('user_id', user.id);
+
+  savedComparisons.innerHTML = data.map(d =>
+    `<div>${d.a_name} vs ${d.b_name}</div>`
+  ).join('');
+}
+
+/* ADMIN */
+async function loadAdminStats() {
+  const { data } = await supabaseClient.from('comparisons').select('*');
+  adminStats.innerText = "Total comparisons: " + data.length;
+}
+
+/* INIT */
+loadSavedComparisons();
+
+</script>
+
 </body>
 </html>
