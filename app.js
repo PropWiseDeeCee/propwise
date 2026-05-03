@@ -241,40 +241,70 @@ function compareAdvanced() {
   // ==============================
   // RESULT UI (ONLY HTML HERE)
   // ==============================
-  const resultEl = document.getElementById("resultDetails"); if (!resultEl) return;  resultEl.innerHTML = `
-    <h4 style="margin-bottom:10px;">${winner}</h4>
+  const resultEl = document.getElementById("resultDetails");
+if (!resultEl) return;
 
-    <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
-      Includes registration + hidden charges (${stateLabel})
+resultEl.innerHTML = `
+  <h4 style="margin-bottom:10px;">${winner}</h4>
+
+  <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
+    Includes registration + hidden charges (${stateLabel})
+  </div>
+
+  <!-- PROPERTY A -->
+  <div style="margin-bottom:15px;">
+    <strong>${aName}</strong><br>
+    Base: ₹${aBase.toLocaleString()}<br>
+    Charges: ₹${aCharges.toLocaleString()}<br>
+    Registration: ₹${aReg.toLocaleString()}<br>
+
+    <div style="margin-top:8px;">
+      <span onclick="toggleDetails('aDetails')" style="cursor:pointer; color:#2563eb;">
+        ▶ View Hidden Charges
+      </span>
+
+      <div id="aDetails" style="display:none; margin-top:8px; padding:10px; background:#f9fafb; border-radius:8px;">
+        Legal: ₹${aHidden.breakdown.legal.toLocaleString()}<br>
+        GST: ₹${Math.round(aHidden.breakdown.gst).toLocaleString()}<br>
+        Maintenance: ₹${Math.round(aHidden.breakdown.maintenance).toLocaleString()}<br>
+        Other: ₹${aHidden.breakdown.other.toLocaleString()}
+      </div>
     </div>
 
-    <div>
-      <strong>${aName}</strong><br>
-      Base: ₹${aBase.toLocaleString()}<br>
-      Charges: ₹${aCharges.toLocaleString()}<br>
-      Registration: ₹${aReg.toLocaleString()}<br>
-      Hidden Charges: ₹${aHidden.total.toLocaleString()}<br>
-      <b>Total: ₹${aTotal.toLocaleString()}</b>
+    <b>Total: ₹${aTotal.toLocaleString()}</b>
+  </div>
+
+  <hr>
+
+  <!-- PROPERTY B -->
+  <div style="margin-bottom:15px;">
+    <strong>${bName}</strong><br>
+    Base: ₹${bBase.toLocaleString()}<br>
+    Charges: ₹${bCharges.toLocaleString()}<br>
+    Registration: ₹${bReg.toLocaleString()}<br>
+
+    <div style="margin-top:8px;">
+      <span onclick="toggleDetails('bDetails')" style="cursor:pointer; color:#2563eb;">
+        ▶ View Hidden Charges
+      </span>
+
+      <div id="bDetails" style="display:none; margin-top:8px; padding:10px; background:#f9fafb; border-radius:8px;">
+        Legal: ₹${bHidden.breakdown.legal.toLocaleString()}<br>
+        GST: ₹${Math.round(bHidden.breakdown.gst).toLocaleString()}<br>
+        Maintenance: ₹${Math.round(bHidden.breakdown.maintenance).toLocaleString()}<br>
+        Other: ₹${bHidden.breakdown.other.toLocaleString()}
+      </div>
     </div>
 
-    <hr style="margin:15px 0;">
+    <b>Total: ₹${bTotal.toLocaleString()}</b>
+  </div>
 
-    <div>
-      <strong>${bName}</strong><br>
-      Base: ₹${bBase.toLocaleString()}<br>
-      Charges: ₹${bCharges.toLocaleString()}<br>
-      Registration: ₹${bReg.toLocaleString()}<br>
-      Hidden Charges: ₹${bHidden.total.toLocaleString()}<br>
-      <b>Total: ₹${bTotal.toLocaleString()}</b>
-    </div>
+  <hr>
 
-    <hr style="margin:15px 0;">
-
-    <div style="font-weight:500;">
-      Difference: ${percent}%
-    </div>
-  `;
-
+  <div style="font-weight:500;">
+    Difference: ${percent}%
+  </div>
+`;
   // ==============================
   // EMI
   // ==============================
