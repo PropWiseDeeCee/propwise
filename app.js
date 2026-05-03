@@ -213,6 +213,9 @@ function compareAdvanced() {
   const diff = Math.abs(aTotal - bTotal);
   const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
 
+  const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
+  const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
+
   // ==============================
   // WINNER
   // ==============================
