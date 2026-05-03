@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Compare</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>Compare</h2>
+
+    <input id="aName" placeholder="Property A name">
+    <input id="aBase" placeholder="A price">
+    <input id="aCharges" placeholder="A charges">
+
+    <input id="bName" placeholder="Property B name">
+    <input id="bBase" placeholder="B price">
+    <input id="bCharges" placeholder="B charges">
+
+    <button onclick="compareProperties()">Compare</button>
+    <button onclick="saveComparison()">Save</button>
+
+    <div id="compareResult"></div>
+  </div>
+</div>
+
+</body>
+</html>
