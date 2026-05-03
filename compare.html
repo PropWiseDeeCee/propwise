@@ -16,24 +16,24 @@
 </header>
 
 <body>
-
 <div class="container">
   <div class="card">
     <h2>Compare Properties</h2>
 
     <input id="aName" placeholder="Property A name">
     <input id="aBase" placeholder="A price">
-    <input id="aCharges" placeholder="A charges">
+    <input id="aCharges" placeholder="A additional charges">
 
     <input id="bName" placeholder="Property B name">
     <input id="bBase" placeholder="B price">
-    <input id="bCharges" placeholder="B charges">
+    <input id="bCharges" placeholder="B additional charges">
 
-    <button onclick="compareProperties()">Compare</button>
-    <button class="secondary" onclick="saveComparison()">Save Comparison</button>
+    <button class="btn-primary" onclick="compareProperties()">Compare</button>
+    <button class="btn-secondary" onclick="saveComparison()">Save Comparison</button>
 
-    <div id="compareResult" style="margin-top:15px;"></div>
+    <div id="compareResult" class="result-box"></div>
   </div>
 </div>
+
 </body>
 </html>
