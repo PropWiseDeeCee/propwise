@@ -1,37 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard - PropWise India</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Dashboard</title>
   <link rel="stylesheet" href="styles.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="app.js"></script>
 </head>
 
-<body onload="loadDashboard()">
+<body onload="initPage(true); loadDashboard()">
 
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
     <div class="nav-links">
-      <a href="calculator.html">Calculator</a>
-      <a href="compare.html">Compare</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="guides.html">Guides</a>
-      <a href="login.html">Login</a>
+      <a href="index.html">Home</a>
+      <span id="nav-right"></span>
     </div>
   </div>
 </header>
 
 <div class="container">
   <div class="card">
-    <h2>Your Saved Comparisons</h2>
+    <h2>Your Comparisons</h2>
     <div id="list"></div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
