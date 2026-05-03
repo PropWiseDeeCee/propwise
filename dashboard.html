@@ -1,30 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PropWise India</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
   <script defer src="app.js"></script>
 </head>
 
 <body onload="initPage(true); loadDashboard()">
 
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <span id="nav-right"></span>
-    </div>
-  </div>
-</header>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">PropWise India</div>
 
-<div class="container">
-  <div class="card">
-    <h2>Your Comparisons</h2>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="compare.html">Compare</a>
+        <span id="nav-right"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="container">
+
+    <h2 style="margin-bottom:20px;">Your Saved Comparisons</h2>
+
     <div id="list"></div>
+
   </div>
-</div>
 
 </body>
 </html>
