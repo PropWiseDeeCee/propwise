@@ -1,211 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PropWise India</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    body { font-family: Arial; margin:0; background:#f7f7f7; }
-    header { padding:15px; background:white; border-bottom:1px solid #ddd; }
-    nav a { margin-right:15px; cursor:pointer; }
-    .container { padding:20px; max-width:900px; margin:auto; }
-    .card { background:white; padding:20px; border-radius:10px; margin-bottom:20px; }
-    input, button { padding:10px; margin:5px 0; width:100%; }
-    button { cursor:pointer; }
-    .page { display:none; }
-    .active { display:block; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
 <header>
   <strong>PropWise India</strong>
   <nav>
-    <a onclick="showPage('home')">Home</a>
-    <a onclick="showPage('calculator')">Calculator</a>
-    <a onclick="showPage('compare')">Compare</a>
-    <a onclick="showPage('dashboard')">Dashboard</a>
-    <a onclick="showPage('login')">Login</a>
-    <a onclick="showPage('admin')">Admin</a>
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="login.html">Login</a>
   </nav>
 </header>
 
 <div class="container">
-
-<!-- HOME -->
-<div id="home" class="page active">
   <div class="card">
     <h2>Welcome to PropWise India</h2>
-    <p>Compare property costs and make smarter buying decisions.</p>
+    <p>Compare property costs and make smarter decisions.</p>
   </div>
 </div>
-
-<!-- CALCULATOR -->
-<div id="calculator" class="page">
-  <div class="card">
-    <h2>Property Cost Calculator</h2>
-    <input id="basePrice" placeholder="Base price"/>
-    <input id="charges" placeholder="Extra charges"/>
-    <button onclick="calculate()">Calculate</button>
-    <div id="calcResult"></div>
-  </div>
-</div>
-
-<!-- COMPARE -->
-<div id="compare" class="page">
-  <div class="card">
-    <h2>Compare Properties</h2>
-
-    <input id="aName" placeholder="Property A name"/>
-    <input id="aBase" placeholder="A base price"/>
-    <input id="aCharges" placeholder="A charges"/>
-
-    <input id="bName" placeholder="Property B name"/>
-    <input id="bBase" placeholder="B base price"/>
-    <input id="bCharges" placeholder="B charges"/>
-
-    <button onclick="compareProperties()">Compare</button>
-    <button onclick="saveComparison()">Save</button>
-
-    <div id="compareResult"></div>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="page">
-  <div class="card">
-    <h2>Your Saved Comparisons</h2>
-    <div id="savedComparisons"></div>
-  </div>
-</div>
-
-<!-- LOGIN -->
-<div id="login" class="page">
-  <div class="card">
-    <h2>Login / Signup</h2>
-
-    <input id="loginEmail" placeholder="Email"/>
-    <input id="loginPassword" type="password" placeholder="Password"/>
-
-    <button onclick="signIn()">Login</button>
-    <button onclick="signUp()">Sign Up</button>
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="page">
-  <div class="card">
-    <h2>Admin</h2>
-    <button onclick="loadAdminStats()">Load Stats</button>
-    <div id="adminStats"></div>
-  </div>
-</div>
-
-</div>
-
-<script>
-const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw";
-
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function calculate() {
-  const base = Number(document.getElementById('basePrice').value || 0);
-  const charges = Number(document.getElementById('charges').value || 0);
-  document.getElementById('calcResult').innerText =
-    "Total: ₹" + (base + charges);
-}
-
-function propertyMetrics(prefix) {
-  const base = Number(document.getElementById(prefix + 'Base').value || 0);
-  const charges = Number(document.getElementById(prefix + 'Charges').value || 0);
-  return { total: base + charges };
-}
-
-function compareProperties() {
-  const a = propertyMetrics('a');
-  const b = propertyMetrics('b');
-
-  document.getElementById('compareResult').innerText =
-    a.total < b.total ? "Property A is cheaper" : "Property B is cheaper";
-}
-
-/* AUTH */
-async function signUp() {
-  const email = loginEmail.value;
-  const password = loginPassword.value;
-
-  const { error } = await supabaseClient.auth.signUp({ email, password });
-  alert(error ? error.message : "Signup success");
-}
-
-async function signIn() {
-  const email = loginEmail.value;
-  const password = loginPassword.value;
-
-  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-  if (error) alert(error.message);
-  else {
-    alert("Logged in");
-    showPage('dashboard');
-    loadSavedComparisons();
-  }
-}
-
-/* SAVE */
-async function saveComparison() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if (!user) return alert("Login first");
-
-  const aName = aName.value || 'A';
-  const bName = bName.value || 'B';
-
-  const a = propertyMetrics('a');
-  const b = propertyMetrics('b');
-
-  await supabaseClient.from('comparisons').insert([
-    { user_id: user.id, a_name: aName, a_cost: a.total, b_name: bName, b_cost: b.total }
-  ]);
-
-  alert("Saved!");
-  loadSavedComparisons();
-}
-
-/* LOAD */
-async function loadSavedComparisons() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if (!user) return;
-
-  const { data } = await supabaseClient
-    .from('comparisons')
-    .select('*')
-    .eq('user_id', user.id);
-
-  savedComparisons.innerHTML = data.map(d =>
-    `<div>${d.a_name} vs ${d.b_name}</div>`
-  ).join('');
-}
-
-/* ADMIN */
-async function loadAdminStats() {
-  const { data } = await supabaseClient.from('comparisons').select('*');
-  adminStats.innerText = "Total comparisons: " + data.length;
-}
-
-/* INIT */
-loadSavedComparisons();
-
-</script>
 
 </body>
 </html>
