@@ -7,20 +7,25 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// AUTH
+// ===== AUTH =====
+
+async function getUser() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  return user;
+}
+
 async function signUp() {
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   const { error } = await supabaseClient.auth.signUp({ email, password });
 
-  if (error) alert(error.message);
-  else alert("Signup successful");
+  alert(error ? error.message : "Signup successful");
 }
 
 async function signIn() {
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
@@ -28,63 +33,86 @@ async function signIn() {
   else window.location.href = "dashboard.html";
 }
 
-// CALCULATOR
-function calculate() {
-  const base = Number(basePrice.value || 0);
-  const charges = Number(chargesInput.value || 0);
-
-  calcResult.innerText = "Total: ₹" + (base + charges);
+async function logout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
 }
 
-// COMPARE
-function propertyMetrics(prefix) {
-  const base = Number(document.getElementById(prefix + 'Base').value || 0);
-  const charges = Number(document.getElementById(prefix + 'Charges').value || 0);
-  return base + charges;
+// ===== NAVBAR =====
+
+async function updateNavbar() {
+  const user = await getUser();
+  const nav = document.getElementById("nav-right");
+
+  if (!nav) return;
+
+  if (user) {
+    nav.innerHTML = `
+      <span style="margin-right:10px;">${user.email}</span>
+      <a href="#" onclick="logout()">Logout</a>
+    `;
+  } else {
+    nav.innerHTML = `<a href="login.html">Login</a>`;
+  }
 }
 
-function compareProperties() {
-  const a = propertyMetrics('a');
-  const b = propertyMetrics('b');
+// ===== PROTECT =====
 
-  compareResult.innerText = a < b ? "Property A is cheaper" : "Property B is cheaper";
+async function requireAuth() {
+  const user = await getUser();
+  if (!user) window.location.href = "login.html";
 }
 
-// SAVE
-async function saveComparison() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
+// ===== COMPARE =====
+
+function getValue(id) {
+  return Number(document.getElementById(id).value || 0);
+}
+
+function compare() {
+  const a = getValue("aPrice") + getValue("aCharges");
+  const b = getValue("bPrice") + getValue("bCharges");
+
+  const result = a < b ? "Property A is cheaper" : "Property B is cheaper";
+
+  document.getElementById("result").innerText = result;
+}
+
+async function save() {
+  const user = await getUser();
   if (!user) return alert("Login first");
 
-  await supabaseClient.from('comparisons').insert([
+  await supabaseClient.from("comparisons").insert([
     {
       user_id: user.id,
-      a_name: aName.value,
-      a_cost: propertyMetrics('a'),
-      b_name: bName.value,
-      b_cost: propertyMetrics('b')
+      a_name: document.getElementById("aName").value,
+      a_cost: getValue("aPrice"),
+      b_name: document.getElementById("bName").value,
+      b_cost: getValue("bPrice")
     }
   ]);
 
   alert("Saved!");
 }
 
-// DASHBOARD
+// ===== DASHBOARD =====
+
 async function loadDashboard() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  const user = await getUser();
   if (!user) return;
 
   const { data } = await supabaseClient
-    .from('comparisons')
-    .select('*')
-    .eq('user_id', user.id);
+    .from("comparisons")
+    .select("*")
+    .eq("user_id", user.id);
 
-  list.innerHTML = data.map(d =>
-    `<div>${d.a_name} vs ${d.b_name}</div>`
-  ).join('');
+  document.getElementById("list").innerHTML =
+    data.map(d => `<div>${d.a_name} vs ${d.b_name}</div>`).join("");
 }
 
-// ADMIN
-async function loadAdmin() {
-  const { data } = await supabaseClient.from('comparisons').select('*');
-  admin.innerText = "Total comparisons: " + data.length;
+// ===== INIT =====
+
+async function initPage(protectedPage = false) {
+  if (protectedPage) await requireAuth();
+  await updateNavbar();
 }
