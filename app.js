@@ -353,6 +353,19 @@ getUser().then(user => {
     b_type: bType
   };
 }
+// =============================
+// Add toggle funtion
+// =============================
+function toggleDetails(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  if (el.style.display === "none") {
+    el.style.display = "block";
+  } else {
+    el.style.display = "none";
+  }
+}
 
 // ==============================
 // SAVE
