@@ -118,3 +118,8 @@ button {
   font-size: 13px;
   font-weight: 500;
 }
+
+.insight-box {
+  background: #fff7ed;
+  border-left: 4px solid #f97316;
+}
