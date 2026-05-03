@@ -1,382 +1,357 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2869
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PropWise</title>
+  <style>
+    body { font-family: Inter, Arial, sans-serif; margin: 0; color: #1f2937; background: #f8fafc; }
+    header { background: rgba(255,255,255,0.95); border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; backdrop-filter: blur(8px); }
+    .nav { max-width: 1160px; margin: 0 auto; display: flex; gap: 20px; align-items: center; }
+    .brand { font-weight: 700; font-size: 20px; margin-right: auto; }
+    .nav a { text-decoration: none; color: #374151; font-size: 14px; }
+    .container { max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .hero { background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); border: 1px solid #e5e7eb; border-radius: 20px; padding: 34px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: 34px; }
+    .hero p { max-width: 700px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 22px; }
+    .tool-card { padding: 18px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; }
+    .tool-card h3 { margin-top: 0; }
+    input, select, button { width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; }
+    button { cursor: pointer; background: #111827; color: white; border: none; }
+    button.secondary { background: #fff; color: #111827; border: 1px solid #d1d5db; }
+    .muted { color: #6b7280; font-size: 14px; }
+    .result-box { margin-top: 16px; padding: 14px; border-radius: 12px; background: #f8fafc; border: 1px solid #e5e7eb; }
+    .ad-slot { border: 1px dashed #cbd5e1; border-radius: 14px; padding: 18px; text-align: center; color: #64748b; font-size: 13px; background: #fff; }
+    .saved-item { padding: 12px 0; border-bottom: 1px solid #eef2f7; }
+    .badge { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 999px; background: #eef2ff; color: #4338ca; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">PropWise</div>
+      <a href="#" onclick="showPage('home')">Home</a>
+      <a href="#" onclick="showPage('calculator')">Calculator</a>
+      <a href="#" onclick="showPage('compare')">Compare</a>
+      <a href="#" onclick="showPage('dashboard')">Dashboard</a>
+      <a href="#" onclick="showPage('login')">Login</a>
+      <a href="#" onclick="showPage('admin')">Admin</a>
+      <a href="#" onclick="showPage('guides')">Guides</a>
+    </div>
+  </header>
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="en">\
-<head>\
-  <meta charset="UTF-8" />\
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\
-  <title>PropWise</title>\
-  <style>\
-    body \{ font-family: Inter, Arial, sans-serif; margin: 0; color: #1f2937; background: #f8fafc; \}\
-    header \{ background: rgba(255,255,255,0.95); border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; backdrop-filter: blur(8px); \}\
-    .nav \{ max-width: 1160px; margin: 0 auto; display: flex; gap: 20px; align-items: center; \}\
-    .brand \{ font-weight: 700; font-size: 20px; margin-right: auto; \}\
-    .nav a \{ text-decoration: none; color: #374151; font-size: 14px; \}\
-    .container \{ max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; \}\
-    .page \{ display: none; \}\
-    .page.active \{ display: block; \}\
-    .hero \{ background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); border: 1px solid #e5e7eb; border-radius: 20px; padding: 34px; margin-bottom: 24px; \}\
-    .hero h1 \{ margin: 0 0 10px; font-size: 34px; \}\
-    .hero p \{ max-width: 700px; \}\
-    .card \{ background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04); \}\
-    .grid \{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; \}\
-    .tools \{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 22px; \}\
-    .tool-card \{ padding: 18px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; \}\
-    .tool-card h3 \{ margin-top: 0; \}\
-    input, select, button \{ width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; \}\
-    button \{ cursor: pointer; background: #111827; color: white; border: none; \}\
-    button.secondary \{ background: #fff; color: #111827; border: 1px solid #d1d5db; \}\
-    .muted \{ color: #6b7280; font-size: 14px; \}\
-    .result-box \{ margin-top: 16px; padding: 14px; border-radius: 12px; background: #f8fafc; border: 1px solid #e5e7eb; \}\
-    .ad-slot \{ border: 1px dashed #cbd5e1; border-radius: 14px; padding: 18px; text-align: center; color: #64748b; font-size: 13px; background: #fff; \}\
-    .saved-item \{ padding: 12px 0; border-bottom: 1px solid #eef2f7; \}\
-    .badge \{ display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 999px; background: #eef2ff; color: #4338ca; margin-bottom: 10px; \}\
-  </style>\
-</head>\
-<body>\
-  <header>\
-    <div class="nav">\
-      <div class="brand">PropWise</div>\
-      <a href="#" onclick="showPage('home')">Home</a>\
-      <a href="#" onclick="showPage('calculator')">Calculator</a>\
-      <a href="#" onclick="showPage('compare')">Compare</a>\
-      <a href="#" onclick="showPage('dashboard')">Dashboard</a>\
-      <a href="#" onclick="showPage('login')">Login</a>\
-      <a href="#" onclick="showPage('admin')">Admin</a>\
-      <a href="#" onclick="showPage('guides')">Guides</a>\
-    </div>\
-  </header>\
-\
-  <div class="container">\
-    <section id="home" class="page active">\
-      <div class="hero">\
-        <div class="badge">India homebuyer decision workspace</div>\
-        <h1>Make smarter property-buying decisions across India</h1>\
-        <p class="muted">Estimate the real cost of apartments, villas, and plots. Compare options side by side. Save important buying decisions for later.</p>\
-      </div>\
-\
-      <div class="tools">\
-        <div class="tool-card">\
-          <h3>True Cost Calculator</h3>\
-          <p class="muted">Understand acquisition cost beyond the quoted price.</p>\
-        </div>\
-        <div class="tool-card">\
-          <h3>Property Comparison</h3>\
-          <p class="muted">See which option needs less cash now and costs less later.</p>\
-        </div>\
-        <div class="tool-card">\
-          <h3>Saved Decision Dashboard</h3>\
-          <p class="muted">Keep track of shortlisted properties and revisit comparisons.</p>\
-        </div>\
-      </div>\
-\
-      <div class="ad-slot">Reserved space for future ad placement</div>\
-    </section>\
-\
-    <section id="calculator" class="page">\
-      <div class="card">\
-        <h2>Property Cost Calculator</h2>\
-        <div class="grid">\
-          <select id="state" onchange="updateCities()">\
-            <option value="KA">Karnataka</option>\
-            <option value="MH">Maharashtra</option>\
-            <option value="TN">Tamil Nadu</option>\
-            <option value="TS">Telangana</option>\
-            <option value="OTHER">Other</option>\
-          </select>\
-          <select id="city"></select>\
-          <select id="ptype" onchange="togglePropertyFields()">\
-            <option>Apartment</option>\
-            <option>Villa</option>\
-            <option>Plot</option>\
-          </select>\
-          <input id="basePrice" type="number" placeholder="Base price" />\
-          <input id="charges" type="number" placeholder="Other charges" />\
-          <input id="parking" type="number" placeholder="Parking (apartment/villa)" />\
-          <input id="corpus" type="number" placeholder="Corpus / maintenance" />\
-        </div>\
-        <div style="margin-top:12px;"><button onclick="calculate()">Calculate</button></div>\
-        <div id="calcResult" class="result-box"></div>\
-      </div>\
-    </section>\
-\
-    <section id="compare" class="page">\
-      <div class="card">\
-        <h2>Compare Two Properties</h2>\
-        <div class="grid">\
-          <input id="aName" placeholder="Property A name" />\
-          <input id="aBase" type="number" placeholder="Property A base price" />\
-          <input id="aCharges" type="number" placeholder="Property A other charges" />\
-          <input id="aDown" type="number" placeholder="Property A down payment" />\
-          <input id="aRate" type="number" placeholder="Property A interest %" value="8.5" />\
-          <input id="aTenure" type="number" placeholder="Property A tenure years" value="20" />\
-          <input id="aSize" type="number" placeholder="Property A size (sq ft)" />\
-\
-          <input id="bName" placeholder="Property B name" />\
-          <input id="bBase" type="number" placeholder="Property B base price" />\
-          <input id="bCharges" type="number" placeholder="Property B other charges" />\
-          <input id="bDown" type="number" placeholder="Property B down payment" />\
-          <input id="bRate" type="number" placeholder="Property B interest %" value="8.5" />\
-          <input id="bTenure" type="number" placeholder="Property B tenure years" value="20" />\
-          <input id="bSize" type="number" placeholder="Property B size (sq ft)" />\
-        </div>\
-        <div style="display:flex; gap:10px; margin-top:12px;">\
-          <button onclick="compareProperties()">Compare</button>\
-          <button class="secondary" onclick="saveComparison()">Save Comparison</button>\
-        </div>\
-        <div id="compareResult" class="result-box"></div>\
-      </div>\
-      <div class="ad-slot">Reserved space for comparison page ads</div>\
-    </section>\
-\
-    <section id="dashboard" class="page">\
-      <div class="card">\
-        <h2>Saved Comparisons</h2>\
-        <div id="savedComparisons"></div>\
-      </div>\
-    </section>\
-\
-    <section id="guides" class="page">\
-      <div class="card">\
-        <h2>Property Guides</h2>\
-        <p class="muted">SEO-friendly content pages for discoverability across India.</p>\
-        <div class="saved-item"><strong>Registration charges in Bengaluru</strong><div class="muted">Understand typical registration, stamp duty, and buyer-side costs.</div></div>\
-        <div class="saved-item"><strong>Apartment vs villa total cost</strong><div class="muted">Compare long-term ownership implications before buying.</div></div>\
-        <div class="saved-item"><strong>Hidden builder charges</strong><div class="muted">Common charges buyers often miss in project quotations.</div></div>\
-      </div>\
-    </section>\
-\
-    <section id="admin" class="page">\
-      <div class="card">\
-        <h2>Admin Console</h2>\
-        <p class="muted">Lightweight local admin controls for the free-hosted version.</p>\
-        <div class="result-box">\
-          <strong>Production-ready notes</strong>\
-          <div class="muted" style="margin-top:6px;">Authentication can be connected to Supabase free tier later. Current local save logic can be swapped to cloud persistence with the same comparison payload.</div>\
-        </div>\
-        <div class="grid">\
-          <button onclick="exportComparisons()">Export saved comparisons</button>\
-          <button onclick="clearComparisons()">Clear saved comparisons</button>\
-        </div>\
-        <div style="height:16px"></div>\
-        <h3>Admin Settings</h3>\
-        <div class="grid">\
-          <input id="adminNewCity" placeholder="Add city to selected state" />\
-          <button onclick="addCityToState()">Add City</button>\
-          <input id="adminStateRate" type="number" placeholder="Update state charge %" />\
-          <button onclick="updateStateRate()">Update State Charge</button>\
-        </div>\
-        <div style="height:16px"></div>\
-        <h3>Usage Snapshot</h3>\
-        <div id="adminStats" class="result-box"></div>\
-        <div id="adminResult" class="result-box"></div>\
-      </div>\
-    </section>\
-\
-    <section id="login" class="page">\
-      \
-      <div class="card" style="max-width:420px;">\
-        <h2>Login / Sign Up</h2>\
-        <input placeholder="Email" />\
-        <div style="height:10px"></div>\
-        <input type="password" placeholder="Password" />\
-        <div style="height:12px"></div>\
-        <button>Continue</button>\
-        <p class="muted">Ready to connect to a free-tier auth backend later.</p>\
-        <div class="result-box">\
-          <strong>Free-tier auth wiring</strong>\
-          <div class="muted" style="margin-top:6px;">Use Supabase Auth free tier for signup/login. Replace local browser-only save with authenticated user-level saved comparisons.</div>\
-        </div>\
-      </div>\
-    </section>\
-  </div>\
-\
-  <script>\
-    const cityMap = \{\
-      KA: ['Bengaluru', 'Mysuru', 'Mangaluru'],\
-      MH: ['Mumbai', 'Pune', 'Nagpur'],\
-      TN: ['Chennai', 'Coimbatore', 'Madurai'],\
-      TS: ['Hyderabad', 'Warangal', 'Khammam'],\
-      OTHER: ['Select City']\
-    \};\
-\
-    function showPage(id) \{\
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));\
-      document.getElementById(id).classList.add('active');\
-    \}\
-\
-    function updateCities() \{\
-      const state = document.getElementById('state').value;\
-      const city = document.getElementById('city');\
-      city.innerHTML = '';\
-      cityMap[state].forEach(c => \{\
-        const o = document.createElement('option');\
-        o.textContent = c;\
-        city.appendChild(o);\
-      \});\
-    \}\
-\
-    function calculate() \{\
-      const type = document.getElementById('ptype').value;\
-      const base = parseFloat(document.getElementById('basePrice').value || 0);\
-      const charges = parseFloat(document.getElementById('charges').value || 0);\
-      const parking = parseFloat(document.getElementById('parking').value || 0);\
-      const corpus = parseFloat(document.getElementById('corpus').value || 0);\
-\
-      let total = base + charges;\
-      let note = '$\{note\}';\
-\
-      if (type === 'Apartment') \{\
-        total += parking + corpus;\
-        note = 'Apartment logic includes parking and corpus/maintenance assumptions.';\
-      \} else if (type === 'Villa') \{\
-        total += parking;\
-        note = 'Villa logic includes parking/site-related assumptions.';\
-      \} else if (type === 'Plot') \{\
-        note = 'Plot logic excludes apartment-style recurring charges.';\
-      \}\
-\
-      document.getElementById('calcResult').innerHTML = `<strong>Total estimated cost: \uc0\u8377 $\{new Intl.NumberFormat('en-IN').format(total)\}</strong><div class="muted">Includes base price and declared additional charges.</div>`;\
-    \}\
-\
-    function compareProperties() \{\
-      const calc = (prefix) => \{\
-        const base = parseFloat(document.getElementById(prefix + 'Base').value || 0);\
-        const charges = parseFloat(document.getElementById(prefix + 'Charges').value || 0);\
-        const down = parseFloat(document.getElementById(prefix + 'Down').value || 0);\
-        const rate = (parseFloat(document.getElementById(prefix + 'Rate').value || 8.5) / 100) / 12;\
-        const tenure = (parseFloat(document.getElementById(prefix + 'Tenure').value || 20)) * 12;\
-        const size = parseFloat(document.getElementById(prefix + 'Size').value || 0);\
-\
-        const total = base + charges;\
-        const loan = Math.max(total - down, 0);\
-        let emi = 0;\
-        if (loan > 0 && rate > 0 && tenure > 0) \{\
-          emi = loan * rate * Math.pow(1 + rate, tenure) / (Math.pow(1 + rate, tenure) - 1);\
-        \}\
-        return \{\
-          total,\
-          loan,\
-          emi,\
-          perSqft: size > 0 ? total / size : 0\
-        \};\
-      \};\
-\
-      const aName = document.getElementById('aName').value || 'Property A';\
-      const bName = document.getElementById('bName').value || 'Property B';\
-      const a = calc('a');\
-      const b = calc('b');\
-      const better = a.total <= b.total ? aName : bName;\
-\
-      document.getElementById('compareResult').innerHTML = `\
-        <strong>$\{better\}</strong> has the lower total acquisition cost.\
-        <div class="muted" style="margin-top:10px;">\
-          <strong>$\{aName\}</strong>: Total \uc0\u8377 $\{new Intl.NumberFormat('en-IN').format(a.total)\}, Loan \u8377 $\{new Intl.NumberFormat('en-IN').format(a.loan)\}, EMI \u8377 $\{new Intl.NumberFormat('en-IN').format(Math.round(a.emi))\}, Effective \u8377 $\{new Intl.NumberFormat('en-IN').format(Math.round(a.perSqft))\}/sq ft\
-        </div>\
-        <div class="muted" style="margin-top:8px;">\
-          <strong>$\{bName\}</strong>: Total \uc0\u8377 $\{new Intl.NumberFormat('en-IN').format(b.total)\}, Loan \u8377 $\{new Intl.NumberFormat('en-IN').format(b.loan)\}, EMI \u8377 $\{new Intl.NumberFormat('en-IN').format(Math.round(b.emi))\}, Effective \u8377 $\{new Intl.NumberFormat('en-IN').format(Math.round(b.perSqft))\}/sq ft\
-        </div>\
-        <div class="muted" style="margin-top:8px;">Difference in total cost: \uc0\u8377 $\{new Intl.NumberFormat('en-IN').format(Math.abs(a.total - b.total))\}</div>\
-      `;\
-    \}\
-\
-    function togglePropertyFields() \{\
-      const type = document.getElementById('ptype').value;\
-      const parking = document.getElementById('parking');\
-      const corpus = document.getElementById('corpus');\
-      if (type === 'Plot') \{\
-        parking.style.display = 'none';\
-        corpus.style.display = 'none';\
-      \} else if (type === 'Villa') \{\
-        parking.style.display = '';\
-        corpus.style.display = 'none';\
-      \} else \{\
-        parking.style.display = '';\
-        corpus.style.display = '';\
-      \}\
-    \}\
-\
-    function saveComparison() \{\
-      const aName = document.getElementById('aName').value || 'Property A';\
-      const aCost = (parseFloat(document.getElementById('aBase').value || 0) + parseFloat(document.getElementById('aCharges').value || 0));\
-      const bName = document.getElementById('bName').value || 'Property B';\
-      const bCost = (parseFloat(document.getElementById('bBase').value || 0) + parseFloat(document.getElementById('bCharges').value || 0));\
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');\
-      comparisons.unshift(\{ aName, aCost, bName, bCost, createdAt: new Date().toLocaleString() \});\
-      localStorage.setItem('propwise_comparisons', JSON.stringify(comparisons));\
-      loadSavedComparisons();\
-    loadAdminStats();\
-\
-    // Deployment-ready: static single-file build, compatible with Vercel/Netlify free hosting.\
-      showPage('dashboard');\
-    \}\
-\
-    function loadSavedComparisons() \{\
-      const container = document.getElementById('savedComparisons');\
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');\
-      if (!comparisons.length) \{\
-        container.innerHTML = '<p class="muted">No saved comparisons yet.</p>';\
-        return;\
-      \}\
-      container.innerHTML = comparisons.map(item => `\
-        <div class="saved-item">\
-          <strong>$\{item.aName\}</strong> (\uc0\u8377 $\{new Intl.NumberFormat('en-IN').format(item.aCost)\}) vs <strong>$\{item.bName\}</strong> (\u8377 $\{new Intl.NumberFormat('en-IN').format(item.bCost)\})\
-          <div class="muted">Saved on $\{item.createdAt\}</div>\
-        </div>\
-      `).join('');\
-    \}\
-\
-    function exportComparisons() \{\
-      const data = localStorage.getItem('propwise_comparisons') || '[]';\
-      document.getElementById('adminResult').innerHTML = `<pre style="white-space:pre-wrap;">$\{data\}</pre>`;\
-    \}\
-\
-    function clearComparisons() \{\
-      localStorage.removeItem('propwise_comparisons');\
-      loadSavedComparisons();\
-      loadAdminStats();\
-      document.getElementById('adminResult').innerHTML = '<span class="muted">Saved comparisons cleared.</span>';\
-    \}\
-\
-    function addCityToState() \{\
-      const state = document.getElementById('state').value;\
-      const newCity = document.getElementById('adminNewCity').value.trim();\
-      if (!newCity) return;\
-      if (!cityMap[state].includes(newCity)) \{\
-        cityMap[state].push(newCity);\
-        updateCities();\
-      \}\
-      document.getElementById('adminNewCity').value = '';\
-      document.getElementById('adminResult').innerHTML = `<span class="muted">Added city: $\{newCity\}</span>`;\
-    \}\
-\
-    function updateStateRate() \{\
-      const state = document.getElementById('state').value;\
-      const rate = parseFloat(document.getElementById('adminStateRate').value || 0);\
-      localStorage.setItem(`propwise_rate_$\{state\}`, String(rate));\
-      document.getElementById('adminStateRate').value = '';\
-      document.getElementById('adminResult').innerHTML = `<span class="muted">Updated state charge assumption to $\{rate\}%</span>`;\
-    \}\
-\
-    function loadAdminStats() \{\
-      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');\
-      const total = comparisons.length;\
-      const recent = comparisons.slice(0, 3).map(c => `$\{c.aName\} vs $\{c.bName\}`).join(', ');\
-      document.getElementById('adminStats').innerHTML = `\
-        <div><strong>Total saved comparisons:</strong> $\{total\}</div>\
-        <div class="muted" style="margin-top:6px;"><strong>Recent:</strong> $\{recent || 'None yet'\}</div>\
-      `;\
-    \}\
-\
-    updateCities();\
-    togglePropertyFields();\
-    loadSavedComparisons();\
-  </script>\
-</body>\
-</html>\
-}
+  <div class="container">
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="badge">India homebuyer decision workspace</div>
+        <h1>Make smarter property-buying decisions across India</h1>
+        <p class="muted">Estimate the real cost of apartments, villas, and plots. Compare options side by side. Save important buying decisions for later.</p>
+      </div>
+
+      <div class="tools">
+        <div class="tool-card">
+          <h3>True Cost Calculator</h3>
+          <p class="muted">Understand acquisition cost beyond the quoted price.</p>
+        </div>
+        <div class="tool-card">
+          <h3>Property Comparison</h3>
+          <p class="muted">See which option needs less cash now and costs less later.</p>
+        </div>
+        <div class="tool-card">
+          <h3>Saved Decision Dashboard</h3>
+          <p class="muted">Keep track of shortlisted properties and revisit comparisons.</p>
+        </div>
+      </div>
+
+      <div class="ad-slot">Reserved space for future ad placement</div>
+    </section>
+
+    <section id="calculator" class="page">
+      <div class="card">
+        <h2>Property Cost Calculator</h2>
+        <div class="grid">
+          <select id="state" onchange="updateCities()">
+            <option value="KA">Karnataka</option>
+            <option value="MH">Maharashtra</option>
+            <option value="TN">Tamil Nadu</option>
+            <option value="TS">Telangana</option>
+            <option value="OTHER">Other</option>
+          </select>
+          <select id="city"></select>
+          <select id="ptype" onchange="togglePropertyFields()">
+            <option>Apartment</option>
+            <option>Villa</option>
+            <option>Plot</option>
+          </select>
+          <input id="basePrice" type="number" placeholder="Base price" />
+          <input id="charges" type="number" placeholder="Other charges" />
+          <input id="parking" type="number" placeholder="Parking (apartment/villa)" />
+          <input id="corpus" type="number" placeholder="Corpus / maintenance" />
+        </div>
+        <div style="margin-top:12px;"><button onclick="calculate()">Calculate</button></div>
+        <div id="calcResult" class="result-box"></div>
+      </div>
+    </section>
+
+    <section id="compare" class="page">
+      <div class="card">
+        <h2>Compare Two Properties</h2>
+        <div class="grid">
+          <input id="aName" placeholder="Property A name" />
+          <input id="aBase" type="number" placeholder="Property A base price" />
+          <input id="aCharges" type="number" placeholder="Property A other charges" />
+          <input id="aDown" type="number" placeholder="Property A down payment" />
+          <input id="aRate" type="number" placeholder="Property A interest %" value="8.5" />
+          <input id="aTenure" type="number" placeholder="Property A tenure years" value="20" />
+          <input id="aSize" type="number" placeholder="Property A size (sq ft)" />
+
+          <input id="bName" placeholder="Property B name" />
+          <input id="bBase" type="number" placeholder="Property B base price" />
+          <input id="bCharges" type="number" placeholder="Property B other charges" />
+          <input id="bDown" type="number" placeholder="Property B down payment" />
+          <input id="bRate" type="number" placeholder="Property B interest %" value="8.5" />
+          <input id="bTenure" type="number" placeholder="Property B tenure years" value="20" />
+          <input id="bSize" type="number" placeholder="Property B size (sq ft)" />
+        </div>
+        <div style="display:flex; gap:10px; margin-top:12px;">
+          <button onclick="compareProperties()">Compare</button>
+          <button class="secondary" onclick="saveComparison()">Save Comparison</button>
+        </div>
+        <div id="compareResult" class="result-box"></div>
+      </div>
+      <div class="ad-slot">Reserved space for comparison page ads</div>
+    </section>
+
+    <section id="dashboard" class="page">
+      <div class="card">
+        <h2>Saved Comparisons</h2>
+        <div id="savedComparisons"></div>
+      </div>
+    </section>
+
+    <section id="guides" class="page">
+      <div class="card">
+        <h2>Property Guides</h2>
+        <p class="muted">SEO-friendly content pages for discoverability across India.</p>
+        <div class="saved-item"><strong>Registration charges in Bengaluru</strong><div class="muted">Understand typical registration, stamp duty, and buyer-side costs.</div></div>
+        <div class="saved-item"><strong>Apartment vs villa total cost</strong><div class="muted">Compare long-term ownership implications before buying.</div></div>
+        <div class="saved-item"><strong>Hidden builder charges</strong><div class="muted">Common charges buyers often miss in project quotations.</div></div>
+      </div>
+    </section>
+
+    <section id="admin" class="page">
+      <div class="card">
+        <h2>Admin Console</h2>
+        <p class="muted">Lightweight local admin controls for the free-hosted version.</p>
+        <div class="result-box">
+          <strong>Production-ready notes</strong>
+          <div class="muted" style="margin-top:6px;">Authentication can be connected to Supabase free tier later. Current local save logic can be swapped to cloud persistence with the same comparison payload.</div>
+        </div>
+        <div class="grid">
+          <button onclick="exportComparisons()">Export saved comparisons</button>
+          <button onclick="clearComparisons()">Clear saved comparisons</button>
+        </div>
+        <div style="height:16px"></div>
+        <h3>Admin Settings</h3>
+        <div class="grid">
+          <input id="adminNewCity" placeholder="Add city to selected state" />
+          <button onclick="addCityToState()">Add City</button>
+          <input id="adminStateRate" type="number" placeholder="Update state charge %" />
+          <button onclick="updateStateRate()">Update State Charge</button>
+        </div>
+        <div style="height:16px"></div>
+        <h3>Usage Snapshot</h3>
+        <div id="adminStats" class="result-box"></div>
+        <div id="adminResult" class="result-box"></div>
+      </div>
+    </section>
+
+    <section id="login" class="page">
+      
+      <div class="card" style="max-width:420px;">
+        <h2>Login / Sign Up</h2>
+        <input placeholder="Email" />
+        <div style="height:10px"></div>
+        <input type="password" placeholder="Password" />
+        <div style="height:12px"></div>
+        <button>Continue</button>
+        <p class="muted">Ready to connect to a free-tier auth backend later.</p>
+        <div class="result-box">
+          <strong>Free-tier auth wiring</strong>
+          <div class="muted" style="margin-top:6px;">Use Supabase Auth free tier for signup/login. Replace local browser-only save with authenticated user-level saved comparisons.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const cityMap = {
+      KA: ['Bengaluru', 'Mysuru', 'Mangaluru'],
+      MH: ['Mumbai', 'Pune', 'Nagpur'],
+      TN: ['Chennai', 'Coimbatore', 'Madurai'],
+      TS: ['Hyderabad', 'Warangal', 'Khammam'],
+      OTHER: ['Select City']
+    };
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+    }
+
+    function updateCities() {
+      const stateEl = document.getElementById('state');
+      const cityEl = document.getElementById('city');
+      if (!stateEl || !cityEl) return;
+
+      const state = stateEl.value;
+      cityEl.innerHTML = '';
+      (cityMap[state] || ['Select City']).forEach(c => {
+        const option = document.createElement('option');
+        option.textContent = c;
+        option.value = c;
+        cityEl.appendChild(option);
+      });
+    }
+
+    function togglePropertyFields() {
+      const typeEl = document.getElementById('ptype');
+      const parking = document.getElementById('parking');
+      const corpus = document.getElementById('corpus');
+      if (!typeEl || !parking || !corpus) return;
+
+      const type = typeEl.value;
+      parking.style.display = type === 'Plot' ? 'none' : '';
+      corpus.style.display = type === 'Apartment' ? '' : 'none';
+    }
+
+    function calculate() {
+      const type = document.getElementById('ptype').value;
+      const base = parseFloat(document.getElementById('basePrice').value || 0);
+      const charges = parseFloat(document.getElementById('charges').value || 0);
+      const parking = parseFloat(document.getElementById('parking').value || 0);
+      const corpus = parseFloat(document.getElementById('corpus').value || 0);
+
+      let total = base + charges;
+      let note = 'Includes base price and declared additional charges.';
+
+      if (type === 'Apartment') {
+        total += parking + corpus;
+        note = 'Apartment logic includes parking and corpus assumptions.';
+      } else if (type === 'Villa') {
+        total += parking;
+        note = 'Villa logic includes parking assumptions.';
+      } else {
+        note = 'Plot logic excludes apartment-style recurring charges.';
+      }
+
+      document.getElementById('calcResult').innerHTML = `<strong>Total estimated cost: ₹${new Intl.NumberFormat('en-IN').format(Math.round(total))}</strong><div class="muted">${note}</div>`;
+    }
+
+    function propertyMetrics(prefix) {
+      const base = parseFloat(document.getElementById(prefix + 'Base').value || 0);
+      const charges = parseFloat(document.getElementById(prefix + 'Charges').value || 0);
+      const down = parseFloat(document.getElementById(prefix + 'Down').value || 0);
+      const annualRate = parseFloat(document.getElementById(prefix + 'Rate').value || 8.5);
+      const tenureYears = parseFloat(document.getElementById(prefix + 'Tenure').value || 20);
+      const size = parseFloat(document.getElementById(prefix + 'Size').value || 0);
+
+      const total = base + charges;
+      const loan = Math.max(total - down, 0);
+      const r = annualRate / 100 / 12;
+      const n = tenureYears * 12;
+
+      let emi = 0;
+      if (loan > 0 && r > 0 && n > 0) {
+        emi = loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      }
+
+      return {
+        total,
+        loan,
+        emi,
+        perSqft: size > 0 ? total / size : 0
+      };
+    }
+
+    function compareProperties() {
+      const aName = document.getElementById('aName').value || 'Property A';
+      const bName = document.getElementById('bName').value || 'Property B';
+      const a = propertyMetrics('a');
+      const b = propertyMetrics('b');
+      const better = a.total <= b.total ? aName : bName;
+
+      document.getElementById('compareResult').innerHTML = `
+        <strong>${better}</strong> has the lower total acquisition cost.
+        <div class="muted" style="margin-top:10px;"><strong>${aName}</strong>: Total ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.total))}, EMI ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.emi))}, ₹${new Intl.NumberFormat('en-IN').format(Math.round(a.perSqft))}/sq ft</div>
+        <div class="muted" style="margin-top:8px;"><strong>${bName}</strong>: Total ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.total))}, EMI ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.emi))}, ₹${new Intl.NumberFormat('en-IN').format(Math.round(b.perSqft))}/sq ft</div>
+      `;
+    }
+
+    function saveComparison() {
+      const aName = document.getElementById('aName').value || 'Property A';
+      const bName = document.getElementById('bName').value || 'Property B';
+      const a = propertyMetrics('a');
+      const b = propertyMetrics('b');
+
+      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
+      comparisons.unshift({ aName, aCost: a.total, bName, bCost: b.total, createdAt: new Date().toLocaleString() });
+      localStorage.setItem('propwise_comparisons', JSON.stringify(comparisons));
+      loadSavedComparisons();
+      loadAdminStats();
+      showPage('dashboard');
+    }
+
+    function loadSavedComparisons() {
+      const container = document.getElementById('savedComparisons');
+      if (!container) return;
+      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
+      container.innerHTML = comparisons.length ? comparisons.map(item => `<div class="saved-item"><strong>${item.aName}</strong> (₹${new Intl.NumberFormat('en-IN').format(Math.round(item.aCost))}) vs <strong>${item.bName}</strong> (₹${new Intl.NumberFormat('en-IN').format(Math.round(item.bCost))})<div class="muted">Saved on ${item.createdAt}</div></div>`).join('') : '<p class="muted">No saved comparisons yet.</p>';
+    }
+
+    function exportComparisons() {
+      const data = localStorage.getItem('propwise_comparisons') || '[]';
+      document.getElementById('adminResult').innerHTML = `<pre style="white-space:pre-wrap;">${data}</pre>`;
+    }
+
+    function clearComparisons() {
+      localStorage.removeItem('propwise_comparisons');
+      loadSavedComparisons();
+      loadAdminStats();
+      document.getElementById('adminResult').innerHTML = '<span class="muted">Saved comparisons cleared.</span>';
+    }
+
+    function addCityToState() {
+      const state = document.getElementById('state').value;
+      const newCity = document.getElementById('adminNewCity').value.trim();
+      if (newCity && !cityMap[state].includes(newCity)) cityMap[state].push(newCity);
+      updateCities();
+      document.getElementById('adminNewCity').value = '';
+    }
+
+    function updateStateRate() {
+      const state = document.getElementById('state').value;
+      const rate = parseFloat(document.getElementById('adminStateRate').value || 0);
+      localStorage.setItem(`propwise_rate_${state}`, String(rate));
+      document.getElementById('adminStateRate').value = '';
+    }
+
+    function loadAdminStats() {
+      const container = document.getElementById('adminStats');
+      if (!container) return;
+      const comparisons = JSON.parse(localStorage.getItem('propwise_comparisons') || '[]');
+      container.innerHTML = `<div><strong>Total saved comparisons:</strong> ${comparisons.length}</div>`;
+    }
+
+    updateCities();
+    togglePropertyFields();
+    loadSavedComparisons();
+    loadAdminStats();
+  </script>
+</body>
+</html>
