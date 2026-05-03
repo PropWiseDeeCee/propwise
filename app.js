@@ -2,12 +2,11 @@
 // CONFIG (REPLACE)
 // ==============================
 const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw"; // keep your key
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+// ✅ FIXED INIT (important)
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ==============================
 // AUTH
@@ -15,6 +14,41 @@ const supabaseClient = window.supabase.createClient(
 async function getUser() {
   const { data: { user } } = await supabaseClient.auth.getUser();
   return user;
+}
+
+async function signUp() {
+  const email = document.getElementById("email")?.value;
+  const password = document.getElementById("password")?.value;
+
+  if (!email || !password) {
+    alert("Enter email and password");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signUp({ email, password });
+
+  if (error) alert(error.message);
+  else alert("Signup successful. Now login.");
+}
+
+async function signIn() {
+  const email = document.getElementById("email")?.value;
+  const password = document.getElementById("password")?.value;
+
+  console.log("Login attempt:", email);
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    console.error(error.message);
+    alert(error.message);
+  } else {
+    console.log("Login success");
+    window.location.href = "dashboard.html";
+  }
 }
 
 async function logout() {
@@ -66,12 +100,8 @@ function getNumber(id) {
 // ==============================
 // REGISTRATION ENGINE
 // ==============================
-function getRegistrationRate() {
-  return 0.06; // 6% (MVP)
-}
-
 function calculateRegistration(price) {
-  return Math.round(price * getRegistrationRate());
+  return Math.round(price * 0.06);
 }
 
 // ==============================
@@ -81,11 +111,10 @@ function calculateEMI(principal) {
   const rate = 0.08 / 12;
   const tenure = 240;
 
-  const emi =
+  return Math.round(
     (principal * rate * Math.pow(1 + rate, tenure)) /
-    (Math.pow(1 + rate, tenure) - 1);
-
-  return Math.round(emi);
+    (Math.pow(1 + rate, tenure) - 1)
+  );
 }
 
 // ==============================
@@ -113,9 +142,8 @@ function compareAdvanced() {
   }
 
   const diff = Math.abs(aTotal - bTotal);
-  const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
 
-  let winner =
+  const winner =
     aTotal < bTotal
       ? `${aName} is cheaper by ₹${diff.toLocaleString()}`
       : `${bName} is cheaper by ₹${diff.toLocaleString()}`;
@@ -125,38 +153,23 @@ function compareAdvanced() {
 
     <div>
       <strong>${aName}</strong><br>
-      Base: ₹${aBase.toLocaleString()}<br>
-      Charges: ₹${aCharges.toLocaleString()}<br>
-      Registration: ₹${aReg.toLocaleString()}<br>
-      <b>Total: ₹${aTotal.toLocaleString()}</b>
+      Total: ₹${aTotal.toLocaleString()}
     </div>
 
-    <hr>
-
-    <div>
+    <div style="margin-top:10px;">
       <strong>${bName}</strong><br>
-      Base: ₹${bBase.toLocaleString()}<br>
-      Charges: ₹${bCharges.toLocaleString()}<br>
-      Registration: ₹${bReg.toLocaleString()}<br>
-      <b>Total: ₹${bTotal.toLocaleString()}</b>
+      Total: ₹${bTotal.toLocaleString()}
     </div>
-
-    <hr>
-    Difference: ${percent}%
   `;
 
-  const emiA = calculateEMI(aTotal);
-  const emiB = calculateEMI(bTotal);
-
   document.getElementById("emiResult").innerHTML = `
-    <h4>Estimated EMI</h4>
-    ${aName}: ₹${emiA.toLocaleString()} / month<br>
-    ${bName}: ₹${emiB.toLocaleString()} / month
+    EMI:
+    ${aName}: ₹${calculateEMI(aTotal).toLocaleString()} / month<br>
+    ${bName}: ₹${calculateEMI(bTotal).toLocaleString()} / month
   `;
 
   document.getElementById("resultCard").style.display = "block";
 
-  // store for saving
   window._lastComparison = {
     a_name: aName,
     b_name: bName,
@@ -198,16 +211,11 @@ async function loadDashboard() {
   const user = await getUser();
   if (!user) return;
 
-  const { data, error } = await supabaseClient
+  const { data } = await supabaseClient
     .from("comparisons")
     .select("*")
     .eq("user_id", user.id)
     .order("id", { ascending: false });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
 
   const container = document.getElementById("list");
 
@@ -217,7 +225,7 @@ async function loadDashboard() {
   }
 
   container.innerHTML = data.map(d => `
-    <div style="padding:12px; border-bottom:1px solid #eee;">
+    <div class="card" style="margin-bottom:10px;">
       <strong>${d.a_name}</strong> vs <strong>${d.b_name}</strong><br>
       ₹${d.a_cost.toLocaleString()} vs ₹${d.b_cost.toLocaleString()}
     </div>
