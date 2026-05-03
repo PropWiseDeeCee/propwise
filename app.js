@@ -291,6 +291,24 @@ function compareAdvanced() {
   // SHOW RESULT
   // ==============================
   document.getElementById("resultCard").style.display = "block";
+  // ==============================
+// LOGIN PROMPT (NON-INTRUSIVE)
+// ==============================
+getUser().then(user => {
+  if (!user) {
+    document.getElementById("resultDetails").innerHTML += `
+      <div style="
+        margin-top:15px;
+        padding:12px;
+        background:#f3f4f6;
+        border-radius:8px;
+        font-size:14px;
+      ">
+        💾 Login to save this comparison and track your properties
+      </div>
+    `;
+  }
+});
 
   // ==============================
   // SAVE DATA
