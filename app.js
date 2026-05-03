@@ -316,6 +316,36 @@ resultEl.innerHTML = `
     ${aName}: ₹${emiA.toLocaleString()} / month<br>
     ${bName}: ₹${emiB.toLocaleString()} / month
   `;
+  // =============================
+  // Insight Engine
+  // ============================
+  function generateInsights(aBase, aTotal, aHidden, type) {
+  const insights = [];
+
+  const extraPercent = ((aTotal - aBase) / aBase) * 100;
+
+  // 🔥 Cost inflation insight
+  if (extraPercent > 10) {
+    insights.push(`⚠️ Total cost is ~${extraPercent.toFixed(1)}% higher than base price`);
+  }
+
+  // 💡 GST warning
+  if (aHidden.breakdown.gst > 0) {
+    insights.push("💡 GST is applicable (likely under-construction property)");
+  }
+
+  // 🏦 Maintenance insight
+  if (aHidden.breakdown.maintenance > 100000) {
+    insights.push("⚠️ High maintenance cost — check builder justification");
+  }
+
+  // 🏗️ Property type insight
+  if (type === "plot") {
+    insights.push("💡 No GST or maintenance — lower hidden costs");
+  }
+
+  return insights;
+}
 
   // ==============================
   // SHOW RESULT
