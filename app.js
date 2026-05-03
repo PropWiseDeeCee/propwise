@@ -182,11 +182,22 @@ function compareAdvanced() {
   const bBase = getNumber("bPrice");
   const bCharges = getNumber("bCharges");
 
+  const aType = document.getElementById("aType")?.value || "apartment";
+  const bType = document.getElementById("bType")?.value || "apartment";
+
+  const state = document.getElementById("state")?.value || "KA";
+
+  // 👉 Registration
   const aReg = calculateRegistration(aBase);
   const bReg = calculateRegistration(bBase);
 
-  const aTotal = aBase + aCharges + aReg;
-  const bTotal = bBase + bCharges + bReg;
+  // 👉 Hidden Charges
+  const aHidden = calculateHiddenCharges(aBase, aType);
+  const bHidden = calculateHiddenCharges(bBase, bType);
+
+  // 👉 Total Cost
+  const aTotal = aBase + aCharges + aReg + aHidden.total;
+  const bTotal = bBase + bCharges + bReg + bHidden.total;
 
   if (aTotal === 0 && bTotal === 0) {
     alert("Enter values");
@@ -194,42 +205,87 @@ function compareAdvanced() {
   }
 
   const diff = Math.abs(aTotal - bTotal);
+  const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
 
-  const winner =
-    aTotal < bTotal
-      ? `${aName} is cheaper by ₹${diff.toLocaleString()}`
-      : `${bName} is cheaper by ₹${diff.toLocaleString()}`;
+  // 👉 Winner
+  let winner = "";
+  if (aTotal < bTotal) {
+    winner = `${aName} is cheaper by ₹${diff.toLocaleString()}`;
+  } else if (bTotal < aTotal) {
+    winner = `${bName} is cheaper by ₹${diff.toLocaleString()}`;
+  } else {
+    winner = "Both properties cost the same";
+  }
 
+  // 👉 State Label
+  const stateNames = {
+    KA: "Karnataka",
+    MH: "Maharashtra",
+    TN: "Tamil Nadu",
+    TS: "Telangana",
+    DL: "Delhi"
+  };
+
+  const stateLabel = stateNames[state] || state;
+
+  // 👉 RESULT UI
   document.getElementById("resultDetails").innerHTML = `
-    <h4>${winner}</h4>
+    <h4 style="margin-bottom:10px;">${winner}</h4>
+
+    <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
+      Includes registration + hidden charges (${stateLabel})
+    </div>
 
     <div>
       <strong>${aName}</strong><br>
-      Total: ₹${aTotal.toLocaleString()}
+      Base: ₹${aBase.toLocaleString()}<br>
+      Charges: ₹${aCharges.toLocaleString()}<br>
+      Registration: ₹${aReg.toLocaleString()}<br>
+      Hidden Charges: ₹${aHidden.total.toLocaleString()}<br>
+      <b>Total: ₹${aTotal.toLocaleString()}</b>
     </div>
 
-    <div style="margin-top:10px;">
+    <hr style="margin:15px 0;">
+
+    <div>
       <strong>${bName}</strong><br>
-      Total: ₹${bTotal.toLocaleString()}
+      Base: ₹${bBase.toLocaleString()}<br>
+      Charges: ₹${bCharges.toLocaleString()}<br>
+      Registration: ₹${bReg.toLocaleString()}<br>
+      Hidden Charges: ₹${bHidden.total.toLocaleString()}<br>
+      <b>Total: ₹${bTotal.toLocaleString()}</b>
+    </div>
+
+    <hr style="margin:15px 0;">
+
+    <div style="font-weight:500;">
+      Difference: ${percent}%
     </div>
   `;
 
+  // 👉 EMI
+  const emiA = calculateEMI(aTotal);
+  const emiB = calculateEMI(bTotal);
+
   document.getElementById("emiResult").innerHTML = `
-    EMI:
-    ${aName}: ₹${calculateEMI(aTotal).toLocaleString()} / month<br>
-    ${bName}: ₹${calculateEMI(bTotal).toLocaleString()} / month
+    <h4>Estimated EMI (20 yrs @ 8%)</h4>
+    ${aName}: ₹${emiA.toLocaleString()} / month<br>
+    ${bName}: ₹${emiB.toLocaleString()} / month
   `;
 
   document.getElementById("resultCard").style.display = "block";
 
+  // 👉 SAVE READY DATA
   window._lastComparison = {
     a_name: aName,
     b_name: bName,
     a_total: aTotal,
-    b_total: bTotal
+    b_total: bTotal,
+    state: stateLabel,
+    a_type: aType,
+    b_type: bType
   };
 }
-
 // ==============================
 // SAVE
 // ==============================
