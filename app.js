@@ -305,6 +305,41 @@ function compareAdvanced() {
     b_type: bType
   };
 }
+
+// ==============================
+// SAVE
+// ==============================
+async function save() {
+  const user = await getUser();
+
+  if (!user) {
+    alert("Please login to save and track your comparisons.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (!window._lastComparison) {
+    alert("Run comparison first");
+    return;
+  }
+
+  const { error } = await supabaseClient.from("comparisons").insert([
+    {
+      user_id: user.id,
+      a_name: window._lastComparison.a_name,
+      a_cost: window._lastComparison.a_total,
+      b_name: window._lastComparison.b_name,
+      b_cost: window._lastComparison.b_total
+    }
+  ]);
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Saved successfully!");
+  }
+}
+
 // ==============================
 // DASHBOARD
 // ==============================
