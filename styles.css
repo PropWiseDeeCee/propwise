@@ -1,36 +1,85 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   margin: 0;
-  background: #f5f5f5;
+  background: #f8fafc;
+  color: #111827;
 }
 
+/* HEADER */
 header {
   background: white;
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
 }
 
-nav a {
-  margin-right: 15px;
-  text-decoration: none;
-  color: #333;
-}
-
-.container {
-  max-width: 900px;
+.nav {
+  max-width: 1100px;
   margin: auto;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
 }
 
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: auto;
+}
+
+.nav a {
+  margin-left: 18px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  color: black;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* CARD */
 .card {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
 }
 
-input, button {
+/* FORM */
+input {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: white;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+h2 {
+  margin-top: 0;
 }
