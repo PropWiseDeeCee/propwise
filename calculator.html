@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator - PropWise India</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
-
     <div class="nav-links">
       <a href="calculator.html">Calculator</a>
       <a href="compare.html">Compare</a>
@@ -15,23 +25,16 @@
   </div>
 </header>
 
-<body>
-<header>
-  <nav>
-    <a href="index.html">Home</a>
-  </nav>
-</header>
-
 <div class="container">
   <div class="card">
-    <h2>Calculator</h2>
+    <h2>Property Cost Calculator</h2>
 
     <input id="basePrice" placeholder="Base price">
-    <input id="chargesInput" placeholder="Charges">
+    <input id="chargesInput" placeholder="Additional charges">
 
-    <button onclick="calculate()">Calculate</button>
+    <button class="btn-primary" onclick="calculate()">Calculate</button>
 
-    <div id="calcResult"></div>
+    <div id="calcResult" class="result-box"></div>
   </div>
 </div>
 
