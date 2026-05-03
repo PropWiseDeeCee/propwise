@@ -38,30 +38,37 @@
 
     <h2 style="margin-bottom: 20px;">Compare Properties</h2>
 
+    <!-- STATE -->
+    <div class="card" style="margin-bottom:20px;">
+      <label><strong>Select State</strong></label>
+
+      <select id="state" style="margin-top:10px; padding:10px; width:100%;">
+        <option value="KA">Karnataka</option>
+        <option value="MH">Maharashtra</option>
+        <option value="TN">Tamil Nadu</option>
+        <option value="TS">Telangana</option>
+        <option value="DL">Delhi</option>
+      </select>
+    </div>
+
+    <!-- GRID -->
     <div class="grid">
-
-      <div class="card" style="margin-bottom:20px;">
-  <label><strong>Select State</strong></label>
-
-  <select id="state" style="margin-top:10px; padding:10px; width:100%;">
-    <option value="KA">Karnataka</option>
-    <option value="MH">Maharashtra</option>
-    <option value="TN">Tamil Nadu</option>
-    <option value="TS">Telangana</option>
-    <option value="DL">Delhi</option>
-  </select>
-</div>
 
       <!-- Property A -->
       <div class="card">
         <h3>Property A</h3>
+
         <input id="aName" placeholder="Property name">
-        <label style="margin-top:10px; display:block;"><strong>Property Type</strong></label>
-<select id="aType" style="margin-top:8px; padding:10px; width:100%;">
-  <option value="apartment">Apartment</option>
-  <option value="villa">Villa</option>
-  <option value="plot">Plot</option>
-</select>
+
+        <label style="margin-top:10px; display:block;">
+          <strong>Property Type</strong>
+        </label>
+        <select id="aType" style="margin-top:8px; padding:10px; width:100%;">
+          <option value="apartment">Apartment</option>
+          <option value="villa">Villa</option>
+          <option value="plot">Plot</option>
+        </select>
+
         <input id="aPrice" placeholder="Base price">
         <input id="aCharges" placeholder="Additional charges">
       </div>
@@ -69,52 +76,33 @@
       <!-- Property B -->
       <div class="card">
         <h3>Property B</h3>
+
         <input id="bName" placeholder="Property name">
+
+        <label style="margin-top:10px; display:block;">
+          <strong>Property Type</strong>
+        </label>
         <select id="bType" style="margin-top:8px; padding:10px; width:100%;">
-  <option value="apartment">Apartment</option>
-  <option value="villa">Villa</option>
-  <option value="plot">Plot</option>
-</select>
+          <option value="apartment">Apartment</option>
+          <option value="villa">Villa</option>
+          <option value="plot">Plot</option>
+        </select>
+
         <input id="bPrice" placeholder="Base price">
         <input id="bCharges" placeholder="Additional charges">
       </div>
 
     </div>
 
+    <!-- ACTION BUTTONS -->
     <button onclick="compareAdvanced()">Compare</button>
     <button onclick="save()">Save Comparison</button>
 
     <!-- RESULT -->
-    const state = document.getElementById("state").value;
-
-document.getElementById("resultDetails").innerHTML = `
-  <h4>${winner}</h4>
-
-  <div style="margin-bottom:10px; font-size:13px; color:#6b7280;">
-    Based on ${state} registration rules
-  </div>
-
-  <div>
-    <strong>${aName}</strong><br>
-    Base: ₹${aBase.toLocaleString()}<br>
-    Charges: ₹${aCharges.toLocaleString()}<br>
-    Registration: ₹${aReg.toLocaleString()}<br>
-    <b>Total: ₹${aTotal.toLocaleString()}</b>
-  </div>
-
-  <hr>
-
-  <div>
-    <strong>${bName}</strong><br>
-    Base: ₹${bBase.toLocaleString()}<br>
-    Charges: ₹${bCharges.toLocaleString()}<br>
-    Registration: ₹${bReg.toLocaleString()}<br>
-    <b>Total: ₹${bTotal.toLocaleString()}</b>
-  </div>
-
-  <hr>
-  Difference: ${percent}%
-`;
+    <div id="resultCard" class="card" style="display:none; margin-top:20px;">
+      <div id="resultDetails"></div>
+      <div id="emiResult" style="margin-top:15px;"></div>
+    </div>
 
   </div>
 
