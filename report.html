@@ -20,9 +20,7 @@
 
 <body onload="initPage(false); loadReport()">
 
-<!-- =========================
-     NAVBAR
-========================= -->
+<!-- NAVBAR -->
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
@@ -31,40 +29,67 @@
       <a href="index.html">Home</a>
       <a href="compare.html">Compare</a>
       <a href="tools.html">Tools</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="guides.html">Guides</a>
+      <a href="dashboard.html">Dashboard</a>
       <span id="nav-right"></span>
     </div>
   </div>
 </header>
 
-<!-- =========================
-     CONTENT
-========================= -->
+<!-- CONTENT -->
 <div class="container">
 
   <!-- HEADER -->
   <div style="text-align:center; margin-bottom:30px;">
     <h1>Agreement Report</h1>
     <p style="color:#6b7280;">
-      Detailed breakdown of risks and clauses in your agreement
+      Detailed breakdown of risks, clauses, and recommendations
     </p>
   </div>
 
   <!-- REPORT -->
-  <div id="reportContent"></div>
-
-  <!-- DOWNLOAD -->
-  <div style="margin-top:30px; text-align:center;">
-    <button onclick="downloadReport()">
-      Download PDF Report
-    </button>
+  <div id="reportContent" class="card">
+    <!-- fallback -->
+    <p style="text-align:center; color:#6b7280;">
+      Loading report...
+    </p>
   </div>
 
-  <!-- TRUST -->
+  <!-- 🔥 FREE WATERMARK MESSAGE -->
+  <div style="
+    margin-top:15px;
+    padding:12px;
+    text-align:center;
+    font-size:13px;
+    color:#6b7280;
+    background:#f9fafb;
+    border-radius:10px;
+  ">
+    🔒 Free Report • Upgrade to remove watermark & unlock full insights
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div style="margin-top:30px; text-align:center;">
+
+    <button onclick="downloadReport()" style="max-width:300px;">
+      Download PDF Report
+    </button>
+
+    <div style="margin-top:10px;">
+      <a href="tools.html" style="font-size:13px; color:#6b7280;">
+        ← Analyze another agreement
+      </a>
+    </div>
+
+  </div>
+
+  <!-- DISCLAIMER -->
   <div style="
     margin-top:20px;
     text-align:center;
     font-size:12px;
-    color:#6b7280;
+    color:#9ca3af;
   ">
     This is an automated analysis and not legal advice.
   </div>

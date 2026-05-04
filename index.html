@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PropWise India</title>
+
   <!-- AdSense -->
   <script async 
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
     crossorigin="anonymous">
   </script>
+
   <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -24,178 +26,149 @@
 
   <!-- ANIMATION -->
   <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards;
-    }
-
-    .fade-delay-1 { animation-delay: 0.2s; }
-    .fade-delay-2 { animation-delay: 0.4s; }
-    .fade-delay-3 { animation-delay: 0.6s; }
+    .fade-in { opacity:0; transform:translateY(20px); animation:fadeUp 0.8s ease forwards; }
+    .fade-delay-1 { animation-delay:0.2s; }
+    .fade-delay-2 { animation-delay:0.4s; }
+    .fade-delay-3 { animation-delay:0.6s; }
 
     @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity:1; transform:translateY(0); }
     }
 
-    .hero-title {
-      font-size: 44px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .hero-sub {
-      font-size: 18px;
-      color: #6b7280;
-      margin-top: 15px;
-    }
+    .hero-title { font-size:44px; font-weight:700; }
+    .hero-sub { font-size:18px; color:#6b7280; margin-top:15px; }
 
     .cta-btn {
-      margin-top: 25px;
-      padding: 14px 26px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      background: #111827;
-      color: white;
-      cursor: pointer;
-    }
-
-    .feature-icon {
-      width: 36px;
-      height: 36px;
-      margin-bottom: 10px;
-      color: #111827;
+      margin-top:25px;
+      padding:14px 26px;
+      border-radius:10px;
+      border:none;
+      background:#111827;
+      color:white;
+      cursor:pointer;
     }
 
     .section-title {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 24px;
-      font-weight: 600;
+      text-align:center;
+      margin-bottom:30px;
+      font-size:24px;
+      font-weight:600;
     }
   </style>
 </head>
 
 <body onload="initPage()">
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="logo">PropWise India</div>
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">PropWise India</div>
 
-      <div class="nav-links">
-        <a href="compare.html">Compare</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="guides.html">Guides</a>
-        <span id="nav-right"></span>
-      </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="compare.html">Compare</a>
+      <a href="tools.html">Tools</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="guides.html">Guides</a>
+      <a href="dashboard.html">Dashboard</a>
+      <span id="nav-right"></span>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- HERO -->
-  <section class="container" style="text-align:center; margin-top:80px;">
-    <h1 class="hero-title fade-in">
-      Understand the real cost of property
-    </h1>
+<!-- HERO -->
+<section class="container" style="text-align:center; margin-top:80px;">
+  <h1 class="hero-title fade-in">
+    Make smarter property decisions
+  </h1>
 
-    <p class="hero-sub fade-in fade-delay-1">
-      Compare apartments, villas, and plots with registration, hidden charges, and EMI impact.
-    </p>
+  <p class="hero-sub fade-in fade-delay-1">
+    Compare properties, analyze agreements, and uncover hidden costs before you buy.
+  </p>
 
-    <button class="cta-btn fade-in fade-delay-2"
-      onclick="location.href='compare.html'">
-      Start Comparing
-    </button>
-  </section>
+  <button class="cta-btn fade-in fade-delay-2"
+    onclick="location.href='compare.html'">
+    Start Comparing
+  </button>
 
-  <!-- FEATURES -->
-  <section class="container" style="margin-top:80px;">
-    <div class="section-title fade-in">Why use PropWise?</div>
+  <button class="cta-btn fade-in fade-delay-3"
+    style="background:#e5e7eb; color:#111827; margin-left:10px;"
+    onclick="location.href='tools.html'">
+    Analyze Agreement
+  </button>
+</section>
 
-    <div class="grid">
+<!-- FEATURE ENTRY (🔥 IMPORTANT) -->
+<section class="container" style="margin-top:80px;">
+  <div class="section-title">Start with what you need</div>
 
-      <div class="card fade-in">
-        <i data-lucide="bar-chart-3" class="feature-icon"></i>
-        <h3>Real Cost Comparison</h3>
-        <p style="color:#6b7280; margin-top:10px;">
-          Compare total cost including registration and hidden charges.
-        </p>
-      </div>
+  <div class="grid">
 
-      <div class="card fade-in fade-delay-1">
-        <i data-lucide="banknote" class="feature-icon"></i>
-        <h3>EMI Insights</h3>
-        <p style="color:#6b7280; margin-top:10px;">
-          Understand your monthly commitment before buying.
-        </p>
-      </div>
-
-      <div class="card fade-in fade-delay-2">
-        <i data-lucide="map-pin" class="feature-icon"></i>
-        <h3>India-Specific</h3>
-        <p style="color:#6b7280; margin-top:10px;">
-          State-wise logic for more accurate calculations.
-        </p>
-      </div>
-
-      <div class="card fade-in fade-delay-3">
-        <i data-lucide="save" class="feature-icon"></i>
-        <h3>Save Comparisons</h3>
-        <p style="color:#6b7280; margin-top:10px;">
-          Keep track of properties and revisit decisions.
-        </p>
-      </div>
-
+    <div class="card">
+      <h3>Compare Properties</h3>
+      <p>Compare real total cost including registration and hidden charges.</p>
+      <button onclick="location.href='compare.html'">Compare</button>
     </div>
-  </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="container" style="margin-top:80px;">
-    <div class="section-title fade-in">How it works</div>
-
-    <div class="grid">
-
-      <div class="card fade-in">
-        <h3>1. Enter details</h3>
-        <p style="margin-top:10px;">Add base price and charges.</p>
-      </div>
-
-      <div class="card fade-in fade-delay-1">
-        <h3>2. Compare instantly</h3>
-        <p style="margin-top:10px;">See total cost and difference.</p>
-      </div>
-
-      <div class="card fade-in fade-delay-2">
-        <h3>3. Decide confidently</h3>
-        <p style="margin-top:10px;">Choose based on real impact.</p>
-      </div>
-
+    <div class="card">
+      <h3>Agreement Analyzer 🔥</h3>
+      <p>Detect risky clauses, missing terms, and red flags instantly.</p>
+      <button onclick="location.href='tools.html'">Analyze</button>
     </div>
-  </section>
 
-  <!-- FINAL CTA -->
-  <section class="container" style="text-align:center; margin-top:80px; margin-bottom:80px;">
-    <h2 class="fade-in">Make smarter property decisions today</h2>
+    <div class="card">
+      <h3>Cost Calculator</h3>
+      <p>Estimate registration, GST, and hidden costs.</p>
+      <button onclick="location.href='calculator.html'">Calculate</button>
+    </div>
 
-    <button class="cta-btn fade-in fade-delay-1"
-      onclick="location.href='compare.html'">
-      Compare Now
-    </button>
-  </section>
+  </div>
+</section>
 
-  <!-- INIT ICONS -->
-  <script>
-    lucide.createIcons();
-  </script>
+<!-- FEATURES -->
+<section class="container" style="margin-top:80px;">
+  <div class="section-title">Why use PropWise?</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <i data-lucide="bar-chart-3"></i>
+      <h3>Real Cost Comparison</h3>
+    </div>
+
+    <div class="card">
+      <i data-lucide="file-text"></i>
+      <h3>Agreement Risk Detection</h3>
+    </div>
+
+    <div class="card">
+      <i data-lucide="calculator"></i>
+      <h3>Accurate Cost Calculation</h3>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="container" style="text-align:center; margin-top:80px;">
+  <h2>Know before you buy</h2>
+
+  <button class="cta-btn"
+    onclick="location.href='tools.html'">
+    Analyze Your Agreement
+  </button>
+</section>
+
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+  <a href="about.html">About</a> |
+  <a href="privacy.html">Privacy</a> |
+  <a href="terms.html">Terms</a>
+</footer>
+
+<script>
+  lucide.createIcons();
+</script>
 
 </body>
-<div style="text-align:center; margin-top:40px; font-size:13px; color:#6b7280;">
-  <a href="about.html">About</a> |
-  <a href="privacy.html">Privacy Policy</a> |
-  <a href="terms.html">Terms & Conditions</a>
-</div>
 </html>

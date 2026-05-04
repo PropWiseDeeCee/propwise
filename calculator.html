@@ -3,50 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <title>Calculator - PropWise India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- AdSense -->
   <script async 
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
     crossorigin="anonymous">
   </script>
 
+  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="app.js"></script>
 </head>
 
-<body>
+<body onload="initPage(false)">
 
+<!-- NAVBAR -->
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
+
     <div class="nav-links">
-      <a href="calculator.html">Calculator</a>
+      <a href="index.html">Home</a>
       <a href="compare.html">Compare</a>
-      <a href="dashboard.html">Dashboard</a>
+      <a href="tools.html">Tools</a>
+      <a href="calculator.html">Calculator</a>
       <a href="guides.html">Guides</a>
-      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <span id="nav-right"></span>
     </div>
   </div>
 </header>
 
+<!-- CONTENT -->
 <div class="container">
-  <div class="card">
-    <h2>Property Cost Calculator</h2>
 
-    <input id="basePrice" placeholder="Base price">
-    <input id="chargesInput" placeholder="Additional charges">
-
-    <button class="btn-primary" onclick="calculate()">Calculate</button>
-
-    <div id="calcResult" class="result-box"></div>
+  <!-- HEADER -->
+  <div style="text-align:center; margin-bottom:30px;">
+    <h1>Property Cost Calculator</h1>
+    <p style="color:#6b7280;">
+      Estimate registration charges and total property cost
+    </p>
   </div>
+
+  <div class="card">
+
+    <!-- STATE -->
+    <label><strong>Select State</strong></label>
+    <select id="state" style="margin-top:8px;">
+      <option value="KA">Karnataka</option>
+      <option value="MH">Maharashtra</option>
+      <option value="TN">Tamil Nadu</option>
+      <option value="TS">Telangana</option>
+      <option value="DL">Delhi</option>
+    </select>
+
+    <!-- INPUTS -->
+    <input id="basePrice" placeholder="Base price (₹)">
+    <input id="chargesInput" placeholder="Additional charges (₹)">
+
+    <!-- BUTTON -->
+    <button onclick="calculate()">Calculate</button>
+
+    <!-- RESULT -->
+    <div id="calcResult" style="margin-top:20px;"></div>
+
+  </div>
+
 </div>
+
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+  <a href="about.html">About</a> |
+  <a href="privacy.html">Privacy</a> |
+  <a href="terms.html">Terms</a>
+</footer>
 
 </body>
-<div style="text-align:center; margin-top:40px; font-size:13px; color:#6b7280;">
-  <a href="about.html">About</a> |
-  <a href="privacy.html">Privacy Policy</a> |
-  <a href="terms.html">Terms & Conditions</a>
-</div>
 </html>
