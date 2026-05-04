@@ -1,125 +1,171 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* =========================
+   BASE
+========================= */
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: #f8fafc;
-  color: #111827;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
 }
 
-/* NAVBAR */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
 .navbar {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .nav-container {
   max-width: 1100px;
   margin: auto;
-  display: flex;
   padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
 .logo {
   font-weight: 600;
-  font-size: 16px;
-}
-
-.nav-links {
-  margin-left: auto;
+  font-size: 18px;
 }
 
 .nav-links a {
   margin-left: 20px;
   text-decoration: none;
-  color: #374151;
-  font-size: 14px;
-}
-
-/* LAYOUT */
-.container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-/* CARD */
-.card {
-  background: white;
-  padding: 24px;
-  border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-}
-
-/* INPUT */
-input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-}
-
-/* BUTTON */
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #111827;
-  color: white;
-  cursor: pointer;
-}
-
-/* RESULT */
-.result-card {
-  margin-top: 20px;
-  background: #111827;
-  color: white;
-}
-
-.winner {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 4px 8px;
-  background: #22c55e;
-  color: white;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-/* DASHBOARD */
-.item {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-
-.card span {
-  font-size: 13px;
+  color: #1d1d1f;
   font-weight: 500;
 }
 
-.insight-box {
-  background: #fff7ed;
-  border-left: 4px solid #f97316;
+.nav-links a:hover {
+  opacity: 0.6;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input, textarea, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  margin-top: 10px;
+  font-size: 14px;
+  background: #fafafa;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #1d1d1f;
+  color: white;
+  font-weight: 600;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* =========================
+   RESULT / ANALYSIS
+========================= */
+
+.analysis-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 15px;
+}
+
+.risk-box {
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.risk-high {
+  border-left: 6px solid #ff3b30;
+}
+
+.risk-medium {
+  border-left: 6px solid #ff9500;
+}
+
+.risk-low {
+  border-left: 6px solid #34c759;
+}
+
+/* =========================
+   LISTS
+========================= */
+
+ul {
+  padding-left: 18px;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+/* =========================
+   PAYWALL
+========================= */
+
+.paywall {
+  background: linear-gradient(135deg, #fff7ed, #fff);
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 20px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 15px;
+  }
+
+  .nav-links a {
+    margin-left: 10px;
+    font-size: 14px;
+  }
 }

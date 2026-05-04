@@ -1,21 +1,42 @@
 // ==============================
-// CONFIG (REPLACE)
+// SAFE SUPABASE INIT
 // ==============================
-const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
-const SUPABASE_KEY = "YOUR_KEY";
 
-const { createClient } = supabase;
-const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+let supabaseClient = null;
+
+function initSupabase() {
+  if (!window.supabase) {
+    console.warn("Supabase not loaded yet");
+    return;
+  }
+
+  if (!supabaseClient) {
+    const SUPABASE_URL = "https://awlgjsfhoeijpyusjthl.supabase.co";
+    const SUPABASE_KEY = "YOUR_KEY";
+
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+  }
+}
+
+initSupabase();
 
 // ==============================
 // AUTH
 // ==============================
+
 async function getUser() {
+  if (!supabaseClient) return null;
+
   const { data: { user } } = await supabaseClient.auth.getUser();
   return user;
 }
 
 async function signUp() {
+  initSupabase();
+
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
 
@@ -27,6 +48,8 @@ async function signUp() {
 }
 
 async function signIn() {
+  initSupabase();
+
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
 
@@ -44,7 +67,10 @@ async function logout() {
 // ==============================
 // NAVBAR
 // ==============================
+
 async function updateNavbar() {
+  initSupabase();
+
   const user = await getUser();
   const nav = document.getElementById("nav-right");
 
@@ -61,6 +87,8 @@ async function requireAuth() {
 }
 
 async function initPage(protectedPage = false) {
+  initSupabase();
+
   if (protectedPage) await requireAuth();
   await updateNavbar();
 }
@@ -68,235 +96,344 @@ async function initPage(protectedPage = false) {
 // ==============================
 // HELPERS
 // ==============================
+
 function getNumber(id) {
   return Number(document.getElementById(id)?.value || 0);
 }
 
 // ==============================
-// REGISTRATION
+// PDF EXTRACTION
 // ==============================
-function getRegistrationRate() {
-  const state = document.getElementById("state")?.value || "KA";
 
-  return {
-    KA: 0.06,
-    MH: 0.06,
-    TN: 0.07,
-    TS: 0.06,
-    DL: 0.06
-  }[state] || 0.06;
+async function extractTextFromPDF(file) {
+  try {
+    const reader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+      reader.onload = async function () {
+        try {
+          const typedarray = new Uint8Array(this.result);
+          const pdf = await pdfjsLib.getDocument(typedarray).promise;
+
+          let fullText = "";
+
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+
+            const strings = content.items.map(item => item.str);
+            fullText += strings.join(" ") + " ";
+          }
+
+          resolve(fullText);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+
+  } catch (e) {
+    return "";
+  }
 }
 
-function calculateRegistration(price) {
-  return Math.round(price * getRegistrationRate());
+// ==============================
+// FILE EXTRACTOR
+// ==============================
+
+async function extractTextFromFile(file) {
+  const type = file.name.split('.').pop().toLowerCase();
+
+  try {
+    if (type === "pdf") return await extractTextFromPDF(file);
+    if (type === "txt") return await file.text();
+
+    if (type === "docx") {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      return result.value;
+    }
+
+    return "";
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
 }
 
 // ==============================
-// HIDDEN CHARGES
+// RULE ENGINE
 // ==============================
-function calculateHiddenCharges(price, type) {
-  let charges = {
-    legal: 50000,
-    maintenance: 0,
-    gst: 0,
-    other: 30000
+
+function runAgreementChecks(text) {
+  const t = text.toLowerCase();
+
+  const results = {
+    critical: [],
+    moderate: [],
+    info: []
   };
 
-  if (type === "apartment") {
-    charges.maintenance = price * 0.02;
-    charges.gst = price * 0.05;
-  }
+  if (!t.includes("possession")) results.critical.push("Possession clause missing");
+  if (!t.includes("penalty")) results.critical.push("No delay penalty clause");
+  if (t.includes("sole discretion")) results.critical.push("One-sided clause");
+  if (t.includes("not be liable")) results.critical.push("Builder liability removed");
 
-  if (type === "villa") {
-    charges.maintenance = price * 0.025;
-    charges.gst = price * 0.05;
-  }
+  if (t.includes("reasonable time")) results.moderate.push("Vague timeline");
+  if (!t.includes("maintenance")) results.moderate.push("Maintenance unclear");
+  if (!t.includes("parking")) results.moderate.push("Parking not defined");
 
-  return {
-    breakdown: charges,
-    total: Math.round(
-      charges.legal + charges.maintenance + charges.gst + charges.other
-    )
-  };
+  if (!t.includes("gst")) results.info.push("GST not mentioned");
+
+  return results;
 }
 
 // ==============================
-// EMI
+// MAIN ANALYZER
 // ==============================
-function calculateEMI(principal) {
-  const rate = 0.08 / 12;
-  const tenure = 240;
 
-  return Math.round(
-    (principal * rate * Math.pow(1 + rate, tenure)) /
-    (Math.pow(1 + rate, tenure) - 1)
-  );
-}
+async function analyzeAgreementHandler() {
+  const fileInput = document.getElementById("pdfFile");
+  const textInput = document.getElementById("agreementText").value;
 
-// ==============================
-// INSIGHT ENGINE
-// ==============================
-function generateInsights(base, total, hidden, type) {
-  const insights = [];
-  const extraPercent = ((total - base) / base) * 100;
+  let text = "";
 
-  if (extraPercent > 10) {
-    insights.push(`⚠️ Total cost is ~${extraPercent.toFixed(1)}% higher than base price`);
+  if (fileInput.files.length > 0) {
+    text = await extractTextFromFile(fileInput.files[0]);
+  } else {
+    text = textInput;
   }
 
-  if (hidden.breakdown.gst > 0) {
-    insights.push("💡 GST applicable (under-construction)");
-  }
+  console.log("Extracted:", text);
 
-  if (hidden.breakdown.maintenance > 100000) {
-    insights.push("⚠️ High maintenance cost");
-  }
-
-  if (type === "plot") {
-    insights.push("💡 Lower hidden costs (no GST)");
-  }
-
-  return insights;
-}
-
-// ==============================
-// TOGGLE
-// ==============================
-function toggleDetails(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = el.style.display === "none" ? "block" : "none";
-}
-
-// ==============================
-// COMPARE
-// ==============================
-function compareAdvanced() {
-  const aName = document.getElementById("aName")?.value || "Property A";
-  const bName = document.getElementById("bName")?.value || "Property B";
-
-  const aBase = getNumber("aPrice");
-  const bBase = getNumber("bPrice");
-  const aCharges = getNumber("aCharges");
-  const bCharges = getNumber("bCharges");
-
-  const aType = document.getElementById("aType")?.value || "apartment";
-  const bType = document.getElementById("bType")?.value || "apartment";
-
-  const state = document.getElementById("state")?.value || "KA";
-
-  if (aBase === 0 && bBase === 0) return alert("Enter values");
-
-  const aReg = calculateRegistration(aBase);
-  const bReg = calculateRegistration(bBase);
-
-  const aHidden = calculateHiddenCharges(aBase, aType);
-  const bHidden = calculateHiddenCharges(bBase, bType);
-
-  const aTotal = aBase + aCharges + aReg + aHidden.total;
-  const bTotal = bBase + bCharges + bReg + bHidden.total;
-
-  const diff = Math.abs(aTotal - bTotal);
-  const percent = ((diff / Math.max(aTotal, bTotal)) * 100).toFixed(1);
-
-  const winner =
-    aTotal < bTotal
-      ? `${aName} is cheaper by ₹${diff.toLocaleString()}`
-      : `${bName} is cheaper by ₹${diff.toLocaleString()}`;
-
-  const stateLabel = {
-    KA: "Karnataka",
-    MH: "Maharashtra",
-    TN: "Tamil Nadu",
-    TS: "Telangana",
-    DL: "Delhi"
-  }[state] || state;
-
-  const aInsights = generateInsights(aBase, aTotal, aHidden, aType);
-  const bInsights = generateInsights(bBase, bTotal, bHidden, bType);
-
-  const resultEl = document.getElementById("resultDetails");
-  if (!resultEl) return;
-
-  resultEl.innerHTML = `
-    <h4>${winner}</h4>
-
-    <div style="color:#6b7280;">
-      Includes registration + hidden charges (${stateLabel})
-    </div>
-
-    <br>
-
-    <strong>${aName}</strong><br>
-    Total: ₹${aTotal.toLocaleString()}<br><br>
-
-    <strong>${bName}</strong><br>
-    Total: ₹${bTotal.toLocaleString()}
-
-    <hr>
-
-    <div><b>Difference: ${percent}%</b></div>
-
-    <div style="margin-top:15px; background:#fff7ed; padding:10px;">
-      <strong>Insights</strong><br><br>
-
-      ${aName}:<br>
-      ${aInsights.map(i => `• ${i}`).join("<br>")}<br><br>
-
-      ${bName}:<br>
-      ${bInsights.map(i => `• ${i}`).join("<br>")}
-    </div>
-  `;
-
-  document.getElementById("resultCard").style.display = "block";
-
-  window._lastComparison = {
-    a_name: aName,
-    b_name: bName,
-    a_total: aTotal,
-    b_total: bTotal
-  };
-}
-
-// ==============================
-// SAVE
-// ==============================
-async function save() {
-  const user = await getUser();
-
-  if (!user) {
-    window.location.href = "login.html";
+  if (!text || text.trim().length < 50) {
+    showError("⚠️ Unable to read agreement. Try DOCX or paste text.");
     return;
   }
 
-  if (!window._lastComparison) return alert("Run comparison first");
+  const result = runAgreementChecks(text);
 
-  await supabaseClient.from("comparisons").insert([{
-    user_id: user.id,
-    ...window._lastComparison
-  }]);
+  const score =
+    (result.critical.length * 3) +
+    (result.moderate.length * 2) +
+    result.info.length;
 
-  alert("Saved!");
+  let risk = "Low";
+  let color = "#16a34a";
+
+  if (score >= 10) {
+    risk = "High";
+    color = "#dc2626";
+  } else if (score >= 5) {
+    risk = "Medium";
+    color = "#f59e0b";
+  }
+
+  localStorage.setItem("agreementReport", JSON.stringify({
+    result, score, risk, color
+  }));
+
+  renderPreview(result, score, risk, color);
 }
 
 // ==============================
-// DASHBOARD
+// PREVIEW UI
 // ==============================
-async function loadDashboard() {
+
+async function renderPreview(result, score, risk, color) {
+  const el = document.getElementById("analysisResult");
   const user = await getUser();
-  if (!user) return;
 
-  const { data } = await supabaseClient
-    .from("comparisons")
-    .select("*")
-    .eq("user_id", user.id);
+  const allIssues = [
+    ...result.critical,
+    ...result.moderate,
+    ...result.info
+  ];
 
-  const container = document.getElementById("list");
+  const previewIssues = allIssues.slice(0, 2);
 
-  container.innerHTML = data.map(d => `
-    <div class="card">
-      ${d.a_name} vs ${d.b_name}<br>
-      ₹${d.a_total} vs ₹${d.b_total}
+  let riskClass = "risk-low";
+  if (risk === "High") riskClass = "risk-high";
+  if (risk === "Medium") riskClass = "risk-medium";
+
+  el.innerHTML = `
+    <div class="analysis-card">
+
+      <div class="risk-box ${riskClass}">
+        Risk: <strong>${risk}</strong> | Score: ${score}
+      </div>
+
+      <h4>⚠️ Top Issues Found</h4>
+      <ul>
+        ${
+          previewIssues.length
+            ? previewIssues.map(i => `<li>${i}</li>`).join("")
+            : `<li>No major issues detected</li>`
+        }
+      </ul>
+
     </div>
-  `).join("");
+
+    <div class="paywall">
+      <strong>🔒 Unlock Full Report</strong>
+
+      <ul>
+        <li>All identified risks</li>
+        <li>Detailed explanations</li>
+        <li>Recommendations</li>
+        <li>Downloadable report</li>
+      </ul>
+
+      ${
+        !user
+          ? `<button onclick="location.href='login.html'">Login to Unlock</button>`
+          : `<button onclick="location.href='report.html'">Unlock Full Report</button>`
+      }
+
+      <p style="font-size:12px; color:#6b7280; margin-top:10px;">
+        This is an automated analysis and not legal advice.
+      </p>
+    </div>
+  `;
+}
+
+// ==============================
+// REPORT PAGE
+// ==============================
+
+function loadReport() {
+  const data = JSON.parse(localStorage.getItem("agreementReport"));
+  const el = document.getElementById("reportContent");
+
+  if (!data) {
+    el.innerHTML = "<p>No report found. Please analyze again.</p>";
+    return;
+  }
+
+  const { result, score, risk, color } = data;
+
+  el.innerHTML = `
+    <div class="card">
+
+      <div class="risk-box" style="border-left:6px solid ${color};">
+        <strong>Risk Level: <span style="color:${color}">${risk}</span></strong><br>
+        Score: ${score}
+      </div>
+
+      ${renderSection("🔴 Critical Issues", result.critical, "#dc2626")}
+      ${renderSection("🟠 Moderate Issues", result.moderate, "#f59e0b")}
+      ${renderSection("🟢 Suggestions", result.info, "#16a34a")}
+
+    </div>
+
+    <!-- 🔥 WATERMARK UI -->
+    <div style="
+  margin-top:20px;
+  padding:10px;
+  text-align:center;
+  font-size:12px;
+  color:#6b7280;
+  background:#f9fafb;
+  border-radius:8px;
+">
+  🔒 Free Report • Upgrade to remove watermark & unlock full insights
+</div>
+  `;
+}
+
+// ==============================
+// PDF generation function
+// ==============================
+
+async function downloadReport() {
+  const data = JSON.parse(localStorage.getItem("agreementReport"));
+
+  if (!data) {
+    alert("No report found");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const { result, score, risk } = data;
+
+  let y = 20;
+
+  // 🔥 FREE USER FLAG
+  const isPremium = false;
+
+  // TITLE
+  doc.setFontSize(16);
+  doc.text("PropWise Agreement Report", 20, y);
+
+  y += 10;
+
+  // RISK
+  doc.setFontSize(12);
+  doc.text(`Risk Level: ${risk}`, 20, y);
+  y += 7;
+  doc.text(`Score: ${score}`, 20, y);
+
+  y += 10;
+
+  function addSection(title, items) {
+    if (!items || items.length === 0) return;
+
+    doc.setFontSize(13);
+    doc.text(title, 20, y);
+    y += 7;
+
+    doc.setFontSize(11);
+
+    items.forEach(item => {
+      const split = doc.splitTextToSize(`• ${item}`, 170);
+      doc.text(split, 20, y);
+      y += split.length * 6;
+
+      if (y > 270) {
+        addWatermark();
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    y += 5;
+  }
+
+  addSection("Critical Issues", result.critical);
+  addSection("Moderate Issues", result.moderate);
+  addSection("Suggestions", result.info);
+
+  // DISCLAIMER
+  y += 10;
+  doc.setFontSize(9);
+  doc.text("This is an automated analysis and not legal advice.", 20, y);
+
+  // 🔥 WATERMARK FUNCTION
+  function addWatermark() {
+    if (isPremium) return;
+
+    doc.setTextColor(200, 200, 200);
+    doc.setFontSize(30);
+    doc.text("PropWise (Free Report)", 30, 150, { angle: 30 });
+    doc.setTextColor(0, 0, 0);
+  }
+
+  // ADD WATERMARK ON FIRST PAGE
+  addWatermark();
+
+  // SAVE
+  doc.save("agreement-report.pdf");
+}
+
+// ==============================
+// ERROR
+// ==============================
+
+function showError(msg) {
+  document.getElementById("analysisResult").innerHTML =
+    `<div style="color:red;">${msg}</div>`;
 }
