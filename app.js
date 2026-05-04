@@ -307,39 +307,78 @@ function loadReport() {
   const data = JSON.parse(localStorage.getItem("agreementReport"));
   const el = document.getElementById("reportContent");
 
+  // 🔥 EMPTY STATE (important)
   if (!data) {
-    el.innerHTML = "<p>No report found. Please analyze again.</p>";
+    el.innerHTML = `
+      <div style="text-align:center; padding:40px;">
+        <h3>No report found</h3>
+        <p style="color:#6b7280;">Analyze an agreement first</p>
+        <button onclick="location.href='tools.html'">
+          Go to Analyzer
+        </button>
+      </div>
+    `;
     return;
   }
 
-  const { result, score, risk, color } = data;
+  const { result = {}, score = 0, risk = "Unknown", color = "#6b7280" } = data;
+
+  // 🔥 SAFE SECTION RENDER (no external dependency)
+  const render = (title, items, color) => {
+    if (!items || items.length === 0) return "";
+
+    return `
+      <div style="margin-top:20px;">
+        <h4 style="color:${color}; margin-bottom:8px;">
+          ${title}
+        </h4>
+        <ul>
+          ${items.map(i => `<li>${i}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  };
 
   el.innerHTML = `
     <div class="card">
 
+      <!-- RISK SUMMARY -->
       <div class="risk-box" style="border-left:6px solid ${color};">
-        <strong>Risk Level: <span style="color:${color}">${risk}</span></strong><br>
+        <strong>
+          Risk Level: <span style="color:${color}">${risk}</span>
+        </strong><br>
         Score: ${score}
       </div>
 
-      ${renderSection("🔴 Critical Issues", result.critical, "#dc2626")}
-      ${renderSection("🟠 Moderate Issues", result.moderate, "#f59e0b")}
-      ${renderSection("🟢 Suggestions", result.info, "#16a34a")}
+      <!-- SECTIONS -->
+      ${render("🔴 Critical Issues", result.critical, "#dc2626")}
+      ${render("🟠 Moderate Issues", result.moderate, "#f59e0b")}
+      ${render("🟢 Suggestions", result.info, "#16a34a")}
+
+      ${
+        (!result.critical?.length &&
+         !result.moderate?.length &&
+         !result.info?.length)
+          ? `<p style="margin-top:15px; color:#6b7280;">
+               No major issues detected
+             </p>`
+          : ""
+      }
 
     </div>
 
-    <!-- 🔥 WATERMARK UI -->
+    <!-- 🔒 WATERMARK -->
     <div style="
-  margin-top:20px;
-  padding:10px;
-  text-align:center;
-  font-size:12px;
-  color:#6b7280;
-  background:#f9fafb;
-  border-radius:8px;
-">
-  🔒 Free Report • Upgrade to remove watermark & unlock full insights
-</div>
+      margin-top:20px;
+      padding:12px;
+      text-align:center;
+      font-size:13px;
+      color:#6b7280;
+      background:#f9fafb;
+      border-radius:10px;
+    ">
+      🔒 Free Report • Upgrade to remove watermark & unlock full insights
+    </div>
   `;
 }
 
