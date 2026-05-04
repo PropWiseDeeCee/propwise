@@ -1,36 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body onload="initPage()">
+  <meta charset="UTF-8">
+  <title>Login - PropWise India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
+  <script defer src="app.js"></script>
+</head>
+
+<body onload="initPage(false)">
+
+<!-- NAVBAR -->
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="compare.html">Compare</a>
+      <a href="tools.html">Tools</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="guides.html">Guides</a>
+      <a href="dashboard.html">Dashboard</a>
+      <span id="nav-right"></span>
+    </div>
   </div>
 </header>
 
+<!-- CONTENT -->
 <div class="container">
-  <div class="card">
-    <h2>Login</h2>
 
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+  <div class="card" style="max-width:420px; margin:auto; text-align:center;">
 
-    <button onclick="signIn()">Login</button>
-    <button onclick="signUp()">Sign Up</button>
+    <!-- HEADER -->
+    <h2>Welcome back</h2>
+    <p style="color:#6b7280; font-size:14px;">
+      Login to access your reports and saved data
+    </p>
+
+    <!-- EMAIL -->
+    <input id="email" type="email" placeholder="Enter your email">
+
+    <!-- PASSWORD -->
+    <input id="password" type="password" placeholder="Enter your password">
+
+    <!-- LOGIN -->
+    <button onclick="handleLogin()" id="loginBtn">
+      Login
+    </button>
+
+    <!-- SIGNUP -->
+    <button onclick="handleSignup()" 
+      style="background:#e5e7eb; color:#111827;">
+      Create Account
+    </button>
+
+    <!-- ERROR / SUCCESS -->
+    <div id="authError" style="margin-top:12px; font-size:13px;"></div>
+
+    <!-- TRUST -->
+    <p style="font-size:12px; color:#6b7280; margin-top:15px;">
+      Secure login • No spam • Quick access
+    </p>
+
+    <!-- LEGAL -->
+    <p style="font-size:12px; color:#6b7280; margin-top:10px;">
+      By continuing, you agree to our 
+      <a href="terms.html">Terms</a> & 
+      <a href="privacy.html">Privacy Policy</a>
+    </p>
+
   </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
-
-</body>
-<div style="text-align:center; margin-top:40px; font-size:13px; color:#6b7280;">
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
   <a href="about.html">About</a> |
   <a href="privacy.html">Privacy Policy</a> |
   <a href="terms.html">Terms & Conditions</a>
-</div>
+</footer>
+
+</body>
 </html>

@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - PropWise India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
-    <!-- AdSense -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- AdSense -->
   <script async 
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
     crossorigin="anonymous">
   </script>
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
+  <script defer src="app.js"></script>
+</head>
+
+<body onload="initPage(true); loadAdmin()">
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">PropWise India</div>
+
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="compare.html">Compare</a>
@@ -16,23 +38,30 @@
       <a href="calculator.html">Calculator</a>
       <a href="guides.html">Guides</a>
       <a href="dashboard.html">Dashboard</a>
+      <span id="nav-right"></span>
     </div>
   </div>
 </header>
 
-<body onload="loadAdmin()">
-
+<!-- CONTENT -->
 <div class="container">
+
   <div class="card">
-    <h2>Admin</h2>
-    <div id="admin"></div>
+    <h2>Admin Panel</h2>
+
+    <div id="admin" style="margin-top:20px;">
+      Loading...
+    </div>
   </div>
+
 </div>
 
-</body>
-<div style="text-align:center; margin-top:40px; font-size:13px; color:#6b7280;">
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
   <a href="about.html">About</a> |
   <a href="privacy.html">Privacy Policy</a> |
   <a href="terms.html">Terms & Conditions</a>
-</div>
+</footer>
+
+</body>
 </html>

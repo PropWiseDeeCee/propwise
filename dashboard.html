@@ -2,15 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - PropWise India</title>
-  <!-- AdSense -->
-  <script async 
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
-    crossorigin="anonymous">
-  </script>
-  <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -24,36 +17,86 @@
 
 <body onload="initPage(true); loadDashboard()">
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="logo">PropWise India</div>
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">PropWise India</div>
 
-      <div class="nav-links">
-        <a href="index.html">Home</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
       <a href="compare.html">Compare</a>
       <a href="tools.html">Tools</a>
       <a href="calculator.html">Calculator</a>
       <a href="guides.html">Guides</a>
       <a href="dashboard.html">Dashboard</a>
-        <span id="nav-right"></span>
-      </div>
+      <span id="nav-right"></span>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- CONTENT -->
-  <div class="container">
+<!-- CONTENT -->
+<div class="container">
 
-    <h2 style="margin-bottom:20px;">Your Saved Comparisons</h2>
+  <!-- HEADER -->
+  <div style="text-align:center; margin-bottom:30px;">
+    <h1>Your Dashboard</h1>
+    <p style="color:#6b7280;">
+      View your saved comparisons and activity
+    </p>
+  </div>
 
-    <div id="list"></div>
+  <!-- SAVED COMPARISONS -->
+  <div class="card">
+    <h3>Saved Comparisons</h3>
+
+    <div id="list" style="margin-top:15px;">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="grid" style="margin-top:30px;">
+
+    <div class="card">
+      <h4>Analyze Agreement</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Upload and detect risks instantly
+      </p>
+      <button onclick="location.href='tools.html'">
+        Go to Analyzer
+      </button>
+    </div>
+
+    <div class="card">
+      <h4>Compare Properties</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Compare real total cost
+      </p>
+      <button onclick="location.href='compare.html'">
+        Compare Now
+      </button>
+    </div>
+
+    <div class="card">
+      <h4>Cost Calculator</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Estimate full property cost
+      </p>
+      <button onclick="location.href='calculator.html'">
+        Open Calculator
+      </button>
+    </div>
 
   </div>
 
-</body>
-<div style="text-align:center; margin-top:40px; font-size:13px; color:#6b7280;">
+</div>
+
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
   <a href="about.html">About</a> |
   <a href="privacy.html">Privacy Policy</a> |
   <a href="terms.html">Terms & Conditions</a>
-</div>
+</footer>
+
+</body>
 </html>

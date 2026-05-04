@@ -18,7 +18,7 @@
   <script defer src="app.js"></script>
 </head>
 
-<body onload="initPage(false); loadReport()">
+<body onload="initPage(true); loadReport()">
 
 <!-- NAVBAR -->
 <header class="navbar">
@@ -42,59 +42,59 @@
 
   <!-- HEADER -->
   <div style="text-align:center; margin-bottom:30px;">
-    <h1>Agreement Report</h1>
+    <h1>Agreement Risk Report</h1>
     <p style="color:#6b7280;">
       Detailed breakdown of risks, clauses, and recommendations
     </p>
   </div>
 
-  <!-- REPORT -->
+  <!-- REPORT CONTENT -->
   <div id="reportContent" class="card">
-    <!-- fallback -->
-    <p style="text-align:center; color:#6b7280;">
-      Loading report...
-    </p>
+    <p>Loading report...</p>
   </div>
 
-  <!-- 🔥 FREE WATERMARK MESSAGE -->
-  <div style="
-    margin-top:15px;
-    padding:12px;
-    text-align:center;
-    font-size:13px;
-    color:#6b7280;
-    background:#f9fafb;
-    border-radius:10px;
-  ">
-    🔒 Free Report • Upgrade to remove watermark & unlock full insights
-  </div>
-
-  <!-- ACTION BUTTONS -->
+  <!-- ACTIONS -->
   <div style="margin-top:30px; text-align:center;">
 
+    <!-- DOWNLOAD -->
     <button onclick="downloadReport()" style="max-width:300px;">
       Download PDF Report
     </button>
 
-    <div style="margin-top:10px;">
+    <!-- SECONDARY ACTIONS -->
+    <div style="margin-top:15px;">
       <a href="tools.html" style="font-size:13px; color:#6b7280;">
         ← Analyze another agreement
       </a>
     </div>
 
+    <div style="margin-top:10px;">
+      <button onclick="location.href='compare.html'"
+        style="background:#e5e7eb; color:#111827;">
+        Compare Property
+      </button>
+    </div>
+
   </div>
 
-  <!-- DISCLAIMER -->
+  <!-- TRUST / DISCLAIMER -->
   <div style="
-    margin-top:20px;
+    margin-top:30px;
     text-align:center;
     font-size:12px;
-    color:#9ca3af;
+    color:#6b7280;
   ">
-    This is an automated analysis and not legal advice.
+    This is an AI-assisted analysis and not legal advice.
   </div>
 
 </div>
+
+<!-- FOOTER -->
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+  <a href="about.html">About</a> |
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="terms.html">Terms & Conditions</a>
+</footer>
 
 </body>
 </html>

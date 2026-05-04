@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tools - PropWise India</title>
+  <title>Agreement Analyzer - PropWise India</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- CSS -->
@@ -25,9 +25,7 @@
 
 <body onload="initPage(false)">
 
-<!-- =========================
-     NAVBAR
-========================= -->
+<!-- NAVBAR -->
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">PropWise India</div>
@@ -35,29 +33,33 @@
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="compare.html">Compare</a>
-      <a href="guides.html">Guides</a>
       <a href="tools.html">Tools</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="guides.html">Guides</a>
       <span id="nav-right"></span>
     </div>
   </div>
 </header>
 
-<!-- =========================
-     CONTENT
-========================= -->
+<!-- CONTENT -->
 <div class="container">
 
-  <!-- 🔥 HERO / INTRO -->
+  <!-- HERO -->
   <div style="text-align:center; margin-bottom:30px;">
-    <h1 style="margin-bottom:10px;">Agreement Analyzer</h1>
+    <h1>Agreement Analyzer</h1>
     <p style="color:#6b7280; max-width:600px; margin:auto;">
-      Upload or paste your property agreement to instantly identify risks, missing clauses, and potential red flags.
+      Identify risky clauses, missing terms, and hidden issues before signing your agreement.
     </p>
+
+    <!-- 🔥 SAMPLE CTA -->
+    <div style="margin-top:15px;">
+      <button onclick="loadSampleAgreement()" style="background:#e5e7eb; color:#111827;">
+        Try Sample Agreement
+      </button>
+    </div>
   </div>
 
-  <!-- =========================
-       MAIN CARD
-  ========================= -->
+  <!-- MAIN CARD -->
   <div class="card">
 
     <!-- FILE UPLOAD -->
@@ -69,12 +71,7 @@
     </p>
 
     <!-- DIVIDER -->
-    <div style="
-      margin:25px 0;
-      text-align:center;
-      color:#9ca3af;
-      font-size:12px;
-    ">
+    <div style="margin:25px 0; text-align:center; color:#9ca3af; font-size:12px;">
       OR
     </div>
 
@@ -96,21 +93,44 @@
 
   </div>
 
-  <!-- =========================
-       TRUST SECTION (NEW)
-  ========================= -->
-  <div style="
-    margin-top:30px;
-    text-align:center;
-    font-size:13px;
-    color:#6b7280;
-  ">
+  <!-- 🔥 HOW IT WORKS -->
+  <div class="grid" style="margin-top:30px;">
+    <div class="card">
+      <h4>Upload / Paste</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Add your agreement content
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Instant Analysis</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Detect risks & missing clauses
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Unlock Full Report</h4>
+      <p style="font-size:13px; color:#6b7280;">
+        Get detailed insights & recommendations
+      </p>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div style="margin-top:30px; text-align:center; font-size:13px; color:#6b7280;">
     ✔ No data stored permanently  
     ✔ Secure analysis  
-    ✔ For informational purposes only  
+    ✔ Based on real agreement patterns  
+    ✔ AI-assisted insights • Not legal advice    
   </div>
 
 </div>
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+  <a href="about.html">About</a> |
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="terms.html">Terms & Conditions</a>
+</footer>
 
 </body>
 </html>
