@@ -697,6 +697,7 @@ await supabaseClient
     </div>
 
   `;
+    }
   
 // ==============================
 // REPORT (FINAL)
