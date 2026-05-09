@@ -47,6 +47,34 @@ function getInitial(value) {
   return String(value || "U").trim().charAt(0).toUpperCase() || "U";
 }
 
+function getVisitorId() {
+  const key = "propwiseVisitorId";
+  let id = localStorage.getItem(key);
+
+  if (!id) {
+    id = window.crypto?.randomUUID?.() || `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    localStorage.setItem(key, id);
+  }
+
+  return id;
+}
+
+function getDeviceType() {
+  const width = window.innerWidth || 0;
+  if (width <= 640) return "mobile";
+  if (width <= 1024) return "tablet";
+  return "desktop";
+}
+
+function getBrowserName() {
+  const ua = navigator.userAgent;
+  if (ua.includes("Edg/")) return "Edge";
+  if (ua.includes("Chrome/")) return "Chrome";
+  if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
+  if (ua.includes("Firefox/")) return "Firefox";
+  return "Other";
+}
+
 function toggleUserMenu(event) {
   event.preventDefault();
   event.stopPropagation();
@@ -63,6 +91,35 @@ document.addEventListener("click", () => {
   menu?.classList.remove("open");
   menu?.querySelector(".user-menu-button")?.setAttribute("aria-expanded", "false");
 });
+
+// ==============================
+// ANALYTICS
+// ==============================
+
+async function trackPageView(user = null) {
+  if (!supabaseClient) return;
+
+  try {
+    await supabaseClient
+      .from("analytics_events")
+      .insert([{
+        user_id: user?.id || null,
+        email: user?.email || null,
+        visitor_id: getVisitorId(),
+        event_type: "page_view",
+        page_path: window.location.pathname,
+        page_title: document.title,
+        referrer: document.referrer || null,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
+        locale: navigator.language || null,
+        device_type: getDeviceType(),
+        browser: getBrowserName(),
+        user_agent: navigator.userAgent
+      }]);
+  } catch (error) {
+    console.warn("Analytics tracking skipped", error);
+  }
+}
 
 // ==============================
 // AUTH
@@ -159,6 +216,8 @@ async function initPage(protectedPage = false) {
     window.location.href = appPath("login.html");
     return;
   }
+
+  trackPageView(user);
 
   const nav = document.getElementById("nav-right");
 
@@ -592,6 +651,160 @@ async function isSuperAdmin() {
   return profile?.role === "super_admin";
 }
 
+function formatDateTime(value) {
+  if (!value) return "Unknown";
+  return new Date(value).toLocaleString();
+}
+
+function groupBy(items, keyFn) {
+  return items.reduce((groups, item) => {
+    const key = keyFn(item);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+    return groups;
+  }, {});
+}
+
+function renderAdminMetric(label, value) {
+  return `
+    <div class="admin-metric">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+    </div>
+  `;
+}
+
+function renderAdminSetupMessage(error) {
+  return `
+    <div class="card">
+      <h3>Analytics setup needed</h3>
+      <p style="color:#6b7280;">
+        The admin analytics table is not available yet. Run the SQL in
+        <strong>supabase-analytics.sql</strong> from your Supabase SQL Editor.
+      </p>
+      <p style="font-size:13px; color:#dc2626; margin-top:10px;">
+        ${escapeHtml(error?.message || "analytics_events table is unavailable")}
+      </p>
+    </div>
+  `;
+}
+
+function renderTopPages(events) {
+  const counts = {};
+  events.forEach(event => {
+    const page = event.page_path || "Unknown";
+    counts[page] = (counts[page] || 0) + 1;
+  });
+
+  const rows = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+
+  if (!rows.length) return `<p style="color:#6b7280;">No page views tracked yet.</p>`;
+
+  return rows.map(([page, count]) => `
+    <div class="admin-row">
+      <span>${escapeHtml(page)}</span>
+      <strong>${escapeHtml(count)}</strong>
+    </div>
+  `).join("");
+}
+
+function renderRecentActivity(events) {
+  if (!events.length) return `<p style="color:#6b7280;">No recent activity yet.</p>`;
+
+  return events.slice(0, 12).map(event => `
+    <div class="admin-row admin-row-stacked">
+      <div>
+        <strong>${escapeHtml(event.email || "Anonymous visitor")}</strong>
+        <span>${escapeHtml(event.page_path || "Unknown page")}</span>
+      </div>
+      <small>${escapeHtml(formatDateTime(event.created_at))}</small>
+    </div>
+  `).join("");
+}
+
+function renderUserJourneys(events) {
+  const groups = groupBy(events, event => event.email || event.visitor_id || "unknown");
+  const journeys = Object.entries(groups)
+    .map(([visitor, visitorEvents]) => ({
+      visitor,
+      events: visitorEvents
+        .slice()
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+        .slice(-8)
+    }))
+    .sort((a, b) => {
+      const aLast = a.events[a.events.length - 1]?.created_at || 0;
+      const bLast = b.events[b.events.length - 1]?.created_at || 0;
+      return new Date(bLast) - new Date(aLast);
+    })
+    .slice(0, 8);
+
+  if (!journeys.length) return `<p style="color:#6b7280;">No journeys tracked yet.</p>`;
+
+  return journeys.map(journey => `
+    <div class="journey-card">
+      <strong>${escapeHtml(journey.visitor)}</strong>
+      <div class="journey-path">
+        ${journey.events.map(event => `
+          <span title="${escapeHtml(formatDateTime(event.created_at))}">
+            ${escapeHtml(event.page_path || "Unknown")}
+          </span>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+async function loadAdminAnalytics() {
+  const metricsEl = document.getElementById("adminMetrics");
+  const topPagesEl = document.getElementById("adminTopPages");
+  const recentEl = document.getElementById("adminRecentActivity");
+  const journeysEl = document.getElementById("adminJourneys");
+
+  const [
+    profilesResult,
+    comparisonsResult,
+    eventsCountResult,
+    recentEventsResult
+  ] = await Promise.all([
+    supabaseClient.from("profiles").select("*", { count: "exact", head: true }),
+    supabaseClient.from("comparisons").select("*", { count: "exact", head: true }),
+    supabaseClient.from("analytics_events").select("*", { count: "exact", head: true }),
+    supabaseClient
+      .from("analytics_events")
+      .select("*")
+      .eq("event_type", "page_view")
+      .order("created_at", { ascending: false })
+      .limit(300)
+  ]);
+
+  if (eventsCountResult.error || recentEventsResult.error) {
+    metricsEl.innerHTML = renderAdminSetupMessage(eventsCountResult.error || recentEventsResult.error);
+    topPagesEl.innerHTML = "";
+    recentEl.innerHTML = "";
+    journeysEl.innerHTML = "";
+    return;
+  }
+
+  const events = recentEventsResult.data || [];
+  const uniqueVisitors = new Set(events.map(event => event.email || event.visitor_id).filter(Boolean)).size;
+  const loggedInVisits = events.filter(event => event.email).length;
+
+  metricsEl.innerHTML = `
+    ${renderAdminMetric("Users", profilesResult.count ?? 0)}
+    ${renderAdminMetric("Saved Comparisons", comparisonsResult.count ?? 0)}
+    ${renderAdminMetric("Total Page Views", eventsCountResult.count ?? 0)}
+    ${renderAdminMetric("Recent Unique Visitors", uniqueVisitors)}
+    ${renderAdminMetric("Logged-in Visits", loggedInVisits)}
+  `;
+
+  topPagesEl.innerHTML = renderTopPages(events);
+  recentEl.innerHTML = renderRecentActivity(events);
+  journeysEl.innerHTML = renderUserJourneys(events);
+}
+
 // ==============================
 // ADMIN
 // ==============================
@@ -614,19 +827,42 @@ async function loadAdmin() {
   const profile = await getProfile();
 
   el.innerHTML = `
-    <div class="card">
-      <h2>Admin Panel</h2>
-
-      <p style="margin-top:10px;">
-        Welcome back,
-        <strong>${escapeHtml(profile.full_name || profile.email)}</strong>
-      </p>
-
-      <p style="color:#16a34a; margin-top:8px;">
-        Role: ${escapeHtml(profile.role)}
+    <div style="text-align:center; margin-bottom:30px;">
+      <h1>Admin Panel</h1>
+      <p style="color:#6b7280;">
+        Welcome back, <strong>${escapeHtml(profile.full_name || profile.email)}</strong>
       </p>
     </div>
+
+    <div id="adminMetrics" class="admin-metrics">
+      ${renderAdminMetric("Loading", "...")}
+    </div>
+
+    <div class="admin-grid">
+      <div class="card">
+        <h3>Top Pages</h3>
+        <div id="adminTopPages" class="admin-list">
+          <p>Loading...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Recent Activity</h3>
+        <div id="adminRecentActivity" class="admin-list">
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>User Journeys</h3>
+      <div id="adminJourneys" class="journey-list">
+        <p>Loading...</p>
+      </div>
+    </div>
   `;
+
+  await loadAdminAnalytics();
 }
 
 // ==============================
