@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stamp Duty and Registration Charges in Karnataka</title>
   <!-- AdSense -->
   <script async 
@@ -9,25 +11,44 @@
   </script>
   <meta name="description" content="Check latest stamp duty and registration charges in Karnataka and calculate your total property cost.">
   <link rel="stylesheet" href="../styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="../app.js"></script>
 </head>
 
-<body>
+<body onload="initPage(false)">
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">PropWise India</div>
+
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../compare.html">Compare</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../calculator.html">Calculator</a>
+      <a href="../guides.html">Guides</a>
+      <a href="../dashboard.html">Dashboard</a>
+      <span id="nav-right"></span>
+    </div>
+  </div>
+</header>
 
 <div class="container">
   <h1>Stamp Duty & Registration Charges in Karnataka</h1>
 
   <p>
-    Stamp duty and registration charges typically range between 5–7% in Karnataka.
+    Stamp duty, registration charges, and applicable cess typically range from about 5.5–7.6% in Karnataka depending on property value and location.
   </p>
 
   <h2>Breakdown</h2>
   <ul>
-    <li>Stamp Duty: ~5%</li>
-    <li>Registration Fee: ~1%</li>
+    <li>Stamp Duty: 2–5% based on property value slab</li>
+    <li>Registration Fee: ~2%</li>
+    <li>Cess/surcharge may apply depending on the property and location</li>
   </ul>
 
   <p>
-    These charges vary based on property value and buyer category.
+    These charges can change, so buyers should verify the exact payable amount on Kaveri Online Services before registration.
   </p>
 
   <hr>
@@ -37,6 +58,12 @@
   </button>
 
 </div>
+
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+  <a href="../about.html">About</a> |
+  <a href="../privacy.html">Privacy Policy</a> |
+  <a href="../terms.html">Terms & Conditions</a>
+</footer>
 
 </body>
 </html>

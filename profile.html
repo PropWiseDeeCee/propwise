@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Profile - PropWise India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- APP -->
+  <script defer src="app.js"></script>
+</head>
+
+<body onload="initPage(true); loadProfilePage()">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">PropWise India</div>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="compare.html">Compare</a>
+        <a href="tools.html">Tools</a>
+        <a href="calculator.html">Calculator</a>
+        <a href="guides.html">Guides</a>
+        <a href="dashboard.html">Dashboard</a>
+        <span id="nav-right"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="container">
+
+    <!-- PAGE HEADER -->
+    <div style="text-align:center; margin-bottom:30px;">
+      <h1>My Profile</h1>
+
+      <p style="color:#6b7280;">
+        Manage your account information and preferences
+      </p>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="card" style="max-width:700px; margin:auto;">
+
+      <div id="profileContent">
+        <p>Loading profile...</p>
+      </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="grid" style="margin-top:30px;">
+
+      <!-- DASHBOARD -->
+      <div class="card">
+        <h3>Dashboard</h3>
+
+        <p style="font-size:13px; color:#6b7280;">
+          View saved comparisons and reports
+        </p>
+
+        <button onclick="location.href='dashboard.html'">
+          Open Dashboard
+        </button>
+      </div>
+
+      <!-- ANALYZER -->
+      <div class="card">
+        <h3>Agreement Analyzer</h3>
+
+        <p style="font-size:13px; color:#6b7280;">
+          Analyze another agreement
+        </p>
+
+        <button onclick="location.href='tools.html'">
+          Analyze Agreement
+        </button>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="card" id="adminQuickCard" style="display:none;">
+        <h3>Admin Panel</h3>
+
+        <p style="font-size:13px; color:#6b7280;">
+          Super admin controls
+        </p>
+
+        <button onclick="location.href='admin.html'">
+          Open Admin
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
+    <a href="about.html">About</a> |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="terms.html">Terms & Conditions</a>
+  </footer>
+
+  <!-- PAGE SCRIPT -->
+  <script>
+
+    async function loadProfilePage() {
+
+      const profile = await getProfile();
+
+      const el = document.getElementById("profileContent");
+
+      if (!profile) {
+        el.innerHTML = `
+          <p>Unable to load profile.</p>
+        `;
+        return;
+      }
+
+      // SHOW ADMIN CARD
+      if (profile.role === "super_admin") {
+        document.getElementById("adminQuickCard").style.display = "block";
+      }
+
+      el.innerHTML = `
+
+        <!-- PROFILE INFO -->
+        <div>
+
+          <div style="margin-bottom:25px;">
+
+            <label><strong>Full Name</strong></label>
+
+            <input
+              id="fullName"
+              type="text"
+              placeholder="Enter your full name"
+              value="${escapeHtml(profile.full_name || "")}"
+            />
+
+          </div>
+
+          <div style="margin-bottom:25px;">
+
+            <label><strong>Email Address</strong></label>
+
+            <input
+              type="email"
+              value="${escapeHtml(profile.email)}"
+              disabled
+              style="background:#f3f4f6;"
+            />
+
+          </div>
+
+          <div style="margin-bottom:25px;">
+
+            <label><strong>Role</strong></label>
+
+            <input
+              type="text"
+              value="${escapeHtml(profile.role)}"
+              disabled
+              style="background:#f3f4f6;"
+            />
+
+          </div>
+
+          <div style="margin-bottom:25px;">
+
+            <label><strong>Member Since</strong></label>
+
+            <input
+              type="text"
+              value="${escapeHtml(new Date(profile.created_at).toLocaleDateString())}"
+              disabled
+              style="background:#f3f4f6;"
+            />
+
+          </div>
+
+          <!-- SAVE BUTTON -->
+          <button onclick="updateProfile()">
+            Save Profile
+          </button>
+
+          <!-- STATUS -->
+          <div
+            id="profileMessage"
+            style="margin-top:15px; font-size:13px;"
+          ></div>
+
+        </div>
+
+      `;
+    }
+
+    async function updateProfile() {
+
+      const msg = document.getElementById("profileMessage");
+
+      msg.innerHTML = "Saving...";
+
+      const user = await getUser();
+
+      const fullName = document.getElementById("fullName").value;
+
+      const { error } = await supabaseClient
+        .from("profiles")
+        .update({
+          full_name: fullName
+        })
+        .eq("id", user.id);
+
+      if (error) {
+
+        msg.innerHTML = `
+          <span style="color:#dc2626;">
+            ${escapeHtml(error.message)}
+          </span>
+        `;
+
+        return;
+      }
+
+      msg.innerHTML = `
+        <span style="color:#16a34a;">
+          Profile updated successfully
+        </span>
+      `;
+    }
+
+  </script>
+
+</body>
+</html>

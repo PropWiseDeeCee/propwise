@@ -18,6 +18,23 @@ function initSupabase() {
 initSupabase();
 
 // ==============================
+// HELPERS
+// ==============================
+
+function appPath(path) {
+  return window.location.pathname.includes("/guides/") ? `../${path}` : path;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+// ==============================
 // AUTH
 // ==============================
 
@@ -61,7 +78,7 @@ async function signUp() {
 
 async function logout() {
   await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
+  window.location.href = appPath("login.html");
 }
 
 // ==============================
@@ -83,7 +100,7 @@ async function handleLogin() {
     window.location.href = hasReport ? "report.html" : "dashboard.html";
 
   } catch (e) {
-    if (err) err.innerHTML = `<span style="color:#dc2626;">${e.message}</span>`;
+    if (err) err.innerHTML = `<span style="color:#dc2626;">${escapeHtml(e.message)}</span>`;
     if (btn) btn.innerText = "Login";
   }
 }
@@ -95,7 +112,7 @@ async function handleSignup() {
     await signUp();
     if (err) err.innerHTML = `<span style="color:#16a34a;">Account created. Login now.</span>`;
   } catch (e) {
-    if (err) err.innerHTML = `<span style="color:#dc2626;">${e.message}</span>`;
+    if (err) err.innerHTML = `<span style="color:#dc2626;">${escapeHtml(e.message)}</span>`;
   }
 }
 
@@ -109,17 +126,45 @@ async function initPage(protectedPage = false) {
   const user = await getUser();
 
   if (protectedPage && !user) {
-    window.location.href = "login.html";
+    window.location.href = appPath("login.html");
     return;
   }
 
   const nav = document.getElementById("nav-right");
 
-  if (nav) {
-    nav.innerHTML = user
-      ? `<span>${user.email}</span> <a href="#" onclick="logout()">Logout</a>`
-      : `<a href="login.html">Login</a>`;
+  if (!nav) return;
+
+  // NOT LOGGED IN
+  if (!user) {
+    nav.innerHTML = `
+      <a href="${appPath("login.html")}">Login</a>
+    `;
+    return;
   }
+
+  // GET PROFILE
+  const profile = await getProfile();
+
+  const isAdmin = profile?.role === "super_admin";
+  const displayName = escapeHtml(profile?.full_name || user.email);
+
+  nav.innerHTML = `
+    <span style="margin-right:12px;">
+      ${displayName}
+    </span>
+
+    <a href="${appPath("dashboard.html")}">Dashboard</a>
+
+    <a href="${appPath("profile.html")}">Profile</a>
+
+    ${
+      isAdmin
+        ? `<a href="${appPath("admin.html")}">Admin</a>`
+        : ""
+    }
+
+    <a href="#" onclick="logout()">Logout</a>
+  `;
 }
 
 // ==============================
@@ -233,11 +278,11 @@ async function renderPreview(result, score, risk) {
   el.innerHTML = `
     <div class="analysis-card">
       <div class="risk-box">
-        <strong>Risk: ${risk}</strong> • Score: ${score}
+        <strong>Risk: ${escapeHtml(risk)}</strong> • Score: ${escapeHtml(score)}
       </div>
 
       <h4>Top Issues</h4>
-      <ul>${preview.map(i => `<li>${i}</li>`).join("")}</ul>
+      <ul>${preview.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
 
       ${hidden > 0 ? `<p style="color:#dc2626;">⚠️ ${hidden} more issues found</p>` : ""}
     </div>
@@ -284,12 +329,15 @@ async function loadReport() {
 
   const section = (title, items) => `
     <h3>${title}</h3>
-    ${items.map(i => `<div class="card"><b>${i}</b><br><span>${explain(i)}</span></div>`).join("")}
+    ${items.map(i => {
+      const issue = escapeHtml(i);
+      return `<div class="card"><b>${issue}</b><br><span>${escapeHtml(explain(i))}</span></div>`;
+    }).join("")}
   `;
 
   el.innerHTML = `
-    <h2>Risk: <span style="color:${color}">${risk}</span></h2>
-    <p>Score: ${score}</p>
+    <h2>Risk: <span style="color:${escapeHtml(color)}">${escapeHtml(risk)}</span></h2>
+    <p>Score: ${escapeHtml(score)}</p>
 
     ${section("Critical Issues", result.critical)}
     ${section("Moderate Issues", result.moderate)}
@@ -336,35 +384,144 @@ function compareAdvanced() {
   `;
 }
 
-function save() {
+// ==============================
+// SAVED COMPARISONS
+// ==============================
+async function save() {
+
+  const user = await getUser();
+
+  // USER NOT LOGGED IN
+  if (!user) {
+    alert("Please login first");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // FORM DATA
   const data = {
-    a: aName.value,
-    b: bName.value
+    user_id: user.id,
+    property_a: aName.value,
+    property_b: bName.value
   };
 
-  const list = JSON.parse(localStorage.getItem("savedComparisons") || "[]");
-  list.push(data);
+  // INSERT INTO SUPABASE
+  const { error } = await supabaseClient
+    .from("comparisons")
+    .insert([data]);
 
-  localStorage.setItem("savedComparisons", JSON.stringify(list));
-  alert("Saved");
+  // ERROR HANDLING
+  if (error) {
+    console.error(error);
+    alert("Failed to save comparison");
+    return;
+  }
+
+  // SUCCESS
+  alert("Comparison saved successfully");
 }
 
 // ==============================
 // DASHBOARD
 // ==============================
 
-function loadDashboard() {
-  const list = JSON.parse(localStorage.getItem("savedComparisons") || "[]");
-  const el = document.getElementById("list");
+async function loadDashboard() {
 
-  if (!list.length) {
-    el.innerHTML = "<p>No saved comparisons</p>";
+  const user = await getUser();
+
+  // NOT LOGGED IN
+  if (!user) {
+    window.location.href = "login.html";
     return;
   }
 
-  el.innerHTML = list.map(i => `
-    <div class="card">${i.a} vs ${i.b}</div>
+  const el = document.getElementById("list");
+
+  el.innerHTML = "<p>Loading...</p>";
+
+  // FETCH USER COMPARISONS
+  const { data, error } = await supabaseClient
+    .from("comparisons")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  // ERROR
+  if (error) {
+
+    console.error(error);
+
+    el.innerHTML = `
+      <p>Failed to load comparisons</p>
+    `;
+
+    return;
+  }
+
+  // EMPTY STATE
+  if (!data.length) {
+
+    el.innerHTML = `
+      <p>No saved comparisons yet</p>
+    `;
+
+    return;
+  }
+
+  // RENDER DATA
+  el.innerHTML = data.map(item => `
+
+    <div class="card">
+
+      <h4>${escapeHtml(item.property_a)}</h4>
+
+      <p style="margin:8px 0;">
+        vs
+      </p>
+
+      <h4>${escapeHtml(item.property_b)}</h4>
+
+      <p style="
+        margin-top:12px;
+        font-size:12px;
+        color:#6b7280;
+      ">
+        Saved on
+        ${escapeHtml(new Date(item.created_at).toLocaleDateString())}
+      </p>
+
+    </div>
+
   `).join("");
+}
+
+// ==============================
+// PROFILE + RBAC
+// ==============================
+
+async function getProfile() {
+  const user = await getUser();
+
+  if (!user) return null;
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
+}
+
+async function isSuperAdmin() {
+  const profile = await getProfile();
+
+  return profile?.role === "super_admin";
 }
 
 // ==============================
@@ -372,15 +529,36 @@ function loadDashboard() {
 // ==============================
 
 async function loadAdmin() {
-  const user = await getUser();
   const el = document.getElementById("admin");
 
-  if (!user || user.email !== "your-email@gmail.com") {
-    el.innerHTML = "Access denied";
+  const admin = await isSuperAdmin();
+
+  if (!admin) {
+    el.innerHTML = `
+      <div class="card">
+        <h3>Access Denied</h3>
+        <p>You do not have permission to access this page.</p>
+      </div>
+    `;
     return;
   }
 
-  el.innerHTML = "<h3>Admin Panel</h3>";
+  const profile = await getProfile();
+
+  el.innerHTML = `
+    <div class="card">
+      <h2>Admin Panel</h2>
+
+      <p style="margin-top:10px;">
+        Welcome back,
+        <strong>${escapeHtml(profile.full_name || profile.email)}</strong>
+      </p>
+
+      <p style="color:#16a34a; margin-top:8px;">
+        Role: ${escapeHtml(profile.role)}
+      </p>
+    </div>
+  `;
 }
 
 // ==============================

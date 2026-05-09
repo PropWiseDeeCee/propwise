@@ -14,7 +14,7 @@
     crossorigin="anonymous">
   </script>
 
-  <!-- LIBS -->
+  <!-- LIBS (required for app.js parsing) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -36,6 +36,7 @@
       <a href="tools.html">Tools</a>
       <a href="calculator.html">Calculator</a>
       <a href="guides.html">Guides</a>
+      <a href="dashboard.html">Dashboard</a>
       <span id="nav-right"></span>
     </div>
   </div>
@@ -47,13 +48,15 @@
   <!-- HERO -->
   <div style="text-align:center; margin-bottom:30px;">
     <h1>Agreement Analyzer</h1>
+
     <p style="color:#6b7280; max-width:600px; margin:auto;">
-      Identify risky clauses, missing terms, and hidden issues before signing your agreement.
+      Upload or paste your agreement to detect risks, missing clauses, and hidden issues before signing.
     </p>
 
-    <!-- 🔥 SAMPLE CTA -->
+    <!-- SAMPLE BUTTON -->
     <div style="margin-top:15px;">
-      <button onclick="loadSampleAgreement()" style="background:#e5e7eb; color:#111827;">
+      <button onclick="loadSampleAgreement()"
+        style="background:#e5e7eb; color:#111827;">
         Try Sample Agreement
       </button>
     </div>
@@ -67,11 +70,11 @@
     <input type="file" id="pdfFile" accept=".pdf,.txt,.doc,.docx">
 
     <p style="font-size:12px; color:#6b7280; margin-top:6px;">
-      Supported formats: PDF, TXT, DOCX. Scanned PDFs may not work.
+      Supported: PDF, TXT, DOCX • Scanned PDFs may not work
     </p>
 
     <!-- DIVIDER -->
-    <div style="margin:25px 0; text-align:center; color:#9ca3af; font-size:12px;">
+    <div style="margin:25px 0; text-align:center; color:#9ca3af;">
       OR
     </div>
 
@@ -80,52 +83,53 @@
     <textarea 
       id="agreementText" 
       rows="6" 
-      placeholder="Paste agreement content..."
+      placeholder="Paste your agreement content here..."
     ></textarea>
 
-    <!-- BUTTON -->
-    <button onclick="analyzeAgreementHandler()">
+    <!-- ACTION BUTTON -->
+    <button onclick="analyzeAgreementHandler()" id="analyzeBtn">
       Analyze Agreement
     </button>
 
-    <!-- RESULT -->
+    <!-- RESULT AREA -->
     <div id="analysisResult" style="margin-top:20px;"></div>
 
   </div>
 
-  <!-- 🔥 HOW IT WORKS -->
+  <!-- HOW IT WORKS -->
   <div class="grid" style="margin-top:30px;">
     <div class="card">
-      <h4>Upload / Paste</h4>
+      <h4>1. Upload / Paste</h4>
       <p style="font-size:13px; color:#6b7280;">
-        Add your agreement content
+        Add your agreement document
       </p>
     </div>
 
     <div class="card">
-      <h4>Instant Analysis</h4>
+      <h4>2. Instant Analysis</h4>
       <p style="font-size:13px; color:#6b7280;">
-        Detect risks & missing clauses
+        Detect risks and missing clauses
       </p>
     </div>
 
     <div class="card">
-      <h4>Unlock Full Report</h4>
+      <h4>3. Unlock Full Report</h4>
       <p style="font-size:13px; color:#6b7280;">
         Get detailed insights & recommendations
       </p>
     </div>
   </div>
 
-  <!-- TRUST -->
+  <!-- TRUST SECTION -->
   <div style="margin-top:30px; text-align:center; font-size:13px; color:#6b7280;">
-    ✔ No data stored permanently  
-    ✔ Secure analysis  
-    ✔ Based on real agreement patterns  
-    ✔ AI-assisted insights • Not legal advice    
+    ✔ Free analysis • Login required for full report
+    ✔ Secure processing (not stored permanently)
+    ✔ AI-assisted insights • Not legal advice
   </div>
 
 </div>
+
+<!-- FOOTER -->
 <footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
   <a href="about.html">About</a> |
   <a href="privacy.html">Privacy Policy</a> |
