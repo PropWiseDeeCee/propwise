@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Apartment vs Villa Cost Calculator India | PropWise</title>
+
+  <meta
+    name="description"
+    content="Compare apartment vs villa costs in India including registration, maintenance, parking, GST and long-term ownership expenses."
+  />
+
+  <meta
+    name="keywords"
+    content="apartment vs villa calculator, villa vs apartment cost india, property comparison calculator, apartment or villa better"
+  />
+
+  <meta name="robots" content="index, follow" />
+
+  <link
+    rel="canonical"
+    href="https://propwise-zeta.vercel.app/apartment-vs-villa-cost-calculator.html"
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Apartment vs Villa Cost Calculator India" />
+  <meta
+    property="og:description"
+    content="Compare total apartment and villa ownership costs instantly."
+  />
+  <meta
+    property="og:url"
+    content="https://propwise-zeta.vercel.app/apartment-vs-villa-cost-calculator.html"
+  />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Apartment vs Villa Cost Calculator India" />
+  <meta
+    name="twitter:description"
+    content="Calculate and compare apartment vs villa costs instantly."
+  />
+
+  <meta name="author" content="PropWise India" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+
+    body {
+      font-family: Inter, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin-top: 50px;
+      font-size: 30px;
+    }
+
+    p {
+      color: #475569;
+    }
+
+    .hero {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .result {
+      margin-top: 30px;
+      background: #ecfeff;
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid #a5f3fc;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .faq {
+      margin-top: 30px;
+    }
+
+    .faq-item {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="hero">
+
+      <h1>Apartment vs Villa Cost Calculator</h1>
+
+      <p>
+        Compare apartment and villa ownership costs including registration,
+        maintenance, parking, GST, and long-term expenses in India.
+      </p>
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>Apartment</h3>
+
+          <label>Base Price</label>
+          <input type="number" id="aptPrice" placeholder="e.g. 8500000" />
+
+          <label>Maintenance (Yearly)</label>
+          <input type="number" id="aptMaintenance" placeholder="e.g. 60000" />
+
+          <label>Parking Cost</label>
+          <input type="number" id="aptParking" placeholder="e.g. 300000" />
+
+        </div>
+
+        <div class="card">
+
+          <h3>Villa</h3>
+
+          <label>Base Price</label>
+          <input type="number" id="villaPrice" placeholder="e.g. 15000000" />
+
+          <label>Maintenance (Yearly)</label>
+          <input type="number" id="villaMaintenance" placeholder="e.g. 120000" />
+
+          <label>Parking Cost</label>
+          <input type="number" id="villaParking" placeholder="e.g. 0" />
+
+        </div>
+
+      </div>
+
+      <button onclick="compareCosts()">
+        Compare Total Cost
+      </button>
+
+      <div id="result" class="result" style="display:none;"></div>
+
+    </div>
+
+    <h2>Apartment vs Villa — Which is Better?</h2>
+
+    <p>
+      Apartments generally offer lower maintenance burden, better security,
+      and lower upfront costs. Villas provide larger living space, land ownership,
+      and more privacy but usually involve higher maintenance and registration costs.
+    </p>
+
+    <p>
+      In cities like Bangalore, Hyderabad, Pune, and Gurgaon, villas are
+      becoming increasingly expensive due to land scarcity, while apartments
+      continue to dominate urban housing demand.
+    </p>
+
+    <h2>Key Cost Factors</h2>
+
+    <ul>
+      <li>Registration & stamp duty</li>
+      <li>GST applicability</li>
+      <li>Maintenance charges</li>
+      <li>Parking ownership</li>
+      <li>Clubhouse and amenities</li>
+      <li>Land appreciation potential</li>
+      <li>Resale liquidity</li>
+    </ul>
+
+    <h2>Who Should Buy an Apartment?</h2>
+
+    <p>
+      Apartments are ideal for first-time home buyers, working professionals,
+      and buyers seeking lower maintenance responsibilities and easier resale options.
+    </p>
+
+    <h2>Who Should Buy a Villa?</h2>
+
+    <p>
+      Villas are better suited for families seeking larger living space,
+      privacy, land ownership, and long-term appreciation potential.
+    </p>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+
+      <div class="faq-item">
+        <h3>Is villa maintenance more expensive?</h3>
+        <p>
+          Yes. Villas generally involve higher upkeep costs including landscaping,
+          repairs, and independent infrastructure maintenance.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Do villas appreciate faster than apartments?</h3>
+        <p>
+          In many Indian cities, land value appreciation can make villas
+          appreciate faster over long periods.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Are apartments easier to rent?</h3>
+        <p>
+          Usually yes. Apartments tend to have broader rental demand
+          in urban locations.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function compareCosts() {
+
+      const aptPrice =
+        Number(document.getElementById("aptPrice").value || 0);
+
+      const aptMaintenance =
+        Number(document.getElementById("aptMaintenance").value || 0);
+
+      const aptParking =
+        Number(document.getElementById("aptParking").value || 0);
+
+      const villaPrice =
+        Number(document.getElementById("villaPrice").value || 0);
+
+      const villaMaintenance =
+        Number(document.getElementById("villaMaintenance").value || 0);
+
+      const villaParking =
+        Number(document.getElementById("villaParking").value || 0);
+
+      const apartmentTotal =
+        aptPrice +
+        aptParking +
+        (aptMaintenance * 10);
+
+      const villaTotal =
+        villaPrice +
+        villaParking +
+        (villaMaintenance * 10);
+
+      const better =
+        apartmentTotal < villaTotal
+          ? "Apartment is financially cheaper over 10 years."
+          : "Villa is financially competitive over 10 years.";
+
+      const savings =
+        Math.abs(apartmentTotal - villaTotal);
+
+      const result = document.getElementById("result");
+
+      result.style.display = "block";
+
+      result.innerHTML = `
+
+        <h3>Comparison Result</h3>
+
+        <p>
+          Apartment Total Estimated Cost:
+          <strong>₹${apartmentTotal.toLocaleString()}</strong>
+        </p>
+
+        <p>
+          Villa Total Estimated Cost:
+          <strong>₹${villaTotal.toLocaleString()}</strong>
+        </p>
+
+        <p>
+          Difference:
+          <strong>₹${savings.toLocaleString()}</strong>
+        </p>
+
+        <p style="margin-top:20px;">
+          <strong>${better}</strong>
+        </p>
+
+      `;
+    }
+
+  </script>
+
+</body>
+</html>
