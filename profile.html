@@ -212,15 +212,18 @@
       msg.innerHTML = "Saving...";
 
       const user = await getUser();
+      const profile = await getProfile();
 
       const fullName = document.getElementById("fullName").value;
 
       const { error } = await supabaseClient
         .from("profiles")
-        .update({
-          full_name: fullName
-        })
-        .eq("id", user.id);
+        .upsert({
+          id: user.id,
+          email: user.email,
+          full_name: fullName,
+          role: profile?.role || roleForEmail(user.email)
+        });
 
       if (error) {
 

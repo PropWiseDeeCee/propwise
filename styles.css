@@ -186,3 +186,18 @@ li {
 .nav-links a {
   margin-left: 0;
 }
+
+#nav-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-user {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #6b7280;
+  font-weight: 600;
+}

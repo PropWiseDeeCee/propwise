@@ -3,6 +3,9 @@
 // ==============================
 
 let supabaseClient = null;
+const SUPER_ADMIN_EMAILS = [
+  "choudhury.diganta17@example.com"
+];
 
 function initSupabase() {
   if (!window.supabase) return;
@@ -32,6 +35,12 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function roleForEmail(email) {
+  return SUPER_ADMIN_EMAILS.includes(String(email || "").toLowerCase())
+    ? "super_admin"
+    : "user";
 }
 
 // ==============================
@@ -149,11 +158,9 @@ async function initPage(protectedPage = false) {
   const displayName = escapeHtml(profile?.full_name || user.email);
 
   nav.innerHTML = `
-    <span style="margin-right:12px;">
+    <span class="nav-user">
       ${displayName}
     </span>
-
-    <a href="${appPath("dashboard.html")}">Dashboard</a>
 
     <a href="${appPath("profile.html")}">Profile</a>
 
@@ -504,18 +511,45 @@ async function getProfile() {
 
   if (!user) return null;
 
+  const fallbackProfile = {
+    id: user.id,
+    email: user.email,
+    full_name: user.user_metadata?.full_name || "",
+    role: roleForEmail(user.email),
+    created_at: user.created_at || new Date().toISOString()
+  };
+
   const { data, error } = await supabaseClient
     .from("profiles")
     .select("*")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error(error);
-    return null;
+    return fallbackProfile;
   }
 
-  return data;
+  if (data) {
+    if (fallbackProfile.role === "super_admin") {
+      return { ...data, role: "super_admin" };
+    }
+
+    return data;
+  }
+
+  const { data: created, error: createError } = await supabaseClient
+    .from("profiles")
+    .insert([fallbackProfile])
+    .select("*")
+    .maybeSingle();
+
+  if (createError) {
+    console.error(createError);
+    return fallbackProfile;
+  }
+
+  return created || fallbackProfile;
 }
 
 async function isSuperAdmin() {
