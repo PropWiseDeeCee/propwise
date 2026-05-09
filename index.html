@@ -1,202 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PropWise India</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    PropWise India | Property Agreement Risk Analyzer
+  </title>
+
+  <meta
+    name="description"
+    content="Analyze builder agreements, detect hidden property risks, compare total costs, and avoid costly mistakes before buying property in India."
+  />
 
   <!-- AdSense -->
-  <script async 
+  <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
     crossorigin="anonymous">
   </script>
 
   <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- ICONS -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="app.js"></script>
-
-  <!-- ANIMATION -->
-  <style>
-    .fade-in { opacity:0; transform:translateY(20px); animation:fadeUp 0.8s ease forwards; }
-    .fade-delay-1 { animation-delay:0.2s; }
-    .fade-delay-2 { animation-delay:0.4s; }
-    .fade-delay-3 { animation-delay:0.6s; }
-
-    @keyframes fadeUp {
-      to { opacity:1; transform:translateY(0); }
-    }
-
-    .hero-title { font-size:44px; font-weight:700; }
-    .hero-sub { font-size:18px; color:#6b7280; margin-top:15px; }
-
-    .cta-btn {
-      margin-top:25px;
-      padding:14px 26px;
-      border-radius:10px;
-      border:none;
-      background:#111827;
-      color:white;
-      cursor:pointer;
-    }
-
-    .section-title {
-      text-align:center;
-      margin-bottom:30px;
-      font-size:24px;
-      font-weight:600;
-    }
-  </style>
 </head>
 
 <body onload="initPage()">
 
-<!-- NAVBAR -->
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="compare.html">Compare</a>
-      <a href="tools.html">Tools</a>
-      <a href="calculator.html">Calculator</a>
-      <a href="guides.html">Guides</a>
-      <a href="dashboard.html">Dashboard</a>
-      <span id="nav-right"></span>
+      <div class="logo">
+        PropWise India
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="compare.html">Compare</a>
+        <a href="tools.html">Tools</a>
+        <a href="calculator.html">Calculator</a>
+        <a href="guides.html">Guides</a>
+        <a href="dashboard.html">Dashboard</a>
+        <span id="nav-right"></span>
+      </div>
+
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- HERO -->
-<section class="container" style="text-align:center; margin-top:80px;">
+  <!-- HERO -->
+  <section class="container hero-section">
 
-  <h1 class="hero-title fade-in">
-    Analyze your property agreement before you sign
-  </h1>
-
-  <p class="hero-sub fade-in fade-delay-1">
-    Detect hidden risks, missing clauses, and costly mistakes in seconds.
-  </p>
-
-  <!-- PRIMARY CTA -->
-  <button class="cta-btn fade-in fade-delay-2"
-    onclick="location.href='tools.html'">
-    Analyze Agreement 🔥
-  </button>
-
-  <!-- SECONDARY CTA -->
-  <button class="cta-btn fade-in fade-delay-3"
-    style="background:#e5e7eb; color:#111827; margin-left:10px;"
-    onclick="location.href='compare.html'">
-    Compare Properties
-  </button>
-
-  <!-- TRUST -->
-  <div style="margin-top:15px; font-size:13px; color:#6b7280;">
-    ✔ No signup required • ✔ Instant analysis • ✔ Not legal advice
-  </div>
-
-</section>
-
-<!-- FEATURE ENTRY -->
-<section class="container" style="margin-top:80px;">
-  <div class="section-title">Start with what you need</div>
-
-  <div class="grid">
-
-    <!-- ANALYZER FIRST -->
-    <div class="card">
-      <h3>Agreement Analyzer 🔥</h3>
-      <p>Detect risky clauses, missing terms, and red flags instantly.</p>
-      <button onclick="location.href='tools.html'">Analyze</button>
+    <div class="hero-badge fade-in">
+      AI-Assisted Agreement Risk Detection
     </div>
 
-    <div class="card">
-      <h3>Compare Properties</h3>
-      <p>Compare real total cost including registration and hidden charges.</p>
-      <button onclick="location.href='compare.html'">Compare</button>
+    <h1 class="hero-title fade-in fade-delay-1">
+      Analyze Your Property Agreement Before You Sign
+    </h1>
+
+    <p class="hero-sub fade-in fade-delay-2">
+      Detect hidden risks, one-sided clauses,
+      delay penalties, parking issues,
+      refund risks, and costly surprises
+      in builder agreements across India.
+    </p>
+
+    <!-- CTA -->
+    <div class="hero-actions fade-in fade-delay-3">
+
+      <button
+        class="hero-primary-btn"
+        onclick="location.href='tools.html'">
+
+        Analyze Agreement
+
+      </button>
+
+      <a
+        href="compare.html"
+        class="hero-secondary-link">
+
+        Compare Property Costs →
+
+      </a>
+
     </div>
 
-    <div class="card">
-      <h3>Cost Calculator</h3>
-      <p>Estimate registration, GST, and hidden costs.</p>
-      <button onclick="location.href='calculator.html'">Calculate</button>
+    <!-- TRUST -->
+    <div class="trust-row fade-in fade-delay-3">
+
+      <span>✓ Private & Secure</span>
+      <span>✓ Built for Indian Property Buyers</span>
+      <span>✓ AI-Assisted Risk Detection</span>
+
     </div>
 
-  </div>
-</section>
+  </section>
 
-<!-- FEATURES -->
-<section class="container" style="margin-top:80px;">
-  <div class="section-title">Why use PropWise?</div>
+  <!-- PAIN POINTS -->
+  <section class="container section-spacing">
 
-  <div class="grid">
+    <div class="section-title">
+      Most buyers sign agreements without fully understanding the risks
+    </div>
 
-    <div class="card">
-      <i data-lucide="file-text"></i>
-      <h3>Agreement Risk Detection</h3>
-      <p style="font-size:13px; color:#6b7280;">
-        Identify risky clauses before signing
+    <p class="section-sub">
+      Property agreements often contain hidden clauses,
+      vague timelines, unfair penalties,
+      maintenance ambiguity, and builder-friendly terms
+      that buyers miss before signing.
+    </p>
+
+    <div class="pain-grid">
+
+      <div class="pain-card">
+        <h4>Delay Penalty Clauses</h4>
+
+        <p>
+          Many agreements fail to define proper compensation
+          if possession is delayed.
+        </p>
+      </div>
+
+      <div class="pain-card">
+        <h4>Parking Ownership Confusion</h4>
+
+        <p>
+          Open, covered, and reserved parking rights
+          are often vaguely described.
+        </p>
+      </div>
+
+      <div class="pain-card">
+        <h4>One-Sided Builder Protections</h4>
+
+        <p>
+          Some clauses remove builder liability
+          while heavily favoring the developer.
+        </p>
+      </div>
+
+      <div class="pain-card">
+        <h4>Hidden Financial Costs</h4>
+
+        <p>
+          Maintenance, GST, registration,
+          and additional charges are often unclear.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- TOOLS -->
+  <section class="container section-spacing">
+
+    <div class="section-title">
+      Tools to Protect Your Property Purchase
+    </div>
+
+    <p class="section-sub">
+      Analyze agreements, compare actual costs,
+      and estimate registration expenses before making
+      one of the biggest financial decisions of your life.
+    </p>
+
+    <div class="grid tools-grid">
+
+      <!-- ANALYZER -->
+      <div class="card">
+
+        <div class="feature-icon">
+          <i data-lucide="shield-alert"></i>
+        </div>
+
+        <h3>Agreement Analyzer</h3>
+
+        <p class="card-subtext">
+          Detect risky clauses, vague timelines,
+          missing protections, and hidden agreement risks instantly.
+        </p>
+
+        <button onclick="location.href='tools.html'">
+          Analyze Agreement
+        </button>
+
+      </div>
+
+      <!-- COMPARE -->
+      <div class="card">
+
+        <div class="feature-icon">
+          <i data-lucide="scale"></i>
+        </div>
+
+        <h3>Property Comparison</h3>
+
+        <p class="card-subtext">
+          Compare actual property costs including registration,
+          GST, and hidden builder charges.
+        </p>
+
+        <button onclick="location.href='compare.html'">
+          Compare Costs
+        </button>
+
+      </div>
+
+      <!-- CALCULATOR -->
+      <div class="card">
+
+        <div class="feature-icon">
+          <i data-lucide="calculator"></i>
+        </div>
+
+        <h3>Cost Calculator</h3>
+
+        <p class="card-subtext">
+          Estimate registration charges,
+          GST, and additional property purchase costs.
+        </p>
+
+        <button onclick="location.href='calculator.html'">
+          Estimate Costs
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CREDIBILITY -->
+  <section class="container">
+
+    <div class="credibility-box">
+
+      <h2>
+        Built Around Real Indian Property Agreements
+      </h2>
+
+      <p>
+        PropWise India is designed around common agreement risks
+        seen in Indian real estate transactions including
+        possession delays, maintenance ambiguity,
+        one-sided clauses, GST confusion,
+        parking disputes, and refund-related issues.
       </p>
+
     </div>
 
-    <div class="card">
-      <i data-lucide="bar-chart-3"></i>
-      <h3>Real Cost Comparison</h3>
-      <p style="font-size:13px; color:#6b7280;">
-        Compare total property cost accurately
-      </p>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="container final-cta">
+
+    <h2>
+      Avoid Costly Mistakes Before Buying Property
+    </h2>
+
+    <p>
+      Upload your agreement, detect potential risks,
+      and review important clauses before signing.
+    </p>
+
+    <button
+      class="hero-primary-btn"
+      style="margin-top:30px;"
+      onclick="location.href='tools.html'">
+
+      Check Your Agreement for Hidden Risks
+
+    </button>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div style="margin-bottom:12px;">
+      Built for Indian property buyers
     </div>
 
-    <div class="card">
-      <i data-lucide="calculator"></i>
-      <h3>Accurate Cost Calculation</h3>
-      <p style="font-size:13px; color:#6b7280;">
-        Estimate registration & hidden costs
-      </p>
-    </div>
+    <a href="about.html">About</a> |
+    <a href="privacy.html">Privacy</a> |
+    <a href="terms.html">Terms</a>
 
-  </div>
-</section>
+  </footer>
 
-<!-- FINAL CTA -->
-<section class="container" style="text-align:center; margin-top:80px;">
-  <h2>Avoid costly mistakes before signing</h2>
-
-  <p style="color:#6b7280;">
-    Get instant insights on your agreement
-  </p>
-
-  <button class="cta-btn"
-    onclick="location.href='tools.html'">
-    Analyze Your Agreement
-  </button>
-</section>
-
-<!-- CREDIBILITY -->
-<div style="text-align:center; margin-top:30px; font-size:13px; color:#6b7280;">
-  Built for Indian property buyers • Based on real agreement patterns
-</div>
-
-<!-- FOOTER -->
-<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
-  <a href="about.html">About</a> |
-  <a href="privacy.html">Privacy</a> |
-  <a href="terms.html">Terms</a>
-</footer>
-
-<script>
-  lucide.createIcons();
-</script>
+  <script>
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>

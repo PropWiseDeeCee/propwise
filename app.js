@@ -3,9 +3,6 @@
 // ==============================
 
 let supabaseClient = null;
-const SUPER_ADMIN_EMAILS = [
-  "choudhury.diganta17@example.com"
-];
 
 function initSupabase() {
   if (!window.supabase) return;
@@ -35,12 +32,6 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-}
-
-function roleForEmail(email) {
-  return SUPER_ADMIN_EMAILS.includes(String(email || "").toLowerCase())
-    ? "super_admin"
-    : "user";
 }
 
 function getInitial(value) {
@@ -328,39 +319,118 @@ function runChecks(text) {
     ].filter(Boolean)
   };
 }
+function analyzeAgreement(text) {
+  return runChecks(text);
+}
+
+function calculateRiskScore(result) {
+
+  return (
+    result.critical.length * 25 +
+    result.moderate.length * 12 +
+    result.info.length * 5
+  );
+}
+
+function getRiskLevel(score) {
+
+  if (score >= 70) return "High";
+
+  if (score >= 40) return "Medium";
+
+  return "Low";
+}
 
 async function analyzeAgreementHandler() {
-  const resultEl = document.getElementById("analysisResult");
-  if (resultEl) resultEl.innerHTML = "Analyzing...";
 
-  const file = document.getElementById("pdfFile")?.files[0];
-  let text = "";
+  const loading = document.getElementById("analysisLoading");
+  const resultDiv = document.getElementById("analysisResult");
+  const btn = document.getElementById("analyzeBtn");
 
-  if (file) text = await extractTextFromFile(file);
-  else text = document.getElementById("agreementText")?.value;
-
-  if (!text || text.length < 50) {
-    showError("Unable to read agreement. Try another file or paste text.");
-    return;
+  // SHOW LOADING
+  if (loading) {
+    loading.style.display = "block";
   }
 
-  const result = runChecks(text);
+  // DISABLE BUTTON
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Analyzing...";
+  }
 
-  const score =
-    result.critical.length * 3 +
-    result.moderate.length * 2 +
-    result.info.length;
+  try {
 
-  let risk = "Low", color = "#16a34a";
+    let text = document.getElementById("agreementText").value.trim();
 
-  if (score >= 10) { risk = "High"; color = "#dc2626"; }
-  else if (score >= 5) { risk = "Medium"; color = "#f59e0b"; }
+    // FILE INPUT
+    const fileInput = document.getElementById("pdfFile");
+    const file = fileInput?.files?.[0];
 
-  localStorage.setItem("agreementReport", JSON.stringify({
-    result, score, risk, color
-  }));
+    // PARSE FILE
+    if (file) {
 
-  renderPreview(result, score, risk);
+      text = await extractTextFromFile(file);
+
+      if (!text || !text.trim()) {
+
+        alert("Unsupported or unreadable file");
+
+        return;
+      }
+    }
+
+    // EMPTY TEXT
+    if (!text || text.length < 30) {
+
+      alert("Please upload or paste a valid agreement");
+
+      return;
+    }
+
+    // ANALYSIS
+    const result = analyzeAgreement(text);
+
+    const score = calculateRiskScore(result);
+
+    const risk = getRiskLevel(score);
+
+    // RENDER
+    await renderPreview(result, score, risk);
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    resultDiv.innerHTML = `
+      <div class="analysis-card">
+
+        <div class="risk-box risk-high">
+          Failed to analyze agreement.
+        </div>
+
+        <p style="margin-top:10px; color:#6b7280;">
+          Please try another file or paste agreement text manually.
+        </p>
+
+      </div>
+    `;
+  }
+
+  finally {
+
+    // HIDE LOADING
+    if (loading) {
+      loading.style.display = "none";
+    }
+
+    // ENABLE BUTTON
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Analyze Agreement Risks";
+    }
+  }
 }
 
 // ==============================
@@ -368,35 +438,266 @@ async function analyzeAgreementHandler() {
 // ==============================
 
 async function renderPreview(result, score, risk) {
+
   const el = document.getElementById("analysisResult");
+
   const user = await getUser();
 
-  const all = [...result.critical, ...result.moderate, ...result.info];
-  const preview = all.slice(0, 2);
-  const hidden = all.length - 2;
+  const allIssues = [
+    ...result.critical,
+    ...result.moderate,
+    ...result.info
+  ];
 
-  el.innerHTML = `
-    <div class="analysis-card">
-      <div class="risk-box">
-        <strong>Risk: ${escapeHtml(risk)}</strong> • Score: ${escapeHtml(score)}
-      </div>
+  // PREVIEW LIMIT
+  const preview = allIssues.slice(0, 3);
 
-      <h4>Top Issues</h4>
-      <ul>${preview.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
+  const hidden = Math.max(allIssues.length - preview.length, 0);
+  localStorage.setItem(
+  "agreementReport",
+  JSON.stringify({
+    result,
+    score,
+    risk,
+    color:
+      risk === "High"
+        ? "#dc2626"
+        : risk === "Medium"
+        ? "#d97706"
+        : "#16a34a"
+  })
+);
 
-      ${hidden > 0 ? `<p style="color:#dc2626;">⚠️ ${hidden} more issues found</p>` : ""}
-    </div>
 
-    <div class="paywall">
-      ${
-        !user
-          ? `<button onclick="location.href='login.html'">Login to Unlock</button>`
-          : `<button onclick="location.href='report.html'">View Full Report</button>`
-      }
-    </div>
-  `;
+  // EXPLAIN ISSUES
+  const explainIssue = (issue) => {
+
+    const t = issue.toLowerCase();
+
+    if (t.includes("penalty")) {
+      return `
+        The agreement may not clearly define
+        compensation if project possession is delayed.
+      `;
+    }
+
+    if (t.includes("parking")) {
+      return `
+        Parking ownership or allocation terms
+        may be vague or undefined.
+      `;
+    }
+
+    if (t.includes("liability")) {
+      return `
+        Certain clauses may heavily favor
+        the builder by limiting responsibility.
+      `;
+    }
+
+    if (t.includes("maintenance")) {
+      return `
+        Maintenance responsibilities or charges
+        may not be clearly explained.
+      `;
+    }
+
+    if (t.includes("gst")) {
+      return `
+        Tax responsibilities and GST-related costs
+        may require additional clarification.
+      `;
+    }
+
+    if (t.includes("timeline")) {
+      return `
+        Some timelines may be vaguely defined,
+        creating ambiguity around delivery obligations.
+      `;
+    }
+
+    return `
+      This clause or condition may require
+      additional legal and financial review.
+    `;
+  };
+
+  // SCORE EXPLANATION
+  const riskMeaning = () => {
+
+    if (score >= 75) {
+      return `
+        Multiple high-risk or unclear clauses
+        were detected in this agreement.
+      `;
+    }
+
+    if (score >= 45) {
+      return `
+        Some important agreement areas
+        may require closer review.
+      `;
+    }
+
+    return `
+      No major high-risk patterns were detected,
+      but professional review is still recommended.
+    `;
+  };
+
+  // REVIEW AREAS
+  const recommendations = [
+    "Review possession timelines carefully",
+    "Verify builder penalty obligations",
+    "Check parking ownership clarity",
+    "Confirm maintenance and GST terms"
+  ];
+  // SAVE REPORT TO DATABASE
+if (user && supabaseClient) {
+
+  try {
+
+    const payload = {
+  user_id: user.id,
+  risk_level: risk,
+  risk_score: score,
+  result,
+  agreement_excerpt: allIssues.slice(0, 5).join(", ")
+};
+
+await supabaseClient
+  .from("agreement_reports")
+  .insert([payload]);
+
+  } catch (err) {
+
+    console.error("Failed to save report", err);
+
+  }
 }
 
+  el.innerHTML = `
+
+    <!-- SUMMARY -->
+    <div class="analysis-card">
+
+      <div class="risk-box risk-${risk.toLowerCase()}">
+
+        <strong>
+          ${escapeHtml(risk)} Risk Detected
+        </strong>
+
+        <div style="margin-top:8px; font-size:14px; color:#6b7280; line-height:1.7;">
+
+          Agreement Risk Score:
+          <strong>${escapeHtml(score)}</strong>
+
+          <br><br>
+
+          ${riskMeaning()}
+
+          <br><br>
+
+          Higher scores generally indicate
+          more agreement risks,
+          missing protections,
+          or financial ambiguity.
+
+        </div>
+
+      </div>
+
+      <!-- FINDINGS -->
+      <h3 style="margin-top:24px;">
+        Key Findings
+      </h3>
+
+      <div style="margin-top:18px;">
+
+        ${preview.map(issue => `
+
+          <div class="finding-card">
+
+            <div class="finding-title">
+              ⚠ ${escapeHtml(issue)}
+            </div>
+
+            <div class="finding-explain">
+              ${escapeHtml(explainIssue(issue))}
+            </div>
+
+          </div>
+
+        `).join("")}
+
+      </div>
+
+      ${
+        hidden > 0
+          ? `
+            <div class="hidden-warning">
+              + ${hidden} additional issues detected
+            </div>
+          `
+          : ""
+      }
+
+      <!-- REVIEW -->
+      <div class="review-section">
+
+        <h3>
+          Recommended Review Areas
+        </h3>
+
+        <ul>
+
+          ${recommendations.map(item => `
+            <li>${escapeHtml(item)}</li>
+          `).join("")}
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <!-- PAYWALL -->
+    <div class="paywall">
+
+      <h3 style="margin-bottom:10px;">
+        Unlock Full Agreement Report
+      </h3>
+
+      <p style="
+        color:#6b7280;
+        line-height:1.7;
+        margin-bottom:20px;
+      ">
+
+        View detailed agreement findings,
+        additional detected risks,
+        and structured review insights.
+
+      </p>
+
+      ${
+        !user
+          ? `
+            <button onclick="location.href='login.html'">
+              Login to Unlock Full Report
+            </button>
+          `
+          : `
+            <button onclick="location.href='report.html'">
+              View Full Report
+            </button>
+          `
+      }
+
+    </div>
+
+  `;
+  
 // ==============================
 // REPORT (FINAL)
 // ==============================
@@ -561,14 +862,12 @@ async function loadDashboard() {
   // EMPTY STATE
   if (!data.length) {
 
-    el.innerHTML = `
-      <p>No saved comparisons yet</p>
-    `;
+  el.innerHTML = `
+    <p>No saved comparisons yet</p>
+  `;
 
-    return;
-  }
+} else {
 
-  // RENDER DATA
   el.innerHTML = data.map(item => `
 
     <div class="card">
@@ -593,7 +892,85 @@ async function loadDashboard() {
     </div>
 
   `).join("");
+
 }
+
+}
+async function loadReports() {
+
+  const user = await getUser();
+
+  if (!user) return;
+
+  const el = document.getElementById("reportsList");
+
+  if (!el) return;
+
+  el.innerHTML = "<p>Loading reports...</p>";
+
+  const { data, error } = await supabaseClient
+    .from("agreement_reports")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    console.error(error);
+
+    el.innerHTML = `
+      <p>Failed to load reports</p>
+    `;
+
+    return;
+  }
+
+  if (!data.length) {
+
+    el.innerHTML = `
+      <p>No reports available yet</p>
+    `;
+
+    return;
+  }
+
+  el.innerHTML = data.map(report => `
+
+    <div class="card">
+
+      <h3>
+        ${escapeHtml(report.risk_level)} Risk
+      </h3>
+
+      <p style="
+        color:#6b7280;
+        margin:10px 0;
+      ">
+        Score:
+        <strong>${escapeHtml(report.risk_score)}</strong>
+      </p>
+
+      <p style="
+        color:#6b7280;
+        font-size:14px;
+        line-height:1.7;
+      ">
+        ${escapeHtml(report.agreement_excerpt || "Agreement analysis")}
+      </p>
+
+      <p style="
+        margin-top:14px;
+        font-size:12px;
+        color:#9ca3af;
+      ">
+        ${escapeHtml(new Date(report.created_at).toLocaleString())}
+      </p>
+
+    </div>
+
+  `).join("");
+}
+
 
 // ==============================
 // PROFILE + RBAC
@@ -605,12 +982,12 @@ async function getProfile() {
   if (!user) return null;
 
   const fallbackProfile = {
-    id: user.id,
-    email: user.email,
-    full_name: user.user_metadata?.full_name || "",
-    role: roleForEmail(user.email),
-    created_at: user.created_at || new Date().toISOString()
-  };
+  id: user.id,
+  email: user.email,
+  full_name: user.user_metadata?.full_name || "",
+  role: "user",
+  created_at: user.created_at || new Date().toISOString()
+};
 
   const { data, error } = await supabaseClient
     .from("profiles")
@@ -624,9 +1001,7 @@ async function getProfile() {
   }
 
   if (data) {
-    if (fallbackProfile.role === "super_admin") {
-      return { ...data, role: "super_admin" };
-    }
+
 
     return data;
   }

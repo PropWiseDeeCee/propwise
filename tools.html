@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Agreement Analyzer - PropWise India</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+
+  <title>
+    Agreement Analyzer | PropWise India
+  </title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Upload or paste your builder agreement to detect hidden risks, missing clauses, delay penalties, and financial surprises before signing."
+  />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 
   <!-- AdSense -->
-  <script async 
+  <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
     crossorigin="anonymous">
   </script>
 
-  <!-- LIBS (required for app.js parsing) -->
+  <!-- PDF + DOCX -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- APP -->
@@ -25,116 +39,293 @@
 
 <body onload="initPage(false)">
 
-<!-- NAVBAR -->
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="compare.html">Compare</a>
-      <a href="tools.html">Tools</a>
-      <a href="calculator.html">Calculator</a>
-      <a href="guides.html">Guides</a>
-      <a href="dashboard.html">Dashboard</a>
-      <span id="nav-right"></span>
+      <div class="logo">
+        PropWise India
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="compare.html">Compare</a>
+        <a href="tools.html">Tools</a>
+        <a href="calculator.html">Calculator</a>
+        <a href="guides.html">Guides</a>
+        <a href="dashboard.html">Dashboard</a>
+        <span id="nav-right"></span>
+      </div>
+
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- CONTENT -->
-<div class="container">
+  <!-- PAGE -->
+  <div class="container">
 
-  <!-- HERO -->
-  <div style="text-align:center; margin-bottom:30px;">
-    <h1>Agreement Analyzer</h1>
+    <!-- HERO -->
+    <section class="analyzer-hero">
 
-    <p style="color:#6b7280; max-width:600px; margin:auto;">
-      Upload or paste your agreement to detect risks, missing clauses, and hidden issues before signing.
-    </p>
+      <div class="hero-badge fade-in">
+        Agreement Intelligence for Indian Property Buyers
+      </div>
 
-    <!-- SAMPLE BUTTON -->
-    <div style="margin-top:15px;">
-      <button onclick="loadSampleAgreement()"
-        style="background:#e5e7eb; color:#111827;">
-        Try Sample Agreement
-      </button>
-    </div>
-  </div>
+      <h1 class="analyzer-title fade-in fade-delay-1">
+        Review Your Property Agreement Before You Commit
+      </h1>
 
-  <!-- MAIN CARD -->
-  <div class="card">
-
-    <!-- FILE UPLOAD -->
-    <label><strong>Upload Agreement</strong></label>
-    <input type="file" id="pdfFile" accept=".pdf,.txt,.doc,.docx">
-
-    <p style="font-size:12px; color:#6b7280; margin-top:6px;">
-      Supported: PDF, TXT, DOCX • Scanned PDFs may not work
-    </p>
-
-    <!-- DIVIDER -->
-    <div style="margin:25px 0; text-align:center; color:#9ca3af;">
-      OR
-    </div>
-
-    <!-- TEXT INPUT -->
-    <label><strong>Paste Agreement Text</strong></label>
-    <textarea 
-      id="agreementText" 
-      rows="6" 
-      placeholder="Paste your agreement content here..."
-    ></textarea>
-
-    <!-- ACTION BUTTON -->
-    <button onclick="analyzeAgreementHandler()" id="analyzeBtn">
-      Analyze Agreement
-    </button>
-
-    <!-- RESULT AREA -->
-    <div id="analysisResult" style="margin-top:20px;"></div>
-
-  </div>
-
-  <!-- HOW IT WORKS -->
-  <div class="grid" style="margin-top:30px;">
-    <div class="card">
-      <h4>1. Upload / Paste</h4>
-      <p style="font-size:13px; color:#6b7280;">
-        Add your agreement document
+      <p class="analyzer-sub fade-in fade-delay-2">
+        Detect hidden risks, vague timelines,
+        one-sided clauses, delay penalties,
+        parking ambiguity, and financial surprises
+        before signing your builder agreement.
       </p>
-    </div>
 
-    <div class="card">
-      <h4>2. Instant Analysis</h4>
-      <p style="font-size:13px; color:#6b7280;">
-        Detect risks and missing clauses
-      </p>
-    </div>
+      <!-- TRUST -->
+      <div class="trust-row fade-in fade-delay-3">
 
-    <div class="card">
-      <h4>3. Unlock Full Report</h4>
-      <p style="font-size:13px; color:#6b7280;">
-        Get detailed insights & recommendations
+        <span>✓ Private & Secure</span>
+        <span>✓ AI-Assisted Risk Detection</span>
+        <span>✓ Built for Indian Property Buyers</span>
+
+      </div>
+
+    </section>
+
+    <!-- MAIN ANALYZER -->
+    <section class="section-spacing">
+
+      <div class="card analyzer-card">
+
+        <!-- TOP -->
+        <div class="analyzer-header">
+
+          <div>
+            <h2>Agreement Risk Scan</h2>
+
+            <p>
+              Upload your builder agreement or paste text below
+              to detect important legal and financial risks.
+            </p>
+          </div>
+
+          <button
+            class="secondary-btn"
+            onclick="loadSampleAgreement()">
+
+            Try Sample Agreement
+
+          </button>
+
+        </div>
+
+        <!-- WHAT WE CHECK -->
+        <div class="risk-check-grid">
+
+          <div class="risk-check-item">
+            <strong>Possession Delays</strong>
+            <span>Penalty & compensation clauses</span>
+          </div>
+
+          <div class="risk-check-item">
+            <strong>Parking Rights</strong>
+            <span>Ownership & allocation clarity</span>
+          </div>
+
+          <div class="risk-check-item">
+            <strong>Builder Liability</strong>
+            <span>One-sided legal protections</span>
+          </div>
+
+          <div class="risk-check-item">
+            <strong>Financial Risks</strong>
+            <span>GST, maintenance & hidden charges</span>
+          </div>
+
+        </div>
+
+        <!-- FILE -->
+        <div class="upload-box">
+
+          <label class="upload-label">
+            Upload Agreement
+          </label>
+
+          <input
+            type="file"
+            id="pdfFile"
+            accept=".pdf,.txt,.doc,.docx"
+          />
+
+          <p class="upload-note">
+            Supported: PDF, TXT, DOCX
+            • Scanned/image PDFs may not work properly
+          </p>
+
+        </div>
+
+        <!-- DIVIDER -->
+        <div class="divider-text">
+          OR
+        </div>
+
+        <!-- TEXT -->
+        <div>
+
+          <label class="upload-label">
+            Paste Agreement Text
+          </label>
+
+          <textarea
+            id="agreementText"
+            rows="8"
+            placeholder="Paste agreement content here..."
+          ></textarea>
+
+        </div>
+
+        <!-- ANALYZE -->
+        <button
+          id="analyzeBtn"
+          class="hero-primary-btn analyzer-btn"
+          onclick="analyzeAgreementHandler()">
+
+          Analyze Agreement Risks
+
+        </button>
+
+        <!-- LOADING -->
+        <div
+          id="analysisLoading"
+          class="analysis-loading"
+          style="display:none;">
+
+          <div class="loading-spinner"></div>
+
+          <div class="analysis-steps">
+
+            <div>Scanning agreement structure...</div>
+            <div>Reviewing possession clauses...</div>
+            <div>Checking builder liability...</div>
+            <div>Detecting financial risks...</div>
+
+          </div>
+
+        </div>
+
+        <!-- RESULTS -->
+        <div
+          id="analysisResult"
+          style="margin-top:28px;">
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section-spacing">
+
+      <div class="section-title">
+        How It Works
+      </div>
+
+      <p class="section-sub">
+        PropWise helps buyers review builder agreements
+        before making major property decisions.
       </p>
-    </div>
+
+      <div class="grid tools-grid">
+
+        <div class="card">
+
+          <div class="feature-icon">
+            <i data-lucide="upload"></i>
+          </div>
+
+          <h3>Upload Agreement</h3>
+
+          <p class="card-subtext">
+            Upload your builder agreement
+            or paste agreement text securely.
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <div class="feature-icon">
+            <i data-lucide="search-check"></i>
+          </div>
+
+          <h3>Risk Detection</h3>
+
+          <p class="card-subtext">
+            Detect risky clauses,
+            missing protections,
+            vague timelines,
+            and financial ambiguity.
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <div class="feature-icon">
+            <i data-lucide="shield-check"></i>
+          </div>
+
+          <h3>Review Insights</h3>
+
+          <p class="card-subtext">
+            Understand what needs attention
+            before signing or negotiating.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="section-spacing">
+
+      <div class="credibility-box">
+
+        <h2>
+          Important Disclaimer
+        </h2>
+
+        <p>
+          PropWise provides AI-assisted agreement analysis
+          intended for educational and informational purposes only.
+          This is not legal advice and should not replace
+          professional legal review for high-value transactions.
+        </p>
+
+      </div>
+
+    </section>
+
   </div>
 
-  <!-- TRUST SECTION -->
-  <div style="margin-top:30px; text-align:center; font-size:13px; color:#6b7280;">
-    ✔ Free analysis • Login required for full report
-    ✔ Secure processing (not stored permanently)
-    ✔ AI-assisted insights • Not legal advice
-  </div>
+  <!-- FOOTER -->
+  <footer class="footer">
 
-</div>
+    <div style="margin-bottom:12px;">
+      Built for Indian property buyers
+    </div>
 
-<!-- FOOTER -->
-<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
-  <a href="about.html">About</a> |
-  <a href="privacy.html">Privacy Policy</a> |
-  <a href="terms.html">Terms & Conditions</a>
-</footer>
+    <a href="about.html">About</a> |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="terms.html">Terms & Conditions</a>
+
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>

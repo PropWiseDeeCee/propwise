@@ -218,12 +218,10 @@
 
       const { error } = await supabaseClient
         .from("profiles")
-        .upsert({
-          id: user.id,
-          email: user.email,
-          full_name: fullName,
-          role: profile?.role || roleForEmail(user.email)
-        });
+        .update({
+  full_name: fullName
+})
+.eq("id", user.id);
 
       if (error) {
 
