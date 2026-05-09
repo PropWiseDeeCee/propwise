@@ -43,6 +43,27 @@ function roleForEmail(email) {
     : "user";
 }
 
+function getInitial(value) {
+  return String(value || "U").trim().charAt(0).toUpperCase() || "U";
+}
+
+function toggleUserMenu(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const menu = document.getElementById("user-menu");
+  if (!menu) return;
+
+  const isOpen = menu.classList.toggle("open");
+  event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+}
+
+document.addEventListener("click", () => {
+  const menu = document.getElementById("user-menu");
+  menu?.classList.remove("open");
+  menu?.querySelector(".user-menu-button")?.setAttribute("aria-expanded", "false");
+});
+
 // ==============================
 // AUTH
 // ==============================
@@ -146,7 +167,7 @@ async function initPage(protectedPage = false) {
   // NOT LOGGED IN
   if (!user) {
     nav.innerHTML = `
-      <a href="${appPath("login.html")}">Login</a>
+      <a class="login-link" href="${appPath("login.html")}">Login</a>
     `;
     return;
   }
@@ -155,22 +176,35 @@ async function initPage(protectedPage = false) {
   const profile = await getProfile();
 
   const isAdmin = profile?.role === "super_admin";
-  const displayName = escapeHtml(profile?.full_name || user.email);
+  const rawDisplayName = profile?.full_name || user.email;
+  const displayName = escapeHtml(rawDisplayName);
+  const email = escapeHtml(user.email);
+  const initial = escapeHtml(getInitial(rawDisplayName));
 
   nav.innerHTML = `
-    <span class="nav-user">
-      ${displayName}
-    </span>
+    <div class="user-menu" id="user-menu">
+      <button class="user-menu-button" onclick="toggleUserMenu(event)" aria-label="Account menu" aria-expanded="false">
+        ${initial}
+      </button>
 
-    <a href="${appPath("profile.html")}">Profile</a>
+      <div class="user-menu-panel">
+        <div class="user-menu-header">
+          <strong>${displayName}</strong>
+          <span>${email}</span>
+        </div>
 
-    ${
-      isAdmin
-        ? `<a href="${appPath("admin.html")}">Admin</a>`
-        : ""
-    }
+        <a href="${appPath("dashboard.html")}">Dashboard</a>
+        <a href="${appPath("profile.html")}">Profile</a>
 
-    <a href="#" onclick="logout()">Logout</a>
+        ${
+          isAdmin
+            ? `<a href="${appPath("admin.html")}">Admin Panel</a>`
+            : ""
+        }
+
+        <button type="button" onclick="logout()">Logout</button>
+      </div>
+    </div>
   `;
 }
 
