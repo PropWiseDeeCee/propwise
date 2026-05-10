@@ -199,6 +199,7 @@ async function handleSignup() {
 // ==============================
 
 async function initPage(protectedPage = false) {
+   await loadSharedComponents();
   initSupabase();
 
   const user = await getUser();
@@ -1312,4 +1313,23 @@ async function downloadReport() {
 function showError(msg) {
   document.getElementById("analysisResult").innerHTML =
     `<div style="background:#fee2e2;padding:10px">${msg}</div>`;
+}
+
+// ==============================
+// SHARED COMPONENTS
+// ==============================
+
+async function loadSharedComponents() {
+
+  const navbar = document.getElementById("navbar");
+  if (navbar) {
+    const navHtml = await fetch("components/navbar.html");
+    navbar.innerHTML = await navHtml.text();
+  }
+
+  const footer = document.getElementById("footer");
+  if (footer) {
+    const footerHtml = await fetch("components/footer.html");
+    footer.innerHTML = await footerHtml.text();
+  }
 }

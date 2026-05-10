@@ -889,3 +889,30 @@ li {
   color: #6b7280;
   line-height: 1.8;
 }
+
+.logo img {
+  height: 44px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-wrap img {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+.brand-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.5px;
+}
