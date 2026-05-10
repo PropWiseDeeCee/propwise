@@ -17,6 +17,83 @@ function initSupabase() {
 
 initSupabase();
 
+// =====================
+// API_BASEURL
+// =====================
+const API_BASE =
+  "https://propwise-backend-0b32.onrender.com";
+
+async function analyzeAgreement(text, file = null) {
+
+  try {
+
+    const formData = new FormData();
+
+    if (file) {
+
+      formData.append("file", file);
+
+    } else {
+
+      const blob = new Blob([text], {
+        type: "text/plain"
+      });
+
+      formData.append("file", blob, "agreement.txt");
+    }
+
+    const controller = new AbortController();
+
+const timeout = setTimeout(() => {
+  controller.abort();
+}, 90000); // 90 sec timeout for Render cold start
+
+const response = await fetch(
+  `${API_BASE}/analyze`,
+  {
+    method: "POST",
+    body: formData,
+    signal: controller.signal
+  }
+);
+
+clearTimeout(timeout);
+
+if (!response.ok) {
+  throw new Error("Backend request failed");
+}
+
+const data = await response.json();
+
+    if (!data.success) {
+
+      console.error(data);
+
+      return runChecks(text);
+    }
+
+    return {
+      critical: data.analysis.critical || [],
+      moderate: data.analysis.moderate || [],
+      info: [
+        data.analysis.summary || "AI analysis completed"
+      ],
+      aiScore: data.analysis.score || 50,
+      aiRisk: data.analysis.risk_level || "Medium"
+    };
+
+  } catch (err) {
+
+    console.warn(
+  "AI backend unavailable, using fallback rules"
+);
+
+console.error(err);
+
+return runChecks(text);
+  }
+}
+
 // ==============================
 // HELPERS
 // ==============================
@@ -320,9 +397,7 @@ function runChecks(text) {
     ].filter(Boolean)
   };
 }
-function analyzeAgreement(text) {
-  return runChecks(text);
-}
+
 
 function calculateRiskScore(result) {
 
@@ -351,12 +426,33 @@ async function analyzeAgreementHandler() {
   // SHOW LOADING
   if (loading) {
     loading.style.display = "block";
+    if (loading) {
+  loading.innerHTML = `
+    <div style="text-align:center; padding:20px;">
+
+      <div class="loader"></div>
+
+      <div style="margin-top:15px;">
+        AI is analyzing your agreement...
+      </div>
+
+      <div style="
+        margin-top:8px;
+        font-size:13px;
+        color:#6b7280;
+      ">
+        First request may take up to 1 minute
+      </div>
+
+    </div>
+  `;
+}
   }
 
   // DISABLE BUTTON
   if (btn) {
     btn.disabled = true;
-    btn.innerText = "Analyzing...";
+    btn.innerText = "Starting AI analysis...";
   }
 
   try {
@@ -376,7 +472,7 @@ async function analyzeAgreementHandler() {
 
         alert("Unsupported or unreadable file");
 
-        return;
+        throw new Error("Unsupported or unreadable file");
       }
     }
 
@@ -385,15 +481,20 @@ async function analyzeAgreementHandler() {
 
       alert("Please upload or paste a valid agreement");
 
-      return;
+      throw new Error("Please upload or paste a valid agreement");
     }
 
     // ANALYSIS
-    const result = analyzeAgreement(text);
+   
+    const result = await analyzeAgreement(text, file);
 
-    const score = calculateRiskScore(result);
+const score =
+  result.aiScore || calculateRiskScore(result);
 
-    const risk = getRiskLevel(score);
+const risk =
+  result.aiRisk || getRiskLevel(score);
+
+    
 
     // RENDER
     await renderPreview(result, score, risk);
@@ -445,10 +546,10 @@ async function renderPreview(result, score, risk) {
   const user = await getUser();
 
   const allIssues = [
-    ...result.critical,
-    ...result.moderate,
-    ...result.info
-  ];
+  ...(result.critical || []),
+  ...(result.moderate || []),
+  ...(result.info || [])
+];
 
   // PREVIEW LIMIT
   const preview = allIssues.slice(0, 3);
@@ -742,9 +843,9 @@ async function loadReport() {
     <h2>Risk: <span style="color:${escapeHtml(color)}">${escapeHtml(risk)}</span></h2>
     <p>Score: ${escapeHtml(score)}</p>
 
-    ${section("Critical Issues", result.critical)}
-    ${section("Moderate Issues", result.moderate)}
-    ${section("Suggestions", result.info)}
+   ${section("Critical Issues", result.critical || [])}
+${section("Moderate Issues", result.moderate || [])}
+${section("Suggestions", result.info || [])}
   `;
 }
 
@@ -1286,18 +1387,33 @@ async function downloadReport() {
   y += 10;
 
   const addSection = (title, items) => {
-    if (!items || !items.length) return;
 
-    doc.text(title, 20, y);
-    y += 7;
+  if (!items || !items.length) return;
 
-    items.forEach(i => {
-      doc.text(`- ${i}`, 20, y);
-      y += 6;
-    });
+  doc.text(title, 20, y);
 
-    y += 5;
-  };
+  y += 8;
+
+  items.forEach(i => {
+
+    const lines = doc.splitTextToSize(
+      `- ${i}`,
+      170
+    );
+
+    doc.text(lines, 20, y);
+
+    y += lines.length * 6;
+
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+
+  });
+
+  y += 5;
+};
 
   addSection("Critical", result.critical);
   addSection("Moderate", result.moderate);
@@ -1321,15 +1437,49 @@ function showError(msg) {
 
 async function loadSharedComponents() {
 
-  const navbar = document.getElementById("navbar");
+  const navbar =
+    document.getElementById("navbar");
+
   if (navbar) {
-    const navHtml = await fetch("components/navbar.html");
-    navbar.innerHTML = await navHtml.text();
+
+    try {
+
+      const navResponse = await fetch(
+        appPath("components/navbar.html")
+      );
+
+      navbar.innerHTML =
+        await navResponse.text();
+
+    } catch (e) {
+
+      console.warn(
+        "Navbar failed to load"
+      );
+
+    }
   }
 
-  const footer = document.getElementById("footer");
+  const footer =
+    document.getElementById("footer");
+
   if (footer) {
-    const footerHtml = await fetch("components/footer.html");
-    footer.innerHTML = await footerHtml.text();
+
+    try {
+
+      const footerResponse = await fetch(
+        appPath("components/footer.html")
+      );
+
+      footer.innerHTML =
+        await footerResponse.text();
+
+    } catch (e) {
+
+      console.warn(
+        "Footer failed to load"
+      );
+
+    }
   }
 }
