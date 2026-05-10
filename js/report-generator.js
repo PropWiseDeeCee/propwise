@@ -16,6 +16,7 @@ window.downloadReport = async function () {
     );
 
     if (!data) {
+
       alert("No report found");
 
       if (btn) {
@@ -29,20 +30,25 @@ window.downloadReport = async function () {
     const { jsPDF } = window.jspdf;
 
     const doc = new jsPDF();
+
+    // =========================
+    // IMAGE LOADER
+    // =========================
+
     const loadImage = (src) =>
-  new Promise((resolve, reject) => {
+      new Promise((resolve, reject) => {
 
-    const img = new Image();
+        const img = new Image();
 
-    img.crossOrigin = "Anonymous";
+        img.crossOrigin = "Anonymous";
 
-    img.onload = () => resolve(img);
+        img.onload = () => resolve(img);
 
-    img.onerror = reject;
+        img.onerror = reject;
 
-    img.src = src;
+        img.src = src;
 
-  });
+      });
 
     const {
       result,
@@ -63,21 +69,26 @@ window.downloadReport = async function () {
       `PW-${Date.now()}`;
 
     let y = 20;
+
+    // =========================
+    // LOAD LOGO
+    // =========================
+
     let logo = null;
 
-try {
+    try {
 
-  logo = await loadImage(
-    "assets/PropWiseLogo.png"
-  );
+      logo = await loadImage(
+        `${window.location.origin}/assets/PropWiseLogo.png`
+      );
 
-} catch (e) {
+    } catch (e) {
 
-  console.warn(
-    "Logo failed to load"
-  );
+      console.warn(
+        "Logo failed to load"
+      );
 
-}
+    }
 
     // =========================
     // COLORS
@@ -106,9 +117,13 @@ try {
 
     const addWatermark = () => {
 
-      doc.setTextColor(240, 240, 240);
+      doc.setTextColor(
+        245,
+        245,
+        245
+      );
 
-      doc.setFontSize(40);
+      doc.setFontSize(28);
 
       doc.setFont(
         "helvetica",
@@ -117,8 +132,8 @@ try {
 
       doc.text(
         "PROPWISE INDIA",
-        35,
-        160,
+        55,
+        190,
         {
           angle: 45
         }
@@ -153,40 +168,42 @@ try {
       255
     );
 
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
+    // LOGO
+    if (logo) {
 
-   if (logo) {
+      doc.addImage(
+        logo,
+        "PNG",
+        18,
+        10,
+        60,
+        20
+      );
 
-  doc.addImage(
-    logo,
-    "PNG",
-    18,
-    10,
-    55,
-    20
-  );
+    } else {
 
-} else {
+      doc.setFont(
+        "helvetica",
+        "bold"
+      );
 
-  doc.setFontSize(26);
+      doc.setFontSize(26);
 
-  doc.text(
-    "PropWise India",
-    20,
-    22
-  );
+      doc.text(
+        "PropWise India",
+        20,
+        22
+      );
 
-}
+    }
 
-    doc.setFontSize(13);
-
+    // SUBTITLE
     doc.setFont(
       "helvetica",
       "normal"
     );
+
+    doc.setFontSize(13);
 
     doc.text(
       "AI Agreement Risk Analysis Report",
@@ -332,11 +349,11 @@ try {
       "F"
     );
 
-    doc.setFontSize(10);
-
     doc.setTextColor(
       ...COLORS.primary
     );
+
+    doc.setFontSize(10);
 
     doc.text(
       `${score}/100`,
@@ -350,12 +367,12 @@ try {
     // EXEC SUMMARY
     // =========================
 
-    doc.setFontSize(15);
-
     doc.setFont(
       "helvetica",
       "bold"
     );
+
+    doc.setFontSize(15);
 
     doc.text(
       "Executive Summary",
@@ -372,9 +389,18 @@ try {
 
     doc.setFontSize(11);
 
-    const summary =
-      result.info?.[0] ||
-      "Agreement requires additional review.";
+    const summary = `
+This agreement presents ${risk.toLowerCase()}
+legal and financial risk indicators.
+
+${result.critical?.length || 0}
+critical issues and
+${result.moderate?.length || 0}
+moderate concerns were identified during analysis.
+
+Professional legal review is strongly recommended
+before signing this agreement.
+`;
 
     const summaryLines =
       doc.splitTextToSize(
@@ -408,8 +434,11 @@ try {
       ) return;
 
       if (y > 240) {
+
         doc.addPage();
+
         addWatermark();
+
         y = 20;
       }
 
@@ -417,12 +446,12 @@ try {
         ...color
       );
 
-      doc.setFontSize(15);
-
       doc.setFont(
         "helvetica",
         "bold"
       );
+
+      doc.setFontSize(15);
 
       doc.text(
         title,
@@ -444,8 +473,11 @@ try {
           lines.length * 6 + 22;
 
         if (y + height > 280) {
+
           doc.addPage();
+
           addWatermark();
+
           y = 20;
         }
 
@@ -496,20 +528,20 @@ try {
           y + 12
         );
 
-        // ISSUE TITLE
+        // TITLE
         doc.setTextColor(
           ...COLORS.primary
         );
-
-        doc.setFontSize(11);
 
         doc.setFont(
           "helvetica",
           "bold"
         );
 
+        doc.setFontSize(11);
+
         doc.text(
-          "Issue",
+          "Detected Risk",
           58,
           y + 12
         );
@@ -526,7 +558,7 @@ try {
           y + 20
         );
 
-        y += height + 10;
+        y += height + 6;
 
       });
 
@@ -559,8 +591,11 @@ try {
     // =========================
 
     if (y > 220) {
+
       doc.addPage();
+
       addWatermark();
+
       y = 20;
     }
 
@@ -568,12 +603,12 @@ try {
       ...COLORS.primary
     );
 
-    doc.setFontSize(15);
-
     doc.setFont(
       "helvetica",
       "bold"
     );
+
+    doc.setFontSize(15);
 
     doc.text(
       "Recommended Actions",
@@ -590,12 +625,12 @@ try {
       "Ensure all payment obligations are clearly documented."
     ];
 
-    doc.setFontSize(11);
-
     doc.setFont(
       "helvetica",
       "normal"
     );
+
+    doc.setFontSize(11);
 
     recommendations.forEach(r => {
 
@@ -620,14 +655,27 @@ try {
     // DISCLAIMER
     // =========================
 
+    if (y > 240) {
+
+      doc.addPage();
+
+      addWatermark();
+
+      y = 20;
+    }
+
     y += 10;
 
-    doc.setFontSize(14);
+    doc.setTextColor(
+      ...COLORS.primary
+    );
 
     doc.setFont(
       "helvetica",
       "bold"
     );
+
+    doc.setFontSize(14);
 
     doc.text(
       "Disclaimer",
@@ -637,16 +685,16 @@ try {
 
     y += 10;
 
-    doc.setFontSize(10);
+    doc.setTextColor(
+      ...COLORS.gray
+    );
 
     doc.setFont(
       "helvetica",
       "normal"
     );
 
-    doc.setTextColor(
-      ...COLORS.gray
-    );
+    doc.setFontSize(10);
 
     const disclaimer =
 `
@@ -667,12 +715,7 @@ legal nuances, or agreement-specific obligations.
         165
       );
 
-   if (y > 240) {
-  doc.addPage();
-  addWatermark();
-  y = 20;
-}
-      doc.text(
+    doc.text(
       disclaimerLines,
       20,
       y
@@ -693,6 +736,22 @@ legal nuances, or agreement-specific obligations.
 
       doc.setPage(i);
 
+      // PAGE HEADER
+      doc.setFontSize(9);
+
+      doc.setTextColor(
+        180,
+        180,
+        180
+      );
+
+      doc.text(
+        "Agreement Risk Analysis Report",
+        20,
+        10
+      );
+
+      // FOOTER
       const footerY =
         pageHeight - 12;
 
@@ -746,8 +805,11 @@ legal nuances, or agreement-specific obligations.
   } finally {
 
     if (btn) {
+
       btn.disabled = false;
-      btn.innerText = "Download PDF Report";
+
+      btn.innerText =
+        "Download PDF Report";
     }
 
   }
