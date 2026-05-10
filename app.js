@@ -233,7 +233,9 @@ async function signUp() {
 
 async function logout() {
   await supabaseClient.auth.signOut();
-  window.location.href = appPath("login.html");
+  window.location.href = hasReport
+  ? appPath("report.html")
+  : appPath("dashboard.html");
 }
 
 // ==============================
@@ -785,12 +787,12 @@ await supabaseClient
       ${
         !user
           ? `
-            <button onclick="location.href='login.html'">
+            <button onclick="location.href='${appPath("login.html")}'">
               Login to Unlock Full Report
             </button>
           `
           : `
-            <button onclick="location.href='report.html'">
+            <button onclick="location.href='${appPath("report.html")}'">
               View Full Report
             </button>
           `
@@ -1356,71 +1358,6 @@ Maintenance applicable.
 `;
 }
 
-// ==============================
-// Download Report
-// ==============================
-
-async function downloadReport() {
-  const data = JSON.parse(localStorage.getItem("agreementReport"));
-
-  if (!data) {
-    alert("No report found");
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  const { result, score, risk } = data;
-
-  let y = 20;
-
-  doc.setFontSize(16);
-  doc.text("PropWise Agreement Report", 20, y);
-
-  y += 10;
-  doc.setFontSize(12);
-  doc.text(`Risk: ${risk}`, 20, y);
-  y += 7;
-  doc.text(`Score: ${score}`, 20, y);
-
-  y += 10;
-
-  const addSection = (title, items) => {
-
-  if (!items || !items.length) return;
-
-  doc.text(title, 20, y);
-
-  y += 8;
-
-  items.forEach(i => {
-
-    const lines = doc.splitTextToSize(
-      `- ${i}`,
-      170
-    );
-
-    doc.text(lines, 20, y);
-
-    y += lines.length * 6;
-
-    if (y > 270) {
-      doc.addPage();
-      y = 20;
-    }
-
-  });
-
-  y += 5;
-};
-
-  addSection("Critical", result.critical);
-  addSection("Moderate", result.moderate);
-  addSection("Suggestions", result.info);
-
-  doc.save("agreement-report.pdf");
-}
 
 // ==============================
 // ERROR

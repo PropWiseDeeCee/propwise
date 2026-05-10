@@ -16,6 +16,7 @@
 
   <!-- APP -->
   <script defer src="app.js"></script>
+  <script defer src="js/report-generator.js"></script>
 </head>
 
 <body onload="initPage(true); loadReport()">
@@ -45,7 +46,13 @@
   <div style="margin-top:30px; text-align:center;">
 
     <!-- DOWNLOAD -->
-    <button onclick="downloadReport()" style="max-width:300px;">
+    <button
+  onclick="downloadReport()"
+  style="
+    max-width:300px;
+    width:100%;
+  "
+>
       Download PDF Report
     </button>
 
