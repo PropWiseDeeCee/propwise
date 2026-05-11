@@ -232,10 +232,21 @@ async function signUp() {
 }
 
 async function logout() {
-  await supabaseClient.auth.signOut();
-  window.location.href = hasReport
-  ? appPath("report.html")
-  : appPath("dashboard.html");
+
+  try {
+
+    if (supabaseClient) {
+
+      await supabaseClient.auth.signOut();
+    }
+
+  } catch (err) {
+
+    console.error("Logout failed", err);
+  }
+
+  window.location.href =
+    appPath("index.html");
 }
 
 // ==============================
@@ -243,33 +254,61 @@ async function logout() {
 // ==============================
 
 async function handleLogin() {
-  const btn = document.getElementById("loginBtn");
-  const err = document.getElementById("authError");
 
-  if (btn) btn.innerText = "Logging in...";
-  if (err) err.innerHTML = "";
+  const btn =
+    document.getElementById("loginBtn");
+
+  const err =
+    document.getElementById("authError");
+
+  if (btn) {
+
+    btn.disabled = true;
+    btn.innerText = "Logging in...";
+  }
+
+  if (err) {
+    err.innerHTML = "";
+  }
 
   try {
+
     await signIn();
 
-    const hasReport = localStorage.getItem("agreementReport");
+    const hasReport =
+      localStorage.getItem(
+        "agreementReport"
+      );
 
-    window.location.href = hasReport ? "report.html" : "dashboard.html";
+    window.location.href =
+      hasReport
+        ? appPath("report.html")
+        : appPath("dashboard.html");
 
   } catch (e) {
-    if (err) err.innerHTML = `<span style="color:#dc2626;">${escapeHtml(e.message)}</span>`;
-    if (btn) btn.innerText = "Login";
-  }
-}
 
-async function handleSignup() {
-  const err = document.getElementById("authError");
+    console.error(e);
 
-  try {
-    await signUp();
-    if (err) err.innerHTML = `<span style="color:#16a34a;">Account created. Login now.</span>`;
-  } catch (e) {
-    if (err) err.innerHTML = `<span style="color:#dc2626;">${escapeHtml(e.message)}</span>`;
+    if (err) {
+
+      err.innerHTML = `
+
+        <span style="color:#dc2626;">
+
+          ${escapeHtml(e.message)}
+
+        </span>
+      `;
+    }
+
+  } finally {
+
+    if (btn) {
+
+      btn.disabled = false;
+
+      btn.innerText = "Login";
+    }
   }
 }
 
@@ -427,9 +466,11 @@ async function analyzeAgreementHandler() {
 
   // SHOW LOADING
   if (loading) {
-    loading.style.display = "block";
-    if (loading) {
+
+  loading.style.display = "block";
+
   loading.innerHTML = `
+
     <div style="text-align:center; padding:20px;">
 
       <div class="loader"></div>
@@ -449,7 +490,6 @@ async function analyzeAgreementHandler() {
     </div>
   `;
 }
-  }
 
   // DISABLE BUTTON
   if (btn) {
@@ -535,7 +575,7 @@ const risk =
       btn.innerText = "Analyze Agreement Risks";
     }
   }
-}
+
 
 // ==============================
 // PREVIEW
@@ -1367,4 +1407,5 @@ async function loadSharedComponents() {
 
     }
   }
+}
 }

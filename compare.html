@@ -119,10 +119,18 @@
 
   <!-- COMPARE -->
   <script defer src="js/compare.js"></script>
+  <script defer src="js/chart-manager.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- PDF Generator -->
+   <script defer src="js/pdf-generator.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<meta name="robots" content="index, follow">
 </head>
 
 <body onload="initPage(false)">
@@ -334,18 +342,24 @@
 
     </div>
     
-    <div class="compare-field">
+<div class="compare-field">
 
   <label for="aSuperArea">
     Super Built-up Area (sq.ft)
-    <span class="required-star">*</span>
   </label>
 
   <input
     id="aSuperArea"
     type="number"
-    placeholder="Enter super built-up area"
+    placeholder="1500"
   >
+
+  <div
+    class="validation-error"
+    id="aSuperAreaError"
+  >
+    Please enter super built-up area
+  </div>
 
 </div>
 
@@ -599,14 +613,20 @@
 
   <label for="bSuperArea">
     Super Built-up Area (sq.ft)
-    <span class="required-star">*</span>
   </label>
 
   <input
     id="bSuperArea"
     type="number"
-    placeholder="Enter super built-up area"
+    placeholder="1500"
   >
+
+  <div
+    class="validation-error"
+    id="bSuperAreaError"
+  >
+    Please enter super built-up area
+  </div>
 
 </div>
 
@@ -698,11 +718,12 @@
      <div class="compare-action-bar">
 
   <button
-    class="compare-btn"
-    onclick="compareAdvanced()"
-  >
-    Compare Properties
-  </button>
+  id="compareBtn"
+  class="compare-btn"
+  onclick="compareAdvanced()"
+>
+  Compare Properties
+</button>
 
 </div>
 
@@ -776,7 +797,9 @@
 <!-- PDF -->
 <div style="margin-top:20px;">
 
-  <button class="primary-btn" onclick="downloadComparisonPDF()">
+  <button
+  class="primary-btn"
+  onclick="downloadComparisonPDF(window.latestComparisonData)">
     Download Comparison PDF
   </button>
 
@@ -870,6 +893,7 @@
   <!-- FOOTER -->
   <div id="footer"></div>
 
+  <div id="pdfRoot"></div>
 </body>
 
 </html>

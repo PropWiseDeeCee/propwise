@@ -3,12 +3,105 @@
 // ==============================
 
 function getCompareValue(id) {
-  return Number(document.getElementById(id)?.value || 0);
+
+  const raw =
+    document.getElementById(id)?.value || "0";
+
+  return Number(
+    raw.replace(/,/g, "")
+  );
 }
 
 function formatCurrency(value) {
-  return `₹${Math.round(value).toLocaleString("en-IN")}`;
+
+  return `₹${Math.round(value)
+    .toLocaleString("en-IN")}`;
 }
+
+function formatNumberInput(input) {
+
+  input.addEventListener("input", e => {
+
+    let value =
+      e.target.value.replace(/,/g, "");
+
+    if (!value) return;
+
+    if (isNaN(value)) return;
+
+    const parts = value.split(".");
+
+    parts[0] =
+      Number(parts[0])
+      .toLocaleString("en-IN");
+
+    e.target.value =
+      parts.join(".");
+  });
+}
+
+// ==============================
+// AUTO FORMAT
+// ==============================
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  document
+    .querySelectorAll('input[type="number"]')
+    .forEach(input => {
+
+      formatNumberInput(input);
+    });
+
+  loadSavedComparison();
+});
+
+// ==============================
+// LOCAL STORAGE AUTOSAVE
+// ==============================
+
+function autoSaveComparison() {
+
+  const fields = {};
+
+  document
+    .querySelectorAll("input")
+    .forEach(input => {
+
+      fields[input.id] =
+        input.value;
+    });
+
+  localStorage.setItem(
+    "compareDraft",
+    JSON.stringify(fields)
+  );
+}
+
+function loadSavedComparison() {
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem("compareDraft")
+    );
+
+  if (!saved) return;
+
+  Object.keys(saved).forEach(id => {
+
+    const input =
+      document.getElementById(id);
+
+    if (input) {
+      input.value = saved[id];
+    }
+  });
+}
+
+document.addEventListener(
+  "input",
+  autoSaveComparison
+);
 
 // ==============================
 // GLOBAL TOTALS
@@ -36,11 +129,10 @@ function validateCompareForm() {
     "bRegistration",
     "bMaintenance",
     "bSuperArea"
-
   ];
 
-  let firstInvalid = null;
   let valid = true;
+  let firstInvalid = null;
 
   requiredFields.forEach(id => {
 
@@ -53,7 +145,7 @@ function validateCompareForm() {
     const value =
       input?.value?.trim();
 
-    if (!value || Number(value) < 0) {
+    if (!value) {
 
       valid = false;
 
@@ -75,7 +167,6 @@ function validateCompareForm() {
         error.classList.remove("show");
       }
     }
-
   });
 
   if (firstInvalid) {
@@ -95,11 +186,17 @@ function validateCompareForm() {
 // EMI
 // ==============================
 
-function calculateEMI(principal, annualRate, years) {
+function calculateEMI(
+  principal,
+  annualRate,
+  years
+) {
 
-  if (!principal || !annualRate || !years) {
-    return 0;
-  }
+  if (
+    !principal ||
+    !annualRate ||
+    !years
+  ) return 0;
 
   const monthlyRate =
     annualRate / 12 / 100;
@@ -110,20 +207,27 @@ function calculateEMI(principal, annualRate, years) {
   const emi =
     principal *
     monthlyRate *
-    Math.pow(1 + monthlyRate, months) /
-    (Math.pow(1 + monthlyRate, months) - 1);
+    Math.pow(
+      1 + monthlyRate,
+      months
+    ) /
+    (
+      Math.pow(
+        1 + monthlyRate,
+        months
+      ) - 1
+    );
 
   return Math.round(emi);
 }
 
 // ==============================
-// MAINTENANCE PROJECTION
+// MAINTENANCE
 // ==============================
 
 function calculateFiveYearMaintenance(initial) {
 
   let total = 0;
-
   let current = initial;
 
   for (let i = 0; i < 5; i++) {
@@ -140,335 +244,14 @@ function calculateFiveYearMaintenance(initial) {
 // APPRECIATION
 // ==============================
 
-function calculateFutureValue(value, rate = 0.06, years = 5) {
+function calculateFutureValue(
+  value,
+  rate = 0.06,
+  years = 5
+) {
 
   return Math.round(
     value * Math.pow(1 + rate, years)
-  );
-}
-// ==============================
-// LOCALITY ENGINE
-// ==============================
-
-function getLocalityScore(name = "") {
-
-  const locality =
-    name.toLowerCase().trim();
-
-  const localityData = {
-
-    // BANGALORE
-    whitefield: {
-      score: 9,
-      reason:
-        "Strong IT demand, metro expansion and high rental demand."
-    },
-
-    sarjapur: {
-      score: 8,
-      reason:
-        "Rapid growth corridor with strong appreciation potential."
-    },
-
-    hebbal: {
-      score: 9,
-      reason:
-        "Premium North Bangalore growth zone near airport corridor."
-    },
-
-    electronic: {
-      score: 7,
-      reason:
-        "Stable IT employment zone with moderate appreciation."
-    },
-
-    indiranagar: {
-      score: 10,
-      reason:
-        "Prime luxury locality with strong resale value."
-    },
-
-    // HYDERABAD
-    gachibowli: {
-      score: 9,
-      reason:
-        "Top IT corridor with excellent rental market."
-    },
-
-    hitech: {
-      score: 9,
-      reason:
-        "Strong commercial ecosystem and premium demand."
-    },
-
-    // MUMBAI
-    bandra: {
-      score: 10,
-      reason:
-        "Premium Mumbai locality with elite resale demand."
-    },
-
-    powai: {
-      score: 9,
-      reason:
-        "Strong corporate demand and premium housing ecosystem."
-    },
-
-    // NCR
-    gurgaon: {
-      score: 9,
-      reason:
-        "High-end commercial and residential demand."
-    },
-
-    noida: {
-      score: 8,
-      reason:
-        "Infrastructure-led appreciation with improving connectivity."
-    },
-
-    // PUNE
-    hinjewadi: {
-      score: 8,
-      reason:
-        "Major IT employment hub with strong rental market."
-    },
-
-    // CHENNAI
-    omr: {
-      score: 8,
-      reason:
-        "Major IT and residential growth corridor."
-    }
-  };
-
-  for (const key in localityData) {
-
-    if (locality.includes(key)) {
-
-      return {
-        found: true,
-        locality: key,
-        score: localityData[key].score,
-        reason: localityData[key].reason
-      };
-    }
-  }
-
-  return {
-    found: false,
-    locality: name,
-    score: 5,
-    reason:
-      "This locality is currently not available in PropWise intelligence database. Neutral baseline assumptions applied."
-  };
-}
-
-// ==============================
-// AI RECOMMENDATION
-// ==============================
-
-function generateRecommendation(data) {
-
-  const {
-
-    aName,
-    bName,
-
-    totalA,
-    totalB,
-
-    yieldA,
-    yieldB,
-
-    futureA,
-    futureB,
-
-    localityA,
-    localityB
-
-  } = data;
-
-  const better =
-    totalA < totalB
-      ? aName
-      : bName;
-
-  let reasons = [];
-
-  if (yieldA > yieldB) {
-
-    reasons.push(
-      `${aName} offers stronger rental yield potential.`
-    );
-
-  } else {
-
-    reasons.push(
-      `${bName} offers stronger rental yield potential.`
-    );
-  }
-
-  if (futureA > futureB) {
-
-    reasons.push(
-      `${aName} shows better long-term appreciation projection.`
-    );
-
-  } else {
-
-    reasons.push(
-      `${bName} shows better long-term appreciation projection.`
-    );
-  }
-
-  if (localityA.score > localityB.score) {
-
-    reasons.push(
-      `${aName} locality fundamentals appear stronger.`
-    );
-
-  } else {
-
-    reasons.push(
-      `${bName} locality fundamentals appear stronger.`
-    );
-  }
-
-  return `
-
-    <div class="recommendation-box">
-
-      <h3>
-        Recommended Option:
-        ${better}
-      </h3>
-
-      <ul>
-
-        ${reasons.map(r => `
-          <li>${r}</li>
-        `).join("")}
-
-        <li>
-          <strong>${aName} Locality Insight:</strong>
-          ${localityA.reason}
-        </li>
-
-        <li>
-          <strong>${bName} Locality Insight:</strong>
-          ${localityB.reason}
-        </li>
-
-      </ul>
-
-    </div>
-  `;
-}
-
-// ==============================
-// APPRECIATION CHART
-// ==============================
-
-let comparisonChart = null;
-
-function renderAppreciationChart(
-  aName,
-  bName,
-  totalA,
-  totalB
-) {
-
-  const ctx =
-    document.getElementById(
-      "appreciationChart"
-    );
-
-  if (!ctx) return;
-
-  if (comparisonChart) {
-    comparisonChart.destroy();
-  }
-
-  const years = [1,2,3,4,5];
-
-  const aData = years.map(year =>
-    Math.round(
-      totalA * Math.pow(1.08, year)
-    )
-  );
-
-  const bData = years.map(year =>
-    Math.round(
-      totalB * Math.pow(1.08, year)
-    )
-  );
-
-  comparisonChart = new Chart(ctx, {
-
-    type: "line",
-
-    data: {
-
-      labels:
-        years.map(y => `Year ${y}`),
-
-      datasets: [
-
-        {
-          label: aName,
-          data: aData,
-          borderWidth: 3,
-          tension: 0.3
-        },
-
-        {
-          label: bName,
-          data: bData,
-          borderWidth: 3,
-          tension: 0.3
-        }
-      ]
-    },
-
-    options: {
-      responsive: true
-    }
-  });
-}
-
-// ==============================
-// PDF EXPORT
-// ==============================
-
-async function downloadComparisonPDF() {
-
-  const { jsPDF } = window.jspdf;
-
-  const doc = new jsPDF();
-
-  const content =
-    document.getElementById(
-      "resultCard"
-    ).innerText;
-
-  const lines =
-    doc.splitTextToSize(content, 170);
-
-  doc.setFontSize(18);
-
-  doc.text(
-    "PropWise Property Comparison",
-    20,
-    20
-  );
-
-  doc.setFontSize(11);
-
-  doc.text(lines, 20, 40);
-
-  doc.save(
-    "propwise-comparison.pdf"
   );
 }
 
@@ -476,321 +259,245 @@ async function downloadComparisonPDF() {
 // MAIN COMPARISON
 // ==============================
 
-function compareAdvanced() {
+async function compareAdvanced() {
 
-  const valid =
-    validateCompareForm();
+  const btn =
+    document.getElementById("compareBtn");
 
-  if (!valid) return;
+  btn.disabled = true;
+  btn.innerText = "Analyzing...";
 
-  const aName =
-    document.getElementById("aName").value;
+  try {
 
-  const bName =
-    document.getElementById("bName").value;
+    const valid =
+      validateCompareForm();
 
-  const localityA =
-  getLocalityScore(
-    document.getElementById("aLocality").value
-  );
+    if (!valid) {
+  btn.disabled = false;
+  btn.innerText = "Compare Properties";
+  return;
+}
 
-const localityB =
-  getLocalityScore(
-    document.getElementById("bLocality").value
-  );
+    // ==========================
+    // PROPERTY NAMES
+    // ==========================
 
-  // ==============================
-  // PROPERTY A
-  // ==============================
+    const aName =
+      document.getElementById("aName").value;
 
-  const a = {
+    const bName =
+      document.getElementById("bName").value;
 
-    base: getCompareValue("aBase"),
-    gst: getCompareValue("aGst"),
-    registration: getCompareValue("aRegistration"),
-    parking: getCompareValue("aParking"),
-    clubhouse: getCompareValue("aClubhouse"),
-    maintenance: getCompareValue("aMaintenance"),
-    floorRise: getCompareValue("aFloorRise"),
-    legal: getCompareValue("aLegal"),
+    // ==========================
+    // PROPERTY A
+    // ==========================
 
-    superArea: getCompareValue("aSuperArea"),
-    carpetArea: getCompareValue("aCarpetArea"),
+    const a = {
 
-    rent: getCompareValue("aRent"),
+      base: getCompareValue("aBase"),
+      gst: getCompareValue("aGst"),
+      registration: getCompareValue("aRegistration"),
+      parking: getCompareValue("aParking"),
+      clubhouse: getCompareValue("aClubhouse"),
+      maintenance: getCompareValue("aMaintenance"),
+      floorRise: getCompareValue("aFloorRise"),
+      legal: getCompareValue("aLegal"),
+      superArea: getCompareValue("aSuperArea"),
+      carpetArea: getCompareValue("aCarpetArea"),
+      rent: getCompareValue("aRent"),
+      loan: getCompareValue("aLoan"),
+      interest: getCompareValue("aInterest"),
+      tenure: getCompareValue("aTenure")
+    };
 
-    loan: getCompareValue("aLoan"),
-    interest: getCompareValue("aInterest"),
-    tenure: getCompareValue("aTenure")
+    // ==========================
+    // PROPERTY B
+    // ==========================
 
-  };
+    const b = {
 
-  // ==============================
-  // PROPERTY B
-  // ==============================
+      base: getCompareValue("bBase"),
+      gst: getCompareValue("bGst"),
+      registration: getCompareValue("bRegistration"),
+      parking: getCompareValue("bParking"),
+      clubhouse: getCompareValue("bClubhouse"),
+      maintenance: getCompareValue("bMaintenance"),
+      floorRise: getCompareValue("bFloorRise"),
+      legal: getCompareValue("bLegal"),
+      superArea: getCompareValue("bSuperArea"),
+      carpetArea: getCompareValue("bCarpetArea"),
+      rent: getCompareValue("bRent"),
+      loan: getCompareValue("bLoan"),
+      interest: getCompareValue("bInterest"),
+      tenure: getCompareValue("bTenure")
+    };
 
-  const b = {
+    // ==========================
+    // TOTALS
+    // ==========================
 
-    base: getCompareValue("bBase"),
-    gst: getCompareValue("bGst"),
-    registration: getCompareValue("bRegistration"),
-    parking: getCompareValue("bParking"),
-    clubhouse: getCompareValue("bClubhouse"),
-    maintenance: getCompareValue("bMaintenance"),
-    floorRise: getCompareValue("bFloorRise"),
-    legal: getCompareValue("bLegal"),
+    totalA =
+      a.base +
+      a.gst +
+      a.registration +
+      a.parking +
+      a.clubhouse +
+      a.maintenance +
+      a.floorRise +
+      a.legal;
 
-    superArea: getCompareValue("bSuperArea"),
-    carpetArea: getCompareValue("bCarpetArea"),
+    totalB =
+      b.base +
+      b.gst +
+      b.registration +
+      b.parking +
+      b.clubhouse +
+      b.maintenance +
+      b.floorRise +
+      b.legal;
 
-    rent: getCompareValue("bRent"),
+    const winner =
+      totalA < totalB
+        ? aName
+        : bName;
 
-    loan: getCompareValue("bLoan"),
-    interest: getCompareValue("bInterest"),
-    tenure: getCompareValue("bTenure")
+    const savings =
+      Math.abs(totalA - totalB);
 
-  };
+    // ==========================
+    // PRICE PER SQFT
+    // ==========================
 
-  // ==============================
-  // TOTALS
-  // ==============================
+    const priceSqftA =
+      totalA / a.superArea;
 
-  totalA =
-    a.base +
-    a.gst +
-    a.registration +
-    a.parking +
-    a.clubhouse +
-    a.maintenance +
-    a.floorRise +
-    a.legal;
+    const priceSqftB =
+      totalB / b.superArea;
 
-  totalB =
-    b.base +
-    b.gst +
-    b.registration +
-    b.parking +
-    b.clubhouse +
-    b.maintenance +
-    b.floorRise +
-    b.legal;
+    // ==========================
+    // EMI
+    // ==========================
 
-  // ==============================
-  // PRICE / SQFT
-  // ==============================
+    const emiA =
+      calculateEMI(
+        a.loan,
+        a.interest,
+        a.tenure
+      );
 
-  const pricePerSqftA =
-    totalA / a.superArea;
+    const emiB =
+      calculateEMI(
+        b.loan,
+        b.interest,
+        b.tenure
+      );
 
-  const pricePerSqftB =
-    totalB / b.superArea;
+    // ==========================
+    // RENTAL YIELD
+    // ==========================
 
-  // ==============================
-  // CARPET EFFICIENCY
-  // ==============================
+    const yieldA =
+      a.rent
+        ? (
+          ((a.rent * 12) / totalA) * 100
+        ).toFixed(2)
+        : 0;
 
-  const efficiencyA =
-    a.carpetArea
-      ? ((a.carpetArea / a.superArea) * 100).toFixed(1)
-      : "N/A";
+    const yieldB =
+      b.rent
+        ? (
+          ((b.rent * 12) / totalB) * 100
+        ).toFixed(2)
+        : 0;
 
-  const efficiencyB =
-    b.carpetArea
-      ? ((b.carpetArea / b.superArea) * 100).toFixed(1)
-      : "N/A";
+    // ==========================
+    // GLOBAL PDF DATA
+    // ==========================
 
-  // ==============================
-  // RENTAL YIELD
-  // ==============================
+    window.latestComparisonData = {
 
-  const yieldA =
-    a.rent
-      ? (((a.rent * 12) / totalA) * 100).toFixed(2)
-      : "N/A";
+      aName,
+      bName,
 
-  const yieldB =
-    b.rent
-      ? (((b.rent * 12) / totalB) * 100).toFixed(2)
-      : "N/A";
+      winner,
 
-  // ==============================
-  // EMI
-  // ==============================
+      savings:
+        formatCurrency(savings),
 
-  const emiA =
-    calculateEMI(
-      a.loan,
-      a.interest,
-      a.tenure
-    );
+      timestamp:
+        new Date().toLocaleString(),
 
-  const emiB =
-    calculateEMI(
-      b.loan,
-      b.interest,
-      b.tenure
-    );
+      recommendation:
+        `${winner} appears financially stronger based on ownership cost, appreciation potential and financial efficiency.`,
 
-  // ==============================
-  // 5 YEAR MAINTENANCE
-  // ==============================
+      rows: [
 
-  const maintenanceA =
-    calculateFiveYearMaintenance(
-      a.maintenance
-    );
+        {
+          label: "Total Cost",
+          a: formatCurrency(totalA),
+          b: formatCurrency(totalB)
+        },
 
-  const maintenanceB =
-    calculateFiveYearMaintenance(
-      b.maintenance
-    );
+        {
+          label: "Price/Sq.ft",
+          a: formatCurrency(priceSqftA),
+          b: formatCurrency(priceSqftB)
+        },
 
-  // ==============================
-  // FUTURE VALUE
-  // ==============================
+        {
+          label: "Monthly EMI",
+          a: formatCurrency(emiA),
+          b: formatCurrency(emiB)
+        },
 
-  const futureA =
-    calculateFutureValue(totalA);
+        {
+          label: "Rental Yield",
+          a: `${yieldA}%`,
+          b: `${yieldB}%`
+        }
+      ]
+    };
 
-  const futureB =
-    calculateFutureValue(totalB);
+    // ==========================
+    // SHOW RESULT
+    // ==========================
 
-  // ==============================
-  // BETTER OPTION
-  // ==============================
+    document.getElementById(
+      "resultCard"
+    ).style.display = "block";
 
-  const better =
-    totalA < totalB
-      ? aName
-      : bName;
+    // ==========================
+    // SUMMARY
+    // ==========================
 
-  const savings =
-    Math.abs(totalA - totalB);
+    document.getElementById(
+      "resultDetails"
+    ).innerHTML = `
 
-  // ==============================
-  // DOM
-  // ==============================
+      <div class="winner-box">
 
-  const resultCard =
-    document.getElementById("resultCard");
+        <h2>
+          Recommended:
+          ${winner}
+        </h2>
 
-  const resultDetails =
-    document.getElementById("resultDetails");
-
-  const comparisonTable =
-    document.getElementById("comparisonTable");
-
-  const ownershipProjection =
-    document.getElementById("ownershipProjection");
-
-  resultCard.style.display = "block";
-
-  // ==============================
-  // RESULT UI
-  // ==============================
-
-  resultDetails.innerHTML = `
-
-    <div class="compare-result-grid">
-
-      <div class="compare-result-box">
-
-        <h3>${aName}</h3>
-
-        <div class="compare-price">
-          ${formatCurrency(totalA)}
-        </div>
-
-        <div class="metric-list">
-
-          <div class="metric-item">
-            Price/sq.ft:
-            <strong>${formatCurrency(pricePerSqftA)}</strong>
-          </div>
-
-          <div class="metric-item">
-            Carpet Efficiency:
-            <strong>${efficiencyA}%</strong>
-          </div>
-
-          <div class="metric-item">
-            Rental Yield:
-            <strong>${yieldA}%</strong>
-          </div>
-
-          <div class="metric-item">
-            Estimated EMI:
-            <strong>${formatCurrency(emiA)}</strong>
-          </div>
-
-        </div>
+        <p>
+          Estimated Savings:
+          ${formatCurrency(savings)}
+        </p>
 
       </div>
+    `;
 
-      <div class="compare-result-box">
+    // ==========================
+    // TABLE
+    // ==========================
 
-        <h3>${bName}</h3>
+    document.getElementById(
+      "comparisonTable"
+    ).innerHTML = `
 
-        <div class="compare-price">
-          ${formatCurrency(totalB)}
-        </div>
-
-        <div class="metric-list">
-
-          <div class="metric-item">
-            Price/sq.ft:
-            <strong>${formatCurrency(pricePerSqftB)}</strong>
-          </div>
-
-          <div class="metric-item">
-            Carpet Efficiency:
-            <strong>${efficiencyB}%</strong>
-          </div>
-
-          <div class="metric-item">
-            Rental Yield:
-            <strong>${yieldB}%</strong>
-          </div>
-
-          <div class="metric-item">
-            Estimated EMI:
-            <strong>${formatCurrency(emiB)}</strong>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="winner-box">
-
-      <h3>
-        Better Financial Option:
-        ${better}
-      </h3>
-
-      <p>
-        Estimated Savings:
-        <strong>${formatCurrency(savings)}</strong>
-      </p>
-
-    </div>
-  `;
-
-  // ==============================
-  // DETAILED TABLE
-  // ==============================
-
-  comparisonTable.innerHTML = `
-
-    <h2 style="margin-bottom:20px;">
-      Detailed Cost Comparison
-    </h2>
-
-    <div class="compare-table-wrapper">
-
-      <table class="compare-table">
+      <table class="pdf-table">
 
         <tr>
           <th>Metric</th>
@@ -805,15 +512,9 @@ const localityB =
         </tr>
 
         <tr>
-          <td>Price per sq.ft</td>
-          <td>${formatCurrency(pricePerSqftA)}</td>
-          <td>${formatCurrency(pricePerSqftB)}</td>
-        </tr>
-
-        <tr>
-          <td>Carpet Efficiency</td>
-          <td>${efficiencyA}%</td>
-          <td>${efficiencyB}%</td>
+          <td>Price/Sq.ft</td>
+          <td>${formatCurrency(priceSqftA)}</td>
+          <td>${formatCurrency(priceSqftB)}</td>
         </tr>
 
         <tr>
@@ -823,127 +524,112 @@ const localityB =
         </tr>
 
         <tr>
-          <td>Estimated EMI</td>
+          <td>Monthly EMI</td>
           <td>${formatCurrency(emiA)}</td>
           <td>${formatCurrency(emiB)}</td>
         </tr>
 
-        <tr>
-  <td>Locality Score</td>
-  <td>${localityA.score}/10</td>
-  <td>${localityB.score}/10</td>
-</tr>
-
       </table>
+    `;
 
-    </div>
-  `;
+    // ==========================
+    // SHOW SECTIONS
+    // ==========================
 
-  // ==============================
-  // PROJECTIONS
-  // ==============================
+    document.getElementById(
+      "chartSection"
+    ).style.display = "block";
 
-  ownershipProjection.innerHTML = `
+    document.getElementById(
+      "aiSection"
+    ).style.display = "block";
 
-    <h2 style="margin-bottom:20px;">
-      5-Year Ownership Projection
-    </h2>
+    // ==========================
+    // CHARTS
+    // ==========================
 
-    <div class="projection-grid">
+    renderAppreciationChart({
 
-      <div class="projection-card">
+      aName,
+      bName,
 
-        <h3>${aName}</h3>
+      aBase: a.base,
+      bBase: b.base
+    });
 
-        <p>
-          5 Year Maintenance:
-          <strong>${formatCurrency(maintenanceA)}</strong>
-        </p>
+    // ==========================
+    // OWNERSHIP
+    // ==========================
 
-        <p>
-          Projected Property Value:
-          <strong>${formatCurrency(futureA)}</strong>
-        </p>
+    renderOwnershipProjection({
 
-      </div>
+      aName,
+      bName,
 
-      <div class="projection-card">
+      totalA,
+      totalB,
 
-        <h3>${bName}</h3>
+      maintenanceA: a.maintenance,
+      maintenanceB: b.maintenance
+    });
 
-        <p>
-          5 Year Maintenance:
-          <strong>${formatCurrency(maintenanceB)}</strong>
-        </p>
+    // ==========================
+    // AI RECOMMENDATION
+    // ==========================
 
-        <p>
-          Projected Property Value:
-          <strong>${formatCurrency(futureB)}</strong>
-        </p>
+    renderAIRecommendation({
 
-      </div>
+      winner,
 
-    </div>
-  `;
-document.getElementById(
-  "chartSection"
-).style.display = "block";
+      savings,
 
-document.getElementById(
-  "aiSection"
-).style.display = "block";
+      yieldA,
+      yieldB,
 
-renderAppreciationChart(
-  aName,
-  bName,
-  totalA,
-  totalB
-);
+      emiA,
+      emiB
+    });
 
-document.getElementById(
-  "aiRecommendation"
-).innerHTML =
-  generateRecommendation({
+  } catch (err) {
 
-    aName,
-    bName,
+    console.error(err);
 
-    totalA,
-    totalB,
+    alert(
+      "Failed to compare properties"
+    );
 
-    yieldA:
-      Number(yieldA) || 0,
+  } finally {
 
-    yieldB:
-      Number(yieldB) || 0,
+    btn.disabled = false;
 
-    futureA,
-    futureB,
-
-    localityA,
-    localityB
-  });
-  
-  resultCard.scrollIntoView({
-    behavior: "smooth"
-  });
+    btn.innerText =
+      "Compare Properties";
+  }
 }
 
 // ==============================
-// SAVE
+// SAVE COMPARISON
 // ==============================
 
 async function saveComparison() {
+
+  if (!totalA || !totalB) {
+
+    alert(
+      "Please compare properties first"
+    );
+
+    return;
+  }
 
   const user =
     await getUser();
 
   if (!user) {
 
-    alert("Please login first");
-
-    window.location.href =
-      "login.html";
+    alert(
+      "Please login"
+    );
 
     return;
   }
@@ -964,7 +650,6 @@ async function saveComparison() {
 
     created_at:
       new Date().toISOString()
-
   };
 
   const { error } =
@@ -976,13 +661,12 @@ async function saveComparison() {
 
     console.error(error);
 
-    alert(
-      error.message ||
-      "Failed to save comparison"
-    );
+    alert(error.message);
 
     return;
   }
 
-  alert("Comparison saved successfully");
+  alert(
+    "Comparison saved successfully"
+  );
 }
