@@ -1540,3 +1540,15 @@ input.invalid {
     transform: rotate(360deg);
   }
 }
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  margin-top: 24px;
+}
+
+#appreciationChart {
+  width: 100% !important;
+  height: 100% !important;
+}

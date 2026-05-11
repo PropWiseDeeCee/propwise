@@ -37,9 +37,14 @@ function renderAppreciationChart({
   destroyExistingChart();
 
   const canvas =
-    document.getElementById(
-      "appreciationChart"
-    );
+  document.getElementById(
+    "appreciationChart"
+  );
+
+if (!canvas) return;
+
+const ctx =
+  canvas.getContext("2d");
 
   if (!canvas) return;
 
@@ -84,7 +89,7 @@ function renderAppreciationChart({
   };
 
   appreciationChartInstance =
-    new Chart(canvas, {
+    new Chart(ctx, {
 
       type: "line",
 
@@ -123,27 +128,36 @@ function renderAppreciationChart({
         responsive: true,
 
         maintainAspectRatio: false,
+        animation: false,
 
         plugins: {
 
-          legend: {
+  title: {
 
-            position: "top"
-          },
+    display: true,
 
-          tooltip: {
+    text:
+      "5-Year Property Appreciation Projection"
+  },
 
-            callbacks: {
+  legend: {
 
-              label: function(context) {
+    position: "top"
+  },
 
-                return formatCurrency(
-                  context.parsed.y
-                );
-              }
-            }
-          }
-        },
+  tooltip: {
+
+    callbacks: {
+
+      label: function(context) {
+
+        return formatCurrency(
+          context.parsed.y
+        );
+      }
+    }
+  }
+},
 
         scales: {
 
