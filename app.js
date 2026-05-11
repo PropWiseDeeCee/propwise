@@ -575,6 +575,7 @@ const risk =
       btn.innerText = "Analyze Agreement Risks";
     }
   }
+}
 
 
 // ==============================
@@ -1382,6 +1383,7 @@ async function loadSharedComponents() {
         "Navbar failed to load"
       );
 
+      console.error(e);
     }
   }
 
@@ -1405,7 +1407,7 @@ async function loadSharedComponents() {
         "Footer failed to load"
       );
 
+      console.error(e);
     }
   }
-}
 }

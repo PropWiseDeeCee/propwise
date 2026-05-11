@@ -47,7 +47,7 @@ function formatNumberInput(input) {
 window.addEventListener("DOMContentLoaded", () => {
 
   document
-    .querySelectorAll('input[type="number"]')
+     .querySelectorAll('input[inputmode="numeric"]')
     .forEach(input => {
 
       formatNumberInput(input);
