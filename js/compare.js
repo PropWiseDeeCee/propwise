@@ -1,5 +1,5 @@
 // ==============================
-// PROPERTY COMPARISON ENGINE
+// HELPERS
 // ==============================
 
 function getCompareValue(id) {
@@ -10,21 +10,121 @@ function formatCurrency(value) {
   return `₹${value.toLocaleString("en-IN")}`;
 }
 
-function calculatePropertyTotal(prefix) {
+// ==============================
+// VALIDATION
+// ==============================
 
-  return (
-    getCompareValue(`${prefix}Base`) +
-    getCompareValue(`${prefix}Gst`) +
-    getCompareValue(`${prefix}Registration`) +
-    getCompareValue(`${prefix}Parking`) +
-    getCompareValue(`${prefix}Clubhouse`) +
-    getCompareValue(`${prefix}Maintenance`) +
-    getCompareValue(`${prefix}FloorRise`) +
-    getCompareValue(`${prefix}Legal`)
-  );
+function validateCompareForm() {
+
+  const requiredFields = [
+
+    {
+      id: "aName",
+      message: "Please enter Property A name"
+    },
+
+    {
+      id: "aBase",
+      message: "Please enter Property A base price"
+    },
+
+    {
+      id: "aRegistration",
+      message: "Please enter Property A registration charges"
+    },
+
+    {
+      id: "aMaintenance",
+      message: "Please enter Property A maintenance cost"
+    },
+
+    {
+      id: "bName",
+      message: "Please enter Property B name"
+    },
+
+    {
+      id: "bBase",
+      message: "Please enter Property B base price"
+    },
+
+    {
+      id: "bRegistration",
+      message: "Please enter Property B registration charges"
+    },
+
+    {
+      id: "bMaintenance",
+      message: "Please enter Property B maintenance cost"
+    }
+
+  ];
+
+  let firstInvalidField = null;
+  let valid = true;
+
+  requiredFields.forEach(field => {
+
+    const input =
+      document.getElementById(field.id);
+
+    const error =
+      document.getElementById(`${field.id}Error`);
+
+    const value =
+      input.value.trim();
+
+    if (!value || Number(value) < 0) {
+
+      valid = false;
+
+      input.classList.add("invalid");
+
+      if (error) {
+        error.innerText = field.message;
+        error.classList.add("show");
+      }
+
+      if (!firstInvalidField) {
+        firstInvalidField = input;
+      }
+
+    } else {
+
+      input.classList.remove("invalid");
+
+      if (error) {
+        error.classList.remove("show");
+      }
+    }
+
+  });
+
+  // SMOOTH SCROLL
+  if (firstInvalidField) {
+
+    firstInvalidField.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    firstInvalidField.focus();
+  }
+
+  return valid;
 }
 
+// ==============================
+// MAIN COMPARISON
+// ==============================
+
 function compareAdvanced() {
+
+  const valid = validateCompareForm();
+
+  if (!valid) {
+    return;
+  }
 
   const aName =
     document.getElementById("aName")?.value || "Property A";
@@ -124,7 +224,7 @@ function compareAdvanced() {
     </div>
   `;
 
-  // DETAILED TABLE
+  // TABLE
   comparisonTable.innerHTML = `
 
     <h2 style="margin-bottom:20px;">
@@ -141,53 +241,22 @@ function compareAdvanced() {
           <th>${escapeHtml(bName)}</th>
         </tr>
 
-        <tr>
-          <td>Base Price</td>
-          <td>${formatCurrency(a.base)}</td>
-          <td>${formatCurrency(b.base)}</td>
-        </tr>
-
-        <tr>
-          <td>GST</td>
-          <td>${formatCurrency(a.gst)}</td>
-          <td>${formatCurrency(b.gst)}</td>
-        </tr>
-
-        <tr>
-          <td>Registration</td>
-          <td>${formatCurrency(a.registration)}</td>
-          <td>${formatCurrency(b.registration)}</td>
-        </tr>
-
-        <tr>
-          <td>Parking</td>
-          <td>${formatCurrency(a.parking)}</td>
-          <td>${formatCurrency(b.parking)}</td>
-        </tr>
-
-        <tr>
-          <td>Clubhouse</td>
-          <td>${formatCurrency(a.clubhouse)}</td>
-          <td>${formatCurrency(b.clubhouse)}</td>
-        </tr>
-
-        <tr>
-          <td>Maintenance</td>
-          <td>${formatCurrency(a.maintenance)}</td>
-          <td>${formatCurrency(b.maintenance)}</td>
-        </tr>
-
-        <tr>
-          <td>Floor Rise</td>
-          <td>${formatCurrency(a.floorRise)}</td>
-          <td>${formatCurrency(b.floorRise)}</td>
-        </tr>
-
-        <tr>
-          <td>Legal Fees</td>
-          <td>${formatCurrency(a.legal)}</td>
-          <td>${formatCurrency(b.legal)}</td>
-        </tr>
+        ${[
+          ["Base Price", a.base, b.base],
+          ["GST", a.gst, b.gst],
+          ["Registration", a.registration, b.registration],
+          ["Parking", a.parking, b.parking],
+          ["Clubhouse", a.clubhouse, b.clubhouse],
+          ["Maintenance", a.maintenance, b.maintenance],
+          ["Floor Rise", a.floorRise, b.floorRise],
+          ["Legal Fees", a.legal, b.legal]
+        ].map(row => `
+          <tr>
+            <td>${row[0]}</td>
+            <td>${formatCurrency(row[1])}</td>
+            <td>${formatCurrency(row[2])}</td>
+          </tr>
+        `).join("")}
 
         <tr class="compare-total-row">
           <td>Total Cost</td>
@@ -225,11 +294,6 @@ function compareAdvanced() {
           ${formatCurrency(Math.round(aFive))}
         </div>
 
-        <p>
-          Estimated 5-year ownership cost
-          including maintenance escalation.
-        </p>
-
       </div>
 
       <div class="projection-card">
@@ -240,19 +304,18 @@ function compareAdvanced() {
           ${formatCurrency(Math.round(bFive))}
         </div>
 
-        <p>
-          Estimated 5-year ownership cost
-          including maintenance escalation.
-        </p>
-
       </div>
 
     </div>
   `;
+
+  resultCard.scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 // ==============================
-// SAVE COMPARISON
+// SAVE
 // ==============================
 
 async function saveComparison() {

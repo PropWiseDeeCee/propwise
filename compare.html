@@ -156,146 +156,371 @@
     </div>
 
     <!-- GRID -->
-    <div class="compare-grid">
+ <!-- =========================
+     PROPERTY COMPARISON GRID
+========================= -->
 
-      <!-- PROPERTY A -->
-      <div class="card compare-card">
+<div class="compare-layout">
 
-        <h2 style="margin-bottom:20px;">
-          Property A
-        </h2>
+  <!-- PROPERTY A -->
+  <div class="compare-card">
 
-        <input
-          id="aName"
-          placeholder="Property Name"
-        />
+    <div class="compare-card-header">
+      <h2>Property A</h2>
+      <p>
+        Enter pricing, charges and ownership costs
+        for the first property.
+      </p>
+    </div>
 
-        <input
-          id="aBase"
-          type="number"
-          placeholder="Base Property Price"
-        />
+    <div class="compare-field">
 
-        <input
-          id="aGst"
-          type="number"
-          placeholder="GST"
-        />
+  <label for="aName">
+    Property Name
+    <span class="required-star">*</span>
+  </label>
 
-        <input
-          id="aRegistration"
-          type="number"
-          placeholder="Registration & Stamp Duty"
-        />
+  <input
+    id="aName"
+    type="text"
+    placeholder="Example: Sobha Dream Acres"
+  >
 
-        <input
-          id="aParking"
-          type="number"
-          placeholder="Parking Charges"
-        />
+  <div
+    class="validation-error"
+    id="aNameError"
+  >
+    Please enter property name
+  </div>
 
-        <input
-          id="aClubhouse"
-          type="number"
-          placeholder="Clubhouse Charges"
-        />
+</div>
 
-        <input
-          id="aMaintenance"
-          type="number"
-          placeholder="1 Year Maintenance"
-        />
+   <div class="compare-field">
 
-        <input
-          id="aFloorRise"
-          type="number"
-          placeholder="Floor Rise Charges"
-        />
+  <label for="aBase">
+    Base Property Price
+    <span class="required-star">*</span>
+  </label>
 
-        <input
-          id="aLegal"
-          type="number"
-          placeholder="Legal Fees"
-        />
+  <input
+    id="aBase"
+    type="number"
+    placeholder="Enter base property price"
+  >
 
-      </div>
+  <div
+    class="validation-error"
+    id="aBaseError"
+  >
+    Please enter base property price
+  </div>
 
-      <!-- PROPERTY B -->
-      <div class="card compare-card">
+</div>
 
-        <h2 style="margin-bottom:20px;">
-          Property B
-        </h2>
+    <div class="compare-field">
 
-        <input
-          id="bName"
-          placeholder="Property Name"
-        />
+      <label for="aGst">
+        GST Charges
+      </label>
 
-        <input
-          id="bBase"
-          type="number"
-          placeholder="Base Property Price"
-        />
-
-        <input
-          id="bGst"
-          type="number"
-          placeholder="GST"
-        />
-
-        <input
-          id="bRegistration"
-          type="number"
-          placeholder="Registration & Stamp Duty"
-        />
-
-        <input
-          id="bParking"
-          type="number"
-          placeholder="Parking Charges"
-        />
-
-        <input
-          id="bClubhouse"
-          type="number"
-          placeholder="Clubhouse Charges"
-        />
-
-        <input
-          id="bMaintenance"
-          type="number"
-          placeholder="1 Year Maintenance"
-        />
-
-        <input
-          id="bFloorRise"
-          type="number"
-          placeholder="Floor Rise Charges"
-        />
-
-        <input
-          id="bLegal"
-          type="number"
-          placeholder="Legal Fees"
-        />
-
-      </div>
+      <input
+        id="aGst"
+        type="number"
+        placeholder="Enter GST amount"
+      >
 
     </div>
 
+   <div class="compare-field">
+
+  <label for="aRegistration">
+    Registration & Stamp Duty
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="aRegistration"
+    type="number"
+    placeholder="Enter registration cost"
+  >
+
+  <div
+    class="validation-error"
+    id="aRegistrationError"
+  >
+    Please enter registration charges
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+      <label for="aParking">
+        Parking Charges
+      </label>
+
+      <input
+        id="aParking"
+        type="number"
+        placeholder="Enter parking charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+      <label for="aClubhouse">
+        Clubhouse Charges
+      </label>
+
+      <input
+        id="aClubhouse"
+        type="number"
+        placeholder="Enter clubhouse charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+  <label for="aMaintenance">
+    1 Year Maintenance
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="aMaintenance"
+    type="number"
+    placeholder="Enter maintenance cost"
+  >
+
+  <div
+    class="validation-error"
+    id="aMaintenanceError"
+  >
+    Please enter maintenance cost
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+      <label for="aFloorRise">
+        Floor Rise Charges
+      </label>
+
+      <input
+        id="aFloorRise"
+        type="number"
+        placeholder="Enter floor rise charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+      <label for="aLegal">
+        Legal Fees
+      </label>
+
+      <input
+        id="aLegal"
+        type="number"
+        placeholder="Enter legal fees"
+      >
+
+    </div>
+
+  </div>
+
+  <!-- PROPERTY B -->
+  <div class="compare-card">
+
+    <div class="compare-card-header">
+      <h2>Property B</h2>
+      <p>
+        Enter pricing, charges and ownership costs
+        for the second property.
+      </p>
+    </div>
+
+    <div class="compare-field">
+
+  <label for="bName">
+    Property Name
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="bName"
+    type="text"
+    placeholder="Example: Prestige Lakeside Habitat"
+  >
+
+  <div
+    class="validation-error"
+    id="bNameError"
+  >
+    Please enter property name
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+  <label for="bBase">
+    Base Property Price
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="bBase"
+    type="number"
+    placeholder="Enter base property price"
+  >
+
+  <div
+    class="validation-error"
+    id="bBaseError"
+  >
+    Please enter base property price
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+      <label for="bGst">
+        GST Charges
+      </label>
+
+      <input
+        id="bGst"
+        type="number"
+        placeholder="Enter GST amount"
+      >
+
+    </div>
+
+   <div class="compare-field">
+
+  <label for="bRegistration">
+    Registration & Stamp Duty
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="bRegistration"
+    type="number"
+    placeholder="Enter registration cost"
+  >
+
+  <div
+    class="validation-error"
+    id="bRegistrationError"
+  >
+    Please enter registration charges
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+      <label for="bParking">
+        Parking Charges
+      </label>
+
+      <input
+        id="bParking"
+        type="number"
+        placeholder="Enter parking charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+      <label for="bClubhouse">
+        Clubhouse Charges
+      </label>
+
+      <input
+        id="bClubhouse"
+        type="number"
+        placeholder="Enter clubhouse charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+  <label for="bMaintenance">
+    1 Year Maintenance
+    <span class="required-star">*</span>
+  </label>
+
+  <input
+    id="bMaintenance"
+    type="number"
+    placeholder="Enter maintenance cost"
+  >
+
+  <div
+    class="validation-error"
+    id="bMaintenanceError"
+  >
+    Please enter maintenance cost
+  </div>
+
+</div>
+
+    <div class="compare-field">
+
+      <label for="bFloorRise">
+        Floor Rise Charges
+      </label>
+
+      <input
+        id="bFloorRise"
+        type="number"
+        placeholder="Enter floor rise charges"
+      >
+
+    </div>
+
+    <div class="compare-field">
+
+      <label for="bLegal">
+        Legal Fees
+      </label>
+
+      <input
+        id="bLegal"
+        type="number"
+        placeholder="Enter legal fees"
+      >
+
+    </div>
+
+  </div>
+
+</div>
     <!-- ACTIONS -->
     <div style="
       text-align:center;
       margin-top:36px;
     ">
 
-      <button
-        onclick="compareAdvanced()"
-        style="margin-right:10px;"
-      >
-        Compare Properties
-      </button>
+     <div class="compare-action-bar">
+
+  <button
+    class="compare-btn"
+    onclick="compareAdvanced()"
+  >
+    Compare Properties
+  </button>
+
+</div>
 
       <button
         onclick="saveComparison()"
