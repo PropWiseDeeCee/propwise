@@ -1031,3 +1031,15 @@ li {
   background: #f9fafb;
   border-radius: 10px;
 }
+
+.faq-item {
+  margin-bottom: 40px;
+}
+
+.faq-item h2 {
+  margin-bottom: 12px;
+}
+
+.faq-item p {
+  margin-bottom: 12px;
+}
