@@ -1,150 +1,432 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Compare Property Costs India | PropWise India</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Compare Property Costs India | PropWise India
+  </title>
+
+  <meta
+    name="description"
+    content="Compare apartments, villas and property ownership costs including GST, registration, maintenance and hidden charges in India."
+  />
+
+  <link
+    rel="canonical"
+    href="https://propwise-zeta.vercel.app/compare.html"
+  />
+
+  <!-- FAVICON -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="/assets/favicon.png"
+  />
+
+  <link
+    rel="shortcut icon"
+    href="/assets/favicon.ico"
+  />
+
+  <link
+    rel="apple-touch-icon"
+    href="/assets/favicon.png"
+  />
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:type" content="website" />
+
+  <meta
+    property="og:title"
+    content="Compare Property Costs India | PropWise India"
+  />
+
+  <meta
+    property="og:description"
+    content="Compare total property ownership costs including registration, GST, maintenance and hidden builder charges."
+  />
+
+  <meta
+    property="og:url"
+    content="https://propwise-zeta.vercel.app/compare.html"
+  />
+
+  <meta
+    property="og:image"
+    content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
+  />
+
+  <meta
+    property="og:site_name"
+    content="PropWise India"
+  />
+
+  <!-- TWITTER -->
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
+
+  <meta
+    name="twitter:title"
+    content="Compare Property Costs India | PropWise India"
+  />
+
+  <meta
+    name="twitter:description"
+    content="Compare apartments, villas and property purchase costs before buying."
+  />
+
+  <meta
+    name="twitter:image"
+    content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
+  />
+
+  <!-- SCHEMA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PropWise Property Comparison Tool",
+    "url": "https://propwise-zeta.vercel.app/compare.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All"
+  }
+  </script>
+
+  <!-- GOOGLE FONTS -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- APP -->
   <script defer src="app.js"></script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Property Compare Ability",
-  "url": "https://propwise-zeta.vercel.app/compare.html",
-  "applicationCategory": "FinanceApplication"
-}
-</script>
-<!-- Open Graph -->
-<meta property="og:type" content="website" />
 
-<meta
-  property="og:title"
-  content="Compare Property Costs India | PropWise India"
-/>
+  <!-- COMPARE -->
+  <script defer src="js/compare.js"></script>
 
-<meta
-  property="og:description"
-  content="Compare total property ownership costs including registration, GST, maintenance and hidden builder charges."
-/>
-
-<meta
-  property="og:url"
-  content="https://propwise-zeta.vercel.app/compare.html"
-/>
-
-<meta
-  property="og:image"
-  content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
-/>
-
-<meta
-  property="og:site_name"
-  content="PropWise India"
-/>
-
-<!-- Twitter -->
-<meta
-  name="twitter:card"
-  content="summary_large_image"
-/>
-
-<meta
-  name="twitter:title"
-  content="Compare Property Costs India | PropWise India"
-/>
-
-<meta
-  name="twitter:description"
-  content="Compare apartments, villas and property purchase costs before buying."
-/>
-
-<meta
-  name="twitter:image"
-  content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
-/>
- <!-- Favicon -->
-<link rel="icon" type="image/png" href="/assets/favicon.png">
-<link rel="shortcut icon" href="/assets/favicon.ico">
-<link rel="apple-touch-icon" href="/assets/favicon.png">
 </head>
 
 <body onload="initPage(false)">
 
-<!-- NAVBAR -->
-<header class="navbar">
-  <div id="navbar"></div>
-</header>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div id="navbar"></div>
+  </header>
 
-<!-- CONTENT -->
-<div class="container">
+  <!-- MAIN -->
+  <div class="container">
 
-  <!-- HEADER -->
-  <div style="text-align:center; margin-bottom:30px;">
-    <h1>Compare Properties</h1>
-    <p style="color:#6b7280;">
-      Compare real total cost including hidden charges
-    </p>
-  </div>
+    <!-- HERO -->
+    <div style="text-align:center; margin-bottom:40px;">
 
-  <!-- INPUT GRID -->
-  <div class="grid">
+      <h1 style="margin-bottom:12px;">
+        Compare Property Costs
+      </h1>
 
-    <!-- PROPERTY A -->
-    <div class="card">
-      <h3>Property A</h3>
+      <p style="
+        color:#6b7280;
+        max-width:800px;
+        margin:auto;
+        line-height:1.8;
+      ">
 
-      <input id="aName" placeholder="Property Name">
+        Compare apartments, villas and property investments
+        using total ownership cost including GST,
+        registration, parking, maintenance,
+        clubhouse charges and hidden builder fees.
 
-      <input id="aPrice" type="number" placeholder="Base Price">
+      </p>
 
-      <input id="aCharges" type="number" placeholder="Additional Charges">
     </div>
 
-    <!-- PROPERTY B -->
-    <div class="card">
-      <h3>Property B</h3>
+    <!-- GRID -->
+    <div class="compare-grid">
 
-      <input id="bName" placeholder="Property Name">
+      <!-- PROPERTY A -->
+      <div class="card compare-card">
 
-      <input id="bPrice" type="number" placeholder="Base Price">
+        <h2 style="margin-bottom:20px;">
+          Property A
+        </h2>
 
-      <input id="bCharges" type="number" placeholder="Additional Charges">
+        <input
+          id="aName"
+          placeholder="Property Name"
+        />
+
+        <input
+          id="aBase"
+          type="number"
+          placeholder="Base Property Price"
+        />
+
+        <input
+          id="aGst"
+          type="number"
+          placeholder="GST"
+        />
+
+        <input
+          id="aRegistration"
+          type="number"
+          placeholder="Registration & Stamp Duty"
+        />
+
+        <input
+          id="aParking"
+          type="number"
+          placeholder="Parking Charges"
+        />
+
+        <input
+          id="aClubhouse"
+          type="number"
+          placeholder="Clubhouse Charges"
+        />
+
+        <input
+          id="aMaintenance"
+          type="number"
+          placeholder="1 Year Maintenance"
+        />
+
+        <input
+          id="aFloorRise"
+          type="number"
+          placeholder="Floor Rise Charges"
+        />
+
+        <input
+          id="aLegal"
+          type="number"
+          placeholder="Legal Fees"
+        />
+
+      </div>
+
+      <!-- PROPERTY B -->
+      <div class="card compare-card">
+
+        <h2 style="margin-bottom:20px;">
+          Property B
+        </h2>
+
+        <input
+          id="bName"
+          placeholder="Property Name"
+        />
+
+        <input
+          id="bBase"
+          type="number"
+          placeholder="Base Property Price"
+        />
+
+        <input
+          id="bGst"
+          type="number"
+          placeholder="GST"
+        />
+
+        <input
+          id="bRegistration"
+          type="number"
+          placeholder="Registration & Stamp Duty"
+        />
+
+        <input
+          id="bParking"
+          type="number"
+          placeholder="Parking Charges"
+        />
+
+        <input
+          id="bClubhouse"
+          type="number"
+          placeholder="Clubhouse Charges"
+        />
+
+        <input
+          id="bMaintenance"
+          type="number"
+          placeholder="1 Year Maintenance"
+        />
+
+        <input
+          id="bFloorRise"
+          type="number"
+          placeholder="Floor Rise Charges"
+        />
+
+        <input
+          id="bLegal"
+          type="number"
+          placeholder="Legal Fees"
+        />
+
+      </div>
+
     </div>
 
-  </div>
+    <!-- ACTIONS -->
+    <div style="
+      text-align:center;
+      margin-top:36px;
+    ">
 
-  <!-- ACTIONS -->
-  <div style="text-align:center; margin-top:30px;">
-    <button onclick="compareAdvanced()">
-      Compare Now
-    </button>
+      <button
+        onclick="compareAdvanced()"
+        style="margin-right:10px;"
+      >
+        Compare Properties
+      </button>
 
-    <button onclick="save()" 
-      style="background:#e5e7eb; color:#111827; margin-left:10px;">
-      Save Comparison
-    </button>
-  </div>
+      <button
+        onclick="saveComparison()"
+        style="
+          background:#e5e7eb;
+          color:#111827;
+        "
+      >
+        Save Comparison
+      </button>
 
-  <!-- RESULT -->
-  <div id="resultCard" class="card" style="margin-top:30px; display:none;">
-    <h3>Comparison Result</h3>
+    </div>
 
-    <div id="resultDetails"></div>
-  </div>
+    <!-- RESULT -->
+    <div
+      id="resultCard"
+      class="card"
+      style="
+        margin-top:40px;
+        display:none;
+      "
+    >
 
+      <h2 style="margin-bottom:20px;">
+        Comparison Result
+      </h2>
+
+      <div id="resultDetails"></div>
+
+<!-- DETAILED TABLE -->
+<div
+  id="comparisonTable"
+  style="margin-top:40px;"
+>
 </div>
 
-<!-- FOOTER -->
-<div id="footer"></div>
+<!-- 5 YEAR PROJECTION -->
+<div
+  id="ownershipProjection"
+  style="margin-top:40px;"
+>
+</div>
+
+    </div>
+
+    <!-- SEO CONTENT -->
+    <section
+      class="card"
+      style="
+        margin-top:50px;
+        line-height:1.9;
+      "
+    >
+
+      <h2>
+        How to Compare Property Costs in India
+      </h2>
+
+      <p>
+
+        Most home buyers compare only the base property price,
+        but the actual ownership cost can be significantly higher.
+        GST, registration charges, maintenance deposits,
+        parking fees, floor rise charges and clubhouse costs
+        can increase the total investment substantially.
+
+      </p>
+
+      <p>
+
+        PropWise India helps buyers compare real total ownership cost
+        before purchasing apartments, villas or investment properties.
+
+      </p>
+
+      <h3 style="margin-top:24px;">
+        Important Property Charges
+      </h3>
+
+      <ul style="padding-left:20px;">
+
+        <li>
+          GST on under-construction properties
+        </li>
+
+        <li>
+          Stamp duty and registration fees
+        </li>
+
+        <li>
+          Parking allocation charges
+        </li>
+
+        <li>
+          Maintenance deposits
+        </li>
+
+        <li>
+          Clubhouse and amenities charges
+        </li>
+
+        <li>
+          Floor rise premiums
+        </li>
+
+        <li>
+          Legal verification fees
+        </li>
+
+      </ul>
+
+      <h3 style="margin-top:24px;">
+        Why Property Comparison Matters
+      </h3>
+
+      <p>
+
+        Two apartments with similar base prices
+        may have completely different final ownership costs.
+        Comparing complete acquisition expenses
+        helps buyers make financially smarter decisions.
+
+      </p>
+
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
 
 </body>
+
 </html>

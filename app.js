@@ -873,59 +873,7 @@ function calculate() {
   `;
 }
 
-// ==============================
-// COMPARE
-// ==============================
 
-function compareAdvanced() {
-  const a = Number(aPrice.value) + Number(aCharges.value);
-  const b = Number(bPrice.value) + Number(bCharges.value);
-
-  resultCard.style.display = "block";
-
-  resultDetails.innerHTML = `
-    A: ₹${a.toLocaleString()}<br>
-    B: ₹${b.toLocaleString()}<br><br>
-    <strong>${a < b ? "Property A is better" : "Property B is better"}</strong>
-  `;
-}
-
-// ==============================
-// SAVED COMPARISONS
-// ==============================
-async function save() {
-
-  const user = await getUser();
-
-  // USER NOT LOGGED IN
-  if (!user) {
-    alert("Please login first");
-    window.location.href = "login.html";
-    return;
-  }
-
-  // FORM DATA
-  const data = {
-    user_id: user.id,
-    property_a: aName.value,
-    property_b: bName.value
-  };
-
-  // INSERT INTO SUPABASE
-  const { error } = await supabaseClient
-    .from("comparisons")
-    .insert([data]);
-
-  // ERROR HANDLING
-  if (error) {
-    console.error(error);
-    alert("Failed to save comparison");
-    return;
-  }
-
-  // SUCCESS
-  alert("Comparison saved successfully");
-}
 
 // ==============================
 // DASHBOARD
