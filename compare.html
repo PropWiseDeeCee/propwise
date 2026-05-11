@@ -120,6 +120,9 @@
   <!-- COMPARE -->
   <script defer src="js/compare.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body onload="initPage(false)">
@@ -407,6 +410,7 @@
     placeholder="Loan tenure"
   >
 </div>
+<input id="aLocality" placeholder="Locality (e.g Whitefield)">
 
   </div>
   
@@ -655,6 +659,7 @@
     placeholder="Loan tenure"
   >
 </div>
+<input id="bLocality" placeholder="Locality (e.g Sarjapur)">
 
   </div>
 
@@ -717,6 +722,40 @@
   id="ownershipProjection"
   style="margin-top:40px;"
 >
+</div>
+
+<!-- CHART -->
+
+<div id="comparisonResult"></div>
+<!-- CHARTS -->
+<div class="card" id="chartSection" style="display:none; margin-top:30px;">
+
+  <h2 style="margin-bottom:20px;">
+    Financial Projection
+  </h2>
+
+  <canvas id="appreciationChart"></canvas>
+
+</div>
+
+<!-- AI RECOMMENDATION -->
+<div class="card" id="aiSection" style="display:none; margin-top:30px;">
+
+  <h2 style="margin-bottom:20px;">
+    Smart Recommendation
+  </h2>
+
+  <div id="aiRecommendation"></div>
+
+</div>
+
+<!-- PDF -->
+<div style="margin-top:20px;">
+
+  <button class="primary-btn" onclick="downloadComparisonPDF()">
+    Download Comparison PDF
+  </button>
+
 </div>
 
     </div>

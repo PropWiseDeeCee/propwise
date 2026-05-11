@@ -146,6 +146,331 @@ function calculateFutureValue(value, rate = 0.06, years = 5) {
     value * Math.pow(1 + rate, years)
   );
 }
+// ==============================
+// LOCALITY ENGINE
+// ==============================
+
+function getLocalityScore(name = "") {
+
+  const locality =
+    name.toLowerCase().trim();
+
+  const localityData = {
+
+    // BANGALORE
+    whitefield: {
+      score: 9,
+      reason:
+        "Strong IT demand, metro expansion and high rental demand."
+    },
+
+    sarjapur: {
+      score: 8,
+      reason:
+        "Rapid growth corridor with strong appreciation potential."
+    },
+
+    hebbal: {
+      score: 9,
+      reason:
+        "Premium North Bangalore growth zone near airport corridor."
+    },
+
+    electronic: {
+      score: 7,
+      reason:
+        "Stable IT employment zone with moderate appreciation."
+    },
+
+    indiranagar: {
+      score: 10,
+      reason:
+        "Prime luxury locality with strong resale value."
+    },
+
+    // HYDERABAD
+    gachibowli: {
+      score: 9,
+      reason:
+        "Top IT corridor with excellent rental market."
+    },
+
+    hitech: {
+      score: 9,
+      reason:
+        "Strong commercial ecosystem and premium demand."
+    },
+
+    // MUMBAI
+    bandra: {
+      score: 10,
+      reason:
+        "Premium Mumbai locality with elite resale demand."
+    },
+
+    powai: {
+      score: 9,
+      reason:
+        "Strong corporate demand and premium housing ecosystem."
+    },
+
+    // NCR
+    gurgaon: {
+      score: 9,
+      reason:
+        "High-end commercial and residential demand."
+    },
+
+    noida: {
+      score: 8,
+      reason:
+        "Infrastructure-led appreciation with improving connectivity."
+    },
+
+    // PUNE
+    hinjewadi: {
+      score: 8,
+      reason:
+        "Major IT employment hub with strong rental market."
+    },
+
+    // CHENNAI
+    omr: {
+      score: 8,
+      reason:
+        "Major IT and residential growth corridor."
+    }
+  };
+
+  for (const key in localityData) {
+
+    if (locality.includes(key)) {
+
+      return {
+        found: true,
+        locality: key,
+        score: localityData[key].score,
+        reason: localityData[key].reason
+      };
+    }
+  }
+
+  return {
+    found: false,
+    locality: name,
+    score: 5,
+    reason:
+      "This locality is currently not available in PropWise intelligence database. Neutral baseline assumptions applied."
+  };
+}
+
+// ==============================
+// AI RECOMMENDATION
+// ==============================
+
+function generateRecommendation(data) {
+
+  const {
+
+    aName,
+    bName,
+
+    totalA,
+    totalB,
+
+    yieldA,
+    yieldB,
+
+    futureA,
+    futureB,
+
+    localityA,
+    localityB
+
+  } = data;
+
+  const better =
+    totalA < totalB
+      ? aName
+      : bName;
+
+  let reasons = [];
+
+  if (yieldA > yieldB) {
+
+    reasons.push(
+      `${aName} offers stronger rental yield potential.`
+    );
+
+  } else {
+
+    reasons.push(
+      `${bName} offers stronger rental yield potential.`
+    );
+  }
+
+  if (futureA > futureB) {
+
+    reasons.push(
+      `${aName} shows better long-term appreciation projection.`
+    );
+
+  } else {
+
+    reasons.push(
+      `${bName} shows better long-term appreciation projection.`
+    );
+  }
+
+  if (localityA.score > localityB.score) {
+
+    reasons.push(
+      `${aName} locality fundamentals appear stronger.`
+    );
+
+  } else {
+
+    reasons.push(
+      `${bName} locality fundamentals appear stronger.`
+    );
+  }
+
+  return `
+
+    <div class="recommendation-box">
+
+      <h3>
+        Recommended Option:
+        ${better}
+      </h3>
+
+      <ul>
+
+        ${reasons.map(r => `
+          <li>${r}</li>
+        `).join("")}
+
+        <li>
+          <strong>${aName} Locality Insight:</strong>
+          ${localityA.reason}
+        </li>
+
+        <li>
+          <strong>${bName} Locality Insight:</strong>
+          ${localityB.reason}
+        </li>
+
+      </ul>
+
+    </div>
+  `;
+}
+
+// ==============================
+// APPRECIATION CHART
+// ==============================
+
+let comparisonChart = null;
+
+function renderAppreciationChart(
+  aName,
+  bName,
+  totalA,
+  totalB
+) {
+
+  const ctx =
+    document.getElementById(
+      "appreciationChart"
+    );
+
+  if (!ctx) return;
+
+  if (comparisonChart) {
+    comparisonChart.destroy();
+  }
+
+  const years = [1,2,3,4,5];
+
+  const aData = years.map(year =>
+    Math.round(
+      totalA * Math.pow(1.08, year)
+    )
+  );
+
+  const bData = years.map(year =>
+    Math.round(
+      totalB * Math.pow(1.08, year)
+    )
+  );
+
+  comparisonChart = new Chart(ctx, {
+
+    type: "line",
+
+    data: {
+
+      labels:
+        years.map(y => `Year ${y}`),
+
+      datasets: [
+
+        {
+          label: aName,
+          data: aData,
+          borderWidth: 3,
+          tension: 0.3
+        },
+
+        {
+          label: bName,
+          data: bData,
+          borderWidth: 3,
+          tension: 0.3
+        }
+      ]
+    },
+
+    options: {
+      responsive: true
+    }
+  });
+}
+
+// ==============================
+// PDF EXPORT
+// ==============================
+
+async function downloadComparisonPDF() {
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+
+  const content =
+    document.getElementById(
+      "resultCard"
+    ).innerText;
+
+  const lines =
+    doc.splitTextToSize(content, 170);
+
+  doc.setFontSize(18);
+
+  doc.text(
+    "PropWise Property Comparison",
+    20,
+    20
+  );
+
+  doc.setFontSize(11);
+
+  doc.text(lines, 20, 40);
+
+  doc.save(
+    "propwise-comparison.pdf"
+  );
+}
 
 // ==============================
 // MAIN COMPARISON
@@ -163,6 +488,16 @@ function compareAdvanced() {
 
   const bName =
     document.getElementById("bName").value;
+
+  const localityA =
+  getLocalityScore(
+    document.getElementById("aLocality").value
+  );
+
+const localityB =
+  getLocalityScore(
+    document.getElementById("bLocality").value
+  );
 
   // ==============================
   // PROPERTY A
@@ -493,6 +828,12 @@ function compareAdvanced() {
           <td>${formatCurrency(emiB)}</td>
         </tr>
 
+        <tr>
+  <td>Locality Score</td>
+  <td>${localityA.score}/10</td>
+  <td>${localityB.score}/10</td>
+</tr>
+
       </table>
 
     </div>
@@ -544,7 +885,45 @@ function compareAdvanced() {
 
     </div>
   `;
+document.getElementById(
+  "chartSection"
+).style.display = "block";
 
+document.getElementById(
+  "aiSection"
+).style.display = "block";
+
+renderAppreciationChart(
+  aName,
+  bName,
+  totalA,
+  totalB
+);
+
+document.getElementById(
+  "aiRecommendation"
+).innerHTML =
+  generateRecommendation({
+
+    aName,
+    bName,
+
+    totalA,
+    totalB,
+
+    yieldA:
+      Number(yieldA) || 0,
+
+    yieldB:
+      Number(yieldB) || 0,
+
+    futureA,
+    futureB,
+
+    localityA,
+    localityB
+  });
+  
   resultCard.scrollIntoView({
     behavior: "smooth"
   });
