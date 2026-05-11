@@ -7,8 +7,15 @@ function getCompareValue(id) {
 }
 
 function formatCurrency(value) {
-  return `₹${value.toLocaleString("en-IN")}`;
+  return `₹${Math.round(value).toLocaleString("en-IN")}`;
 }
+
+// ==============================
+// GLOBAL TOTALS
+// ==============================
+
+let totalA = 0;
+let totalB = 0;
 
 // ==============================
 // VALIDATION
@@ -18,61 +25,33 @@ function validateCompareForm() {
 
   const requiredFields = [
 
-    {
-      id: "aName",
-      message: "Please enter Property A name"
-    },
+    "aName",
+    "aBase",
+    "aRegistration",
+    "aMaintenance",
+    "aSuperArea",
 
-    {
-      id: "aBase",
-      message: "Please enter Property A base price"
-    },
-
-    {
-      id: "aRegistration",
-      message: "Please enter Property A registration charges"
-    },
-
-    {
-      id: "aMaintenance",
-      message: "Please enter Property A maintenance cost"
-    },
-
-    {
-      id: "bName",
-      message: "Please enter Property B name"
-    },
-
-    {
-      id: "bBase",
-      message: "Please enter Property B base price"
-    },
-
-    {
-      id: "bRegistration",
-      message: "Please enter Property B registration charges"
-    },
-
-    {
-      id: "bMaintenance",
-      message: "Please enter Property B maintenance cost"
-    }
+    "bName",
+    "bBase",
+    "bRegistration",
+    "bMaintenance",
+    "bSuperArea"
 
   ];
 
-  let firstInvalidField = null;
+  let firstInvalid = null;
   let valid = true;
 
-  requiredFields.forEach(field => {
+  requiredFields.forEach(id => {
 
     const input =
-      document.getElementById(field.id);
+      document.getElementById(id);
 
     const error =
-      document.getElementById(`${field.id}Error`);
+      document.getElementById(`${id}Error`);
 
     const value =
-      input.value.trim();
+      input?.value?.trim();
 
     if (!value || Number(value) < 0) {
 
@@ -81,12 +60,11 @@ function validateCompareForm() {
       input.classList.add("invalid");
 
       if (error) {
-        error.innerText = field.message;
         error.classList.add("show");
       }
 
-      if (!firstInvalidField) {
-        firstInvalidField = input;
+      if (!firstInvalid) {
+        firstInvalid = input;
       }
 
     } else {
@@ -100,18 +78,73 @@ function validateCompareForm() {
 
   });
 
-  // SMOOTH SCROLL
-  if (firstInvalidField) {
+  if (firstInvalid) {
 
-    firstInvalidField.scrollIntoView({
+    firstInvalid.scrollIntoView({
       behavior: "smooth",
       block: "center"
     });
 
-    firstInvalidField.focus();
+    firstInvalid.focus();
   }
 
   return valid;
+}
+
+// ==============================
+// EMI
+// ==============================
+
+function calculateEMI(principal, annualRate, years) {
+
+  if (!principal || !annualRate || !years) {
+    return 0;
+  }
+
+  const monthlyRate =
+    annualRate / 12 / 100;
+
+  const months =
+    years * 12;
+
+  const emi =
+    principal *
+    monthlyRate *
+    Math.pow(1 + monthlyRate, months) /
+    (Math.pow(1 + monthlyRate, months) - 1);
+
+  return Math.round(emi);
+}
+
+// ==============================
+// MAINTENANCE PROJECTION
+// ==============================
+
+function calculateFiveYearMaintenance(initial) {
+
+  let total = 0;
+
+  let current = initial;
+
+  for (let i = 0; i < 5; i++) {
+
+    total += current;
+
+    current *= 1.1;
+  }
+
+  return Math.round(total);
+}
+
+// ==============================
+// APPRECIATION
+// ==============================
+
+function calculateFutureValue(value, rate = 0.06, years = 5) {
+
+  return Math.round(
+    value * Math.pow(1 + rate, years)
+  );
 }
 
 // ==============================
@@ -120,20 +153,23 @@ function validateCompareForm() {
 
 function compareAdvanced() {
 
-  const valid = validateCompareForm();
+  const valid =
+    validateCompareForm();
 
-  if (!valid) {
-    return;
-  }
+  if (!valid) return;
 
   const aName =
-    document.getElementById("aName")?.value || "Property A";
+    document.getElementById("aName").value;
 
   const bName =
-    document.getElementById("bName")?.value || "Property B";
+    document.getElementById("bName").value;
 
+  // ==============================
   // PROPERTY A
+  // ==============================
+
   const a = {
+
     base: getCompareValue("aBase"),
     gst: getCompareValue("aGst"),
     registration: getCompareValue("aRegistration"),
@@ -141,11 +177,25 @@ function compareAdvanced() {
     clubhouse: getCompareValue("aClubhouse"),
     maintenance: getCompareValue("aMaintenance"),
     floorRise: getCompareValue("aFloorRise"),
-    legal: getCompareValue("aLegal")
+    legal: getCompareValue("aLegal"),
+
+    superArea: getCompareValue("aSuperArea"),
+    carpetArea: getCompareValue("aCarpetArea"),
+
+    rent: getCompareValue("aRent"),
+
+    loan: getCompareValue("aLoan"),
+    interest: getCompareValue("aInterest"),
+    tenure: getCompareValue("aTenure")
+
   };
 
+  // ==============================
   // PROPERTY B
+  // ==============================
+
   const b = {
+
     base: getCompareValue("bBase"),
     gst: getCompareValue("bGst"),
     registration: getCompareValue("bRegistration"),
@@ -153,20 +203,138 @@ function compareAdvanced() {
     clubhouse: getCompareValue("bClubhouse"),
     maintenance: getCompareValue("bMaintenance"),
     floorRise: getCompareValue("bFloorRise"),
-    legal: getCompareValue("bLegal")
+    legal: getCompareValue("bLegal"),
+
+    superArea: getCompareValue("bSuperArea"),
+    carpetArea: getCompareValue("bCarpetArea"),
+
+    rent: getCompareValue("bRent"),
+
+    loan: getCompareValue("bLoan"),
+    interest: getCompareValue("bInterest"),
+    tenure: getCompareValue("bTenure")
+
   };
 
-  const aTotal =
-    Object.values(a).reduce((x, y) => x + y, 0);
+  // ==============================
+  // TOTALS
+  // ==============================
 
-  const bTotal =
-    Object.values(b).reduce((x, y) => x + y, 0);
+  totalA =
+    a.base +
+    a.gst +
+    a.registration +
+    a.parking +
+    a.clubhouse +
+    a.maintenance +
+    a.floorRise +
+    a.legal;
+
+  totalB =
+    b.base +
+    b.gst +
+    b.registration +
+    b.parking +
+    b.clubhouse +
+    b.maintenance +
+    b.floorRise +
+    b.legal;
+
+  // ==============================
+  // PRICE / SQFT
+  // ==============================
+
+  const pricePerSqftA =
+    totalA / a.superArea;
+
+  const pricePerSqftB =
+    totalB / b.superArea;
+
+  // ==============================
+  // CARPET EFFICIENCY
+  // ==============================
+
+  const efficiencyA =
+    a.carpetArea
+      ? ((a.carpetArea / a.superArea) * 100).toFixed(1)
+      : "N/A";
+
+  const efficiencyB =
+    b.carpetArea
+      ? ((b.carpetArea / b.superArea) * 100).toFixed(1)
+      : "N/A";
+
+  // ==============================
+  // RENTAL YIELD
+  // ==============================
+
+  const yieldA =
+    a.rent
+      ? (((a.rent * 12) / totalA) * 100).toFixed(2)
+      : "N/A";
+
+  const yieldB =
+    b.rent
+      ? (((b.rent * 12) / totalB) * 100).toFixed(2)
+      : "N/A";
+
+  // ==============================
+  // EMI
+  // ==============================
+
+  const emiA =
+    calculateEMI(
+      a.loan,
+      a.interest,
+      a.tenure
+    );
+
+  const emiB =
+    calculateEMI(
+      b.loan,
+      b.interest,
+      b.tenure
+    );
+
+  // ==============================
+  // 5 YEAR MAINTENANCE
+  // ==============================
+
+  const maintenanceA =
+    calculateFiveYearMaintenance(
+      a.maintenance
+    );
+
+  const maintenanceB =
+    calculateFiveYearMaintenance(
+      b.maintenance
+    );
+
+  // ==============================
+  // FUTURE VALUE
+  // ==============================
+
+  const futureA =
+    calculateFutureValue(totalA);
+
+  const futureB =
+    calculateFutureValue(totalB);
+
+  // ==============================
+  // BETTER OPTION
+  // ==============================
 
   const better =
-    aTotal < bTotal ? aName : bName;
+    totalA < totalB
+      ? aName
+      : bName;
 
   const savings =
-    Math.abs(aTotal - bTotal);
+    Math.abs(totalA - totalB);
+
+  // ==============================
+  // DOM
+  // ==============================
 
   const resultCard =
     document.getElementById("resultCard");
@@ -182,27 +350,78 @@ function compareAdvanced() {
 
   resultCard.style.display = "block";
 
-  // MAIN RESULT
+  // ==============================
+  // RESULT UI
+  // ==============================
+
   resultDetails.innerHTML = `
 
     <div class="compare-result-grid">
 
       <div class="compare-result-box">
 
-        <h3>${escapeHtml(aName)}</h3>
+        <h3>${aName}</h3>
 
         <div class="compare-price">
-          ${formatCurrency(aTotal)}
+          ${formatCurrency(totalA)}
+        </div>
+
+        <div class="metric-list">
+
+          <div class="metric-item">
+            Price/sq.ft:
+            <strong>${formatCurrency(pricePerSqftA)}</strong>
+          </div>
+
+          <div class="metric-item">
+            Carpet Efficiency:
+            <strong>${efficiencyA}%</strong>
+          </div>
+
+          <div class="metric-item">
+            Rental Yield:
+            <strong>${yieldA}%</strong>
+          </div>
+
+          <div class="metric-item">
+            Estimated EMI:
+            <strong>${formatCurrency(emiA)}</strong>
+          </div>
+
         </div>
 
       </div>
 
       <div class="compare-result-box">
 
-        <h3>${escapeHtml(bName)}</h3>
+        <h3>${bName}</h3>
 
         <div class="compare-price">
-          ${formatCurrency(bTotal)}
+          ${formatCurrency(totalB)}
+        </div>
+
+        <div class="metric-list">
+
+          <div class="metric-item">
+            Price/sq.ft:
+            <strong>${formatCurrency(pricePerSqftB)}</strong>
+          </div>
+
+          <div class="metric-item">
+            Carpet Efficiency:
+            <strong>${efficiencyB}%</strong>
+          </div>
+
+          <div class="metric-item">
+            Rental Yield:
+            <strong>${yieldB}%</strong>
+          </div>
+
+          <div class="metric-item">
+            Estimated EMI:
+            <strong>${formatCurrency(emiB)}</strong>
+          </div>
+
         </div>
 
       </div>
@@ -213,7 +432,7 @@ function compareAdvanced() {
 
       <h3>
         Better Financial Option:
-        ${escapeHtml(better)}
+        ${better}
       </h3>
 
       <p>
@@ -224,7 +443,10 @@ function compareAdvanced() {
     </div>
   `;
 
-  // TABLE
+  // ==============================
+  // DETAILED TABLE
+  // ==============================
+
   comparisonTable.innerHTML = `
 
     <h2 style="margin-bottom:20px;">
@@ -236,32 +458,39 @@ function compareAdvanced() {
       <table class="compare-table">
 
         <tr>
-          <th>Expense</th>
-          <th>${escapeHtml(aName)}</th>
-          <th>${escapeHtml(bName)}</th>
+          <th>Metric</th>
+          <th>${aName}</th>
+          <th>${bName}</th>
         </tr>
 
-        ${[
-          ["Base Price", a.base, b.base],
-          ["GST", a.gst, b.gst],
-          ["Registration", a.registration, b.registration],
-          ["Parking", a.parking, b.parking],
-          ["Clubhouse", a.clubhouse, b.clubhouse],
-          ["Maintenance", a.maintenance, b.maintenance],
-          ["Floor Rise", a.floorRise, b.floorRise],
-          ["Legal Fees", a.legal, b.legal]
-        ].map(row => `
-          <tr>
-            <td>${row[0]}</td>
-            <td>${formatCurrency(row[1])}</td>
-            <td>${formatCurrency(row[2])}</td>
-          </tr>
-        `).join("")}
-
-        <tr class="compare-total-row">
+        <tr>
           <td>Total Cost</td>
-          <td>${formatCurrency(aTotal)}</td>
-          <td>${formatCurrency(bTotal)}</td>
+          <td>${formatCurrency(totalA)}</td>
+          <td>${formatCurrency(totalB)}</td>
+        </tr>
+
+        <tr>
+          <td>Price per sq.ft</td>
+          <td>${formatCurrency(pricePerSqftA)}</td>
+          <td>${formatCurrency(pricePerSqftB)}</td>
+        </tr>
+
+        <tr>
+          <td>Carpet Efficiency</td>
+          <td>${efficiencyA}%</td>
+          <td>${efficiencyB}%</td>
+        </tr>
+
+        <tr>
+          <td>Rental Yield</td>
+          <td>${yieldA}%</td>
+          <td>${yieldB}%</td>
+        </tr>
+
+        <tr>
+          <td>Estimated EMI</td>
+          <td>${formatCurrency(emiA)}</td>
+          <td>${formatCurrency(emiB)}</td>
         </tr>
 
       </table>
@@ -269,14 +498,9 @@ function compareAdvanced() {
     </div>
   `;
 
-  // 5 YEAR PROJECTION
-  const yearlyGrowth = 1.08;
-
-  let aFive =
-    aTotal + (a.maintenance * 5 * yearlyGrowth);
-
-  let bFive =
-    bTotal + (b.maintenance * 5 * yearlyGrowth);
+  // ==============================
+  // PROJECTIONS
+  // ==============================
 
   ownershipProjection.innerHTML = `
 
@@ -288,21 +512,33 @@ function compareAdvanced() {
 
       <div class="projection-card">
 
-        <h3>${escapeHtml(aName)}</h3>
+        <h3>${aName}</h3>
 
-        <div class="projection-price">
-          ${formatCurrency(Math.round(aFive))}
-        </div>
+        <p>
+          5 Year Maintenance:
+          <strong>${formatCurrency(maintenanceA)}</strong>
+        </p>
+
+        <p>
+          Projected Property Value:
+          <strong>${formatCurrency(futureA)}</strong>
+        </p>
 
       </div>
 
       <div class="projection-card">
 
-        <h3>${escapeHtml(bName)}</h3>
+        <h3>${bName}</h3>
 
-        <div class="projection-price">
-          ${formatCurrency(Math.round(bFive))}
-        </div>
+        <p>
+          5 Year Maintenance:
+          <strong>${formatCurrency(maintenanceB)}</strong>
+        </p>
+
+        <p>
+          Projected Property Value:
+          <strong>${formatCurrency(futureB)}</strong>
+        </p>
 
       </div>
 
@@ -320,37 +556,51 @@ function compareAdvanced() {
 
 async function saveComparison() {
 
-  const user = await getUser();
+  const user =
+    await getUser();
 
   if (!user) {
 
     alert("Please login first");
 
-    window.location.href = "login.html";
+    window.location.href =
+      "login.html";
 
     return;
   }
 
-  const data = {
+  const payload = {
 
     user_id: user.id,
 
     property_a:
-      document.getElementById("aName")?.value || "Property A",
+      document.getElementById("aName").value,
 
     property_b:
-      document.getElementById("bName")?.value || "Property B"
+      document.getElementById("bName").value,
+
+    property_a_price: totalA,
+
+    property_b_price: totalB,
+
+    created_at:
+      new Date().toISOString()
+
   };
 
-  const { error } = await supabaseClient
-    .from("comparisons")
-    .insert([data]);
+  const { error } =
+    await supabaseClient
+      .from("comparisons")
+      .insert([payload]);
 
   if (error) {
 
     console.error(error);
 
-    alert("Failed to save comparison");
+    alert(
+      error.message ||
+      "Failed to save comparison"
+    );
 
     return;
   }
