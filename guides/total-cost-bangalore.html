@@ -1,98 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Total Cost of Buying a Flat in Bangalore (2026)</title>
-  <!-- AdSense -->
-  <script async 
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8642420002721791"
-    crossorigin="anonymous">
-  </script>
-  <meta name="description" content="Understand the real cost of buying a flat in Bangalore including stamp duty, GST, hidden charges and EMI.">
+  <!-- BASIC SEO -->
+  <meta charset="UTF-8" />
 
-  <link rel="stylesheet" href="../styles.css">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Total Cost of Buying Property in Bangalore (2026) | PropWise India
+  </title>
+
+  <meta
+    name="description"
+    content="Calculate the real cost of buying property in Bangalore including stamp duty, GST, registration, maintenance, parking and hidden builder charges."
+  />
+
+  <meta
+    name="keywords"
+    content="property cost bangalore, flat registration charges bangalore, hidden property charges, bangalore property buying cost, apartment buying guide"
+  />
+
+  <meta
+    name="robots"
+    content="index, follow"
+  />
+
+  <!-- CANONICAL -->
+  <link
+    rel="canonical"
+    href="https://propwise-zeta.vercel.app/guides/total-cost-bangalore.html"
+  />
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:type" content="article" />
+
+  <meta
+    property="og:title"
+    content="Total Cost of Buying Property in Bangalore"
+  />
+
+  <meta
+    property="og:description"
+    content="Understand actual property acquisition cost in Bangalore including GST, registration, maintenance and hidden charges."
+  />
+
+  <meta
+    property="og:url"
+    content="https://propwise-zeta.vercel.app/guides/total-cost-bangalore.html"
+  />
+
+  <meta
+    property="og:image"
+    content="https://propwise-zeta.vercel.app/assets/og-guides.jpg"
+  />
+
+  <!-- TWITTER -->
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
+
+  <meta
+    name="twitter:title"
+    content="Total Cost of Buying Property in Bangalore"
+  />
+
+  <meta
+    name="twitter:description"
+    content="Learn the actual cost of buying a flat in Bangalore including all additional charges."
+  />
+
+  <!-- FONTS -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="../app.js"></script>
+
+  <!-- SCHEMA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Total Cost of Buying Property in Bangalore",
+    "author": {
+      "@type": "Organization",
+      "name": "PropWise India"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PropWise India"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://propwise-zeta.vercel.app/guides/total-cost-bangalore.html"
+    }
+  }
+  </script>
+
 </head>
 
 <body onload="initPage(false)">
 
 <header class="navbar">
-  <div class="nav-container">
-    <div class="logo">PropWise India</div>
-
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="../compare.html">Compare</a>
-      <a href="../tools.html">Tools</a>
-      <a href="../calculator.html">Calculator</a>
-      <a href="../guides.html">Guides</a>
-      <a href="../dashboard.html">Dashboard</a>
-      <span id="nav-right"></span>
-    </div>
-  </div>
+  <div id="navbar"></div>
 </header>
 
-<div class="container">
-  <h1>Total Cost of Buying a Flat in Bangalore</h1>
+<main class="container guide-page">
 
-  <p>
-    When buying a property in Bangalore, the base price is not the final price.
-    Buyers often underestimate additional costs like registration, GST, and maintenance.
-  </p>
+  <!-- HERO -->
+  <section class="guide-hero">
 
-  <h2>1. Base Price</h2>
-  <p>This is the property cost quoted by the builder.</p>
+    <h1>
+      Total Cost of Buying Property in Bangalore
+    </h1>
 
-  <h2>2. Registration & Stamp Duty</h2>
-  <p>
-    In Karnataka, registration, stamp duty, and applicable cess can add roughly 5.5–7.6% to the property cost depending on property value and location.
-  </p>
+    <p class="guide-subtitle">
+      Understand the real property acquisition cost
+      including registration, GST, maintenance,
+      parking and hidden builder charges.
+    </p>
 
-  <h2>3. GST</h2>
-  <p>
-    Applicable mainly for under-construction properties (typically 5%).
-  </p>
+  </section>
 
-  <h2>4. Maintenance Charges</h2>
-  <p>
-    Builders often charge advance maintenance for 1–2 years.
-  </p>
+  <!-- TOC -->
+  <section class="card">
 
-  <h2>5. Legal & Miscellaneous Charges</h2>
-  <p>
-    Includes legal verification, documentation, and other fees.
-  </p>
+    <h2>Table of Contents</h2>
 
-  <h2>👉 Example Breakdown</h2>
-  <ul>
-    <li>Base Price: ₹50,00,000</li>
-    <li>Registration: ₹3,00,000</li>
-    <li>GST: ₹2,50,000</li>
-    <li>Maintenance + Other: ₹1,50,000</li>
-  </ul>
+    <ul class="guide-toc">
 
-  <p><strong>Total: ₹57,00,000+</strong></p>
+      <li>
+        <a href="#base-price">
+          Base Property Price
+        </a>
+      </li>
 
-  <hr>
+      <li>
+        <a href="#registration">
+          Registration & Stamp Duty
+        </a>
+      </li>
 
-  <h2>Compare Your Property Cost</h2>
-  <p>
-    Use our tool to calculate your actual cost including all hidden charges.
-  </p>
+      <li>
+        <a href="#gst">
+          GST Charges
+        </a>
+      </li>
 
-  <button onclick="location.href='../compare.html'">
-    Compare Properties Now
-  </button>
+      <li>
+        <a href="#hidden-costs">
+          Hidden Charges
+        </a>
+      </li>
 
-</div>
+      <li>
+        <a href="#maintenance">
+          Maintenance & Parking
+        </a>
+      </li>
 
-<footer style="text-align:center; margin:40px 0; font-size:13px; color:#6b7280;">
-  <a href="../about.html">About</a> |
-  <a href="../privacy.html">Privacy Policy</a> |
-  <a href="../terms.html">Terms & Conditions</a>
+    </ul>
+
+  </section>
+
+  <!-- SECTION -->
+  <section class="card" id="base-price">
+
+    <h2>
+      Base Property Price
+    </h2>
+
+    <p>
+      The quoted property price is usually not the
+      final acquisition cost. Builders often advertise
+      only the base sale value excluding additional expenses.
+    </p>
+
+    <p>
+      Buyers should always request a complete cost sheet
+      before making booking payments.
+    </p>
+
+  </section>
+
+  <!-- SECTION -->
+  <section class="card" id="registration">
+
+    <h2>
+      Registration & Stamp Duty
+    </h2>
+
+    <p>
+      In Karnataka, registration and stamp duty charges
+      may add roughly 5.5% to 7.6% depending on property value.
+    </p>
+
+    <ul>
+
+      <li>
+        Stamp duty
+      </li>
+
+      <li>
+        Registration fees
+      </li>
+
+      <li>
+        Applicable cess
+      </li>
+
+    </ul>
+
+  </section>
+
+  <!-- SECTION -->
+  <section class="card" id="gst">
+
+    <h2>
+      GST Charges
+    </h2>
+
+    <p>
+      GST is generally applicable on under-construction
+      properties but not on completed ready-to-move units.
+    </p>
+
+    <p>
+      Buyers should verify GST applicability directly
+      from the builder and agreement documents.
+    </p>
+
+  </section>
+
+  <!-- SECTION -->
+  <section class="card" id="hidden-costs">
+
+    <h2>
+      Common Hidden Charges
+    </h2>
+
+    <ul>
+
+      <li>
+        Clubhouse charges
+      </li>
+
+      <li>
+        Floor rise charges
+      </li>
+
+      <li>
+        Legal documentation fees
+      </li>
+
+      <li>
+        Power backup charges
+      </li>
+
+      <li>
+        Infrastructure development fees
+      </li>
+
+      <li>
+        Corpus fund deposits
+      </li>
+
+    </ul>
+
+  </section>
+
+  <!-- SECTION -->
+  <section class="card" id="maintenance">
+
+    <h2>
+      Maintenance & Parking Costs
+    </h2>
+
+    <p>
+      Builders may collect advance maintenance
+      for one or two years during possession.
+    </p>
+
+    <p>
+      Parking allocation and parking charges
+      should be clearly documented in the agreement.
+    </p>
+
+  </section>
+
+  <!-- EXAMPLE -->
+  <section class="card">
+
+    <h2>
+      Example Cost Breakdown
+    </h2>
+
+    <ul>
+
+      <li>
+        Base Price: ₹80,00,000
+      </li>
+
+      <li>
+        Registration & Stamp Duty: ₹5,50,000+
+      </li>
+
+      <li>
+        GST: ₹4,00,000
+      </li>
+
+      <li>
+        Maintenance & Parking: ₹3,00,000
+      </li>
+
+      <li>
+        Other Charges: ₹1,50,000
+      </li>
+
+    </ul>
+
+    <p>
+      Final acquisition cost may exceed
+      the original advertised property price significantly.
+    </p>
+
+  </section>
+
+  <!-- CTA -->
+  <section class="card">
+
+    <h2>
+      Compare Actual Property Costs
+    </h2>
+
+    <p>
+      Compare real acquisition costs including
+      hidden charges instantly.
+    </p>
+
+    <a
+      class="primary-btn"
+      href="../compare.html"
+    >
+      Compare Properties
+    </a>
+
+  </section>
+
+  <!-- FAQ -->
+  <section class="card">
+
+    <h2>
+      Frequently Asked Questions
+    </h2>
+
+    <h3>
+      Is GST applicable on ready-to-move flats?
+    </h3>
+
+    <p>
+      GST is generally not applicable on completed
+      ready-to-move properties with completion certificate.
+    </p>
+
+    <h3>
+      Are maintenance charges negotiable?
+    </h3>
+
+    <p>
+      Certain maintenance and builder charges may
+      be negotiable depending on project stage.
+    </p>
+
+  </section>
+
+  <!-- RELATED -->
+  <section class="card">
+
+    <h2>
+      Related Guides
+    </h2>
+
+    <ul>
+
+      <li>
+        <a href="hidden-builder-charges-guide.html">
+          Hidden Builder Charges Guide
+        </a>
+      </li>
+
+      <li>
+        <a href="stamp-duty-karnataka.html">
+          Stamp Duty Karnataka
+        </a>
+      </li>
+
+      <li>
+        <a href="property-agreement-checklist.html">
+          Property Agreement Checklist
+        </a>
+      </li>
+
+    </ul>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+
+  <a href="../about.html">About</a>
+  <a href="../privacy.html">Privacy</a>
+  <a href="../terms.html">Terms</a>
+
 </footer>
 
 </body>
