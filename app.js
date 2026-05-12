@@ -535,8 +535,27 @@ const score =
 
 const risk =
   result.aiRisk || getRiskLevel(score);
+  window.latestAgreementReport = {
 
-    
+  risk_score: score,
+
+  risk_level: risk,
+
+  high_risks:
+    (result.critical || []).map(item => ({
+      title: item,
+      description: item
+    })),
+
+  medium_risks:
+    (result.moderate || []).map(item => ({
+      title: item,
+      description: item
+    })),
+
+  info:
+    result.info || []
+}; 
 
     // RENDER
     await renderPreview(result, score, risk);
