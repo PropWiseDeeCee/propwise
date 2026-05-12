@@ -244,9 +244,46 @@ async function exportAgreementPDF(
 // MAIN REPORT
 // ==============================
 
-async function downloadAgreementReport(
-  report
-) {
+async function downloadAgreementReport() {
+  const stored =
+  JSON.parse(
+    localStorage.getItem(
+      "agreementReport"
+    )
+  );
+
+if (!stored) {
+
+  alert("No agreement report found");
+
+  return;
+}
+
+const report = {
+
+  risk_score:
+    stored.score || 50,
+
+  risk_level:
+    stored.risk || "Medium",
+
+  high_risks:
+    (stored.result?.critical || [])
+      .map(item => ({
+        title: item,
+        description: item
+      })),
+
+  medium_risks:
+    (stored.result?.moderate || [])
+      .map(item => ({
+        title: item,
+        description: item
+      })),
+
+  info:
+    stored.result?.info || []
+};
 
   const reportId =
     generateAgreementReportId();
