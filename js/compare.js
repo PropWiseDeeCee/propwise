@@ -421,14 +421,30 @@ async function compareAdvanced() {
 
       winner,
 
-      savings:
-        formatCurrency(savings),
+      savings,
 
       timestamp:
         new Date().toLocaleString(),
+        score:
+  totalA < totalB
+    ? 84
+    : 79,
 
       recommendation:
         `${winner} appears financially stronger based on ownership cost, appreciation potential and financial efficiency.`,
+
+        ownershipProjection: {
+
+  propertyA:
+    calculateFutureValue(
+      totalA
+    ),
+
+  propertyB:
+    calculateFutureValue(
+      totalB
+    )
+    },
 
       rows: [
 
@@ -605,6 +621,91 @@ async function compareAdvanced() {
     btn.innerText =
       "Compare Properties";
   }
+}
+
+// ==============================
+// Reset
+// ==============================
+
+function resetComparison() {
+
+  // CLEAR ALL INPUTS
+  document
+    .querySelectorAll("input")
+    .forEach(input => {
+
+      input.value = "";
+
+      input.classList.remove(
+        "invalid"
+      );
+    });
+
+  // CLEAR VALIDATION ERRORS
+  document
+    .querySelectorAll(".validation-error")
+    .forEach(error => {
+
+      error.classList.remove("show");
+    });
+
+  // REMOVE LOCAL STORAGE
+  localStorage.removeItem(
+    "compareDraft"
+  );
+
+  // HIDE RESULT SECTIONS
+  document.getElementById(
+    "resultCard"
+  ).style.display = "none";
+
+  document.getElementById(
+    "chartSection"
+  ).style.display = "none";
+
+  document.getElementById(
+    "aiSection"
+  ).style.display = "none";
+
+  // CLEAR CONTENT
+  document.getElementById(
+    "resultDetails"
+  ).innerHTML = "";
+
+  document.getElementById(
+    "comparisonTable"
+  ).innerHTML = "";
+
+  document.getElementById(
+    "ownershipProjection"
+  ).innerHTML = "";
+
+  document.getElementById(
+    "aiRecommendation"
+  ).innerHTML = "";
+
+  // DESTROY CHARTS
+  if (
+    window.appreciationChartInstance
+  ) {
+
+    window.appreciationChartInstance.destroy();
+
+    window.appreciationChartInstance =
+      null;
+  }
+
+  // RESET DATA
+  window.latestComparisonData =
+    null;
+
+  // SCROLL TO TOP
+  window.scrollTo({
+
+    top: 0,
+
+    behavior: "smooth"
+  });
 }
 
 // ==============================

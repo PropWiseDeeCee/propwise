@@ -1241,14 +1241,32 @@ li {
 }
 
 .compare-btn {
-  background: #2563eb;
-  color: white;
+  width: 100%;
+  padding: 18px;
   border: none;
   border-radius: 14px;
-  padding: 16px 34px;
+
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #1e3a8a
+  );
+
+  color: white;
+
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+
   cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.compare-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(30,58,138,0.25);
 }
 
 .compare-result-grid {
@@ -1635,4 +1653,672 @@ input.invalid {
 
 .pdf-summary-box p {
   line-height: 1.8;
+}
+
+.compare-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.reset-btn {
+  min-width: 140px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #e5e7eb;
+
+  color: #111827;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: #d1d5db;
+}
+
+.smart-box {
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #ecfeff
+    );
+
+  border: 1px solid #bae6fd;
+
+  border-radius: 24px;
+
+  padding: 30px;
+
+  margin-top: 30px;
+}
+
+.smart-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.smart-icon {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.06);
+}
+
+.smart-header h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.smart-header p {
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+.smart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.smart-item {
+
+  background: white;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.04);
+}
+
+.smart-highlight {
+
+  margin-top: 10px;
+
+  padding: 22px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a8a
+    );
+
+  color: white;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* =========================
+   SMART RECOMMENDATION
+========================= */
+
+.smart-box {
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #ecfeff
+    );
+
+  border: 1px solid #bae6fd;
+
+  border-radius: 24px;
+
+  padding: 32px;
+
+  margin-top: 30px;
+}
+
+.smart-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 28px;
+}
+
+.smart-icon {
+
+  width: 64px;
+  height: 64px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 30px;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.08);
+}
+
+.smart-header h3 {
+
+  margin: 0;
+
+  font-size: 30px;
+}
+
+.smart-header p {
+
+  margin-top: 6px;
+
+  color: #64748b;
+}
+
+.smart-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.smart-item {
+
+  background: white;
+
+  border-radius: 16px;
+
+  padding: 18px 20px;
+
+  line-height: 1.8;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.04);
+}
+
+.smart-highlight {
+
+  margin-top: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a8a
+    );
+
+  color: white;
+
+  border-radius: 18px;
+
+  padding: 24px;
+
+  text-align: center;
+
+  font-size: 22px;
+
+  font-weight: 700;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.compare-actions {
+
+  display: flex;
+
+  gap: 16px;
+
+  margin-top: 30px;
+
+  flex-wrap: wrap;
+}
+
+.compare-btn {
+
+  flex: 1;
+
+  padding: 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a8a
+    );
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.compare-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(30,58,138,0.25);
+}
+
+.reset-btn {
+
+  padding: 18px 28px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #e5e7eb;
+
+  color: #111827;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.save-btn {
+
+  padding: 18px 28px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f766e,
+      #14b8a6
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* =========================
+   COMPARE ACTIONS
+========================= */
+
+.compare-actions {
+
+  display: flex;
+
+  gap: 16px;
+
+  margin-top: 32px;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+}
+
+.compare-btn {
+
+  flex: 1;
+
+  min-width: 240px;
+
+  padding: 18px 24px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a8a
+    );
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.compare-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(30,58,138,0.25);
+}
+
+.compare-btn:disabled {
+
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+.save-btn {
+
+  padding: 18px 26px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f766e,
+      #14b8a6
+    );
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.save-btn:hover {
+
+  transform: translateY(-2px);
+}
+
+.reset-btn {
+
+  padding: 18px 26px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: #e5e7eb;
+
+  color: #111827;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.reset-btn:hover {
+
+  background: #d1d5db;
+}
+
+/* =========================
+   SMART RECOMMENDATION
+========================= */
+
+.smart-box {
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #ecfeff
+    );
+
+  border: 1px solid #bae6fd;
+
+  border-radius: 28px;
+
+  padding: 34px;
+
+  margin-top: 20px;
+}
+
+.smart-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 28px;
+}
+
+.smart-icon {
+
+  width: 68px;
+
+  height: 68px;
+
+  border-radius: 20px;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.08);
+}
+
+.smart-header h3 {
+
+  margin: 0;
+
+  font-size: 30px;
+
+  font-weight: 700;
+}
+
+.smart-header p {
+
+  margin-top: 6px;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+.smart-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.smart-item {
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 18px 22px;
+
+  line-height: 1.8;
+
+  font-size: 15px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.04);
+}
+
+.smart-highlight {
+
+  margin-top: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a8a
+    );
+
+  color: white;
+
+  border-radius: 20px;
+
+  padding: 28px;
+
+  text-align: center;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  line-height: 1.6;
+}
+
+/* =========================
+   RESULT CARD
+========================= */
+
+.winner-box {
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #eff6ff
+    );
+
+  border: 1px solid #dbeafe;
+
+  border-radius: 24px;
+
+  padding: 28px;
+
+  margin-bottom: 24px;
+}
+
+.winner-box h2 {
+
+  margin-bottom: 12px;
+
+  color: #0f172a;
+}
+
+.winner-box p {
+
+  color: #475569;
+
+  font-size: 16px;
+}
+
+/* =========================
+   CHARTS
+========================= */
+
+.chart-container {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 420px;
+
+  margin-top: 24px;
+}
+
+#appreciationChart {
+
+  width: 100% !important;
+
+  height: 100% !important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .compare-actions {
+
+    flex-direction: column;
+  }
+
+  .compare-btn,
+  .save-btn,
+  .reset-btn {
+
+    width: 100%;
+  }
+
+  .smart-header {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .smart-header h3 {
+
+    font-size: 24px;
+  }
+
+  .smart-highlight {
+
+    font-size: 20px;
+  }
 }

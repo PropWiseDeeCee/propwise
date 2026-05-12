@@ -22,6 +22,10 @@ function destroyExistingChart() {
 // CREATE APPRECIATION CHART
 // ==============================
 
+// ==============================
+// CREATE APPRECIATION CHART
+// ==============================
+
 function renderAppreciationChart({
 
   aName,
@@ -34,21 +38,29 @@ function renderAppreciationChart({
 
 }) {
 
-  destroyExistingChart();
+  // DESTROY OLD CHART
+  if (
+    window.appreciationChartInstance
+  ) {
+
+    window.appreciationChartInstance.destroy();
+
+    window.appreciationChartInstance =
+      null;
+  }
 
   const canvas =
-  document.getElementById(
-    "appreciationChart"
-  );
-
-if (!canvas) return;
-
-const ctx =
-  canvas.getContext("2d");
+    document.getElementById(
+      "appreciationChart"
+    );
 
   if (!canvas) return;
 
-  const years = [
+  const ctx =
+    canvas.getContext("2d");
+
+  const labels = [
+
     "Year 1",
     "Year 2",
     "Year 3",
@@ -56,7 +68,9 @@ const ctx =
     "Year 5"
   ];
 
-  const buildProjection = (base) => {
+  const buildProjection = (
+    base
+  ) => {
 
     return [
 
@@ -88,37 +102,39 @@ const ctx =
     ];
   };
 
-  appreciationChartInstance =
+  const appreciationA =
+    buildProjection(aBase);
+
+  const appreciationB =
+    buildProjection(bBase);
+
+  window.appreciationChartInstance =
     new Chart(ctx, {
 
       type: "line",
 
       data: {
 
-        labels: years,
+        labels,
 
         datasets: [
 
           {
+
             label: aName,
 
-            data:
-              buildProjection(aBase),
+            data: appreciationA,
 
-            tension: 0.4,
-
-            fill: false
+            tension: 0.35
           },
 
           {
+
             label: bName,
 
-            data:
-              buildProjection(bBase),
+            data: appreciationB,
 
-            tension: 0.4,
-
-            fill: false
+            tension: 0.35
           }
         ]
       },
@@ -128,36 +144,37 @@ const ctx =
         responsive: true,
 
         maintainAspectRatio: false,
+
         animation: false,
 
         plugins: {
 
-  title: {
+          title: {
 
-    display: true,
+            display: true,
 
-    text:
-      "5-Year Property Appreciation Projection"
-  },
+            text:
+              "5-Year Property Appreciation Projection"
+          },
 
-  legend: {
+          legend: {
 
-    position: "top"
-  },
+            position: "top"
+          },
 
-  tooltip: {
+          tooltip: {
 
-    callbacks: {
+            callbacks: {
 
-      label: function(context) {
+              label: function(context) {
 
-        return formatCurrency(
-          context.parsed.y
-        );
-      }
-    }
-  }
-},
+                return formatCurrency(
+                  context.parsed.y
+                );
+              }
+            }
+          }
+        },
 
         scales: {
 
@@ -167,7 +184,9 @@ const ctx =
 
               callback: function(value) {
 
-                return formatCurrency(value);
+                return formatCurrency(
+                  value
+                );
               }
             }
           }
@@ -310,7 +329,6 @@ function renderAIRecommendation({
 
   emiA,
   emiB
-
 }) {
 
   const container =
@@ -320,65 +338,91 @@ function renderAIRecommendation({
 
   if (!container) return;
 
-  let insights = [];
+  const propertyA =
+    document.getElementById("aName")
+      ?.value || "Property A";
 
-  insights.push(
+  const propertyB =
+    document.getElementById("bName")
+      ?.value || "Property B";
 
-    `${winner} appears financially stronger based on overall ownership efficiency.`
-  );
+  const betterYield =
+    Number(yieldA) >
+    Number(yieldB)
 
-  if (yieldA > yieldB) {
+      ? propertyA
+      : propertyB;
 
-    insights.push(
-      "Property A offers better rental yield potential."
-    );
+  const lowerEMI =
+    Number(emiA) <
+    Number(emiB)
 
-  } else if (yieldB > yieldA) {
-
-    insights.push(
-      "Property B offers better rental yield potential."
-    );
-  }
-
-  if (emiA < emiB) {
-
-    insights.push(
-      "Property A has lower EMI burden."
-    );
-
-  } else if (emiB < emiA) {
-
-    insights.push(
-      "Property B has lower EMI burden."
-    );
-  }
-
-  insights.push(
-    `Estimated savings difference: ${formatCurrency(savings)}`
-  );
+      ? propertyA
+      : propertyB;
 
   container.innerHTML = `
 
-    <div class="winner-box">
+    <div class="smart-box">
 
-      <h3 style="margin-bottom:16px;">
+      <div class="smart-header">
 
-        Smart Recommendation
+        <div class="smart-icon">
+          🧠
+        </div>
 
-      </h3>
+        <div>
 
-      <ul style="
-        line-height:1.9;
-        padding-left:20px;
-      ">
+          <h3>
+            Smart Recommendation
+          </h3>
 
-        ${insights.map(item => `
+          <p>
+            AI-assisted financial insights
+          </p>
 
-          <li>${item}</li>
+        </div>
 
-        `).join("")}
+      </div>
 
-      </ul>
+      <div class="smart-list">
+
+        <div class="smart-item">
+
+          ✅ <strong>${winner}</strong>
+          appears financially stronger
+          based on ownership efficiency,
+          appreciation potential and
+          overall acquisition cost.
+
+        </div>
+
+        <div class="smart-item">
+
+          📈 <strong>${betterYield}</strong>
+          offers stronger rental yield
+          potential for long-term returns.
+
+        </div>
+
+        <div class="smart-item">
+
+          💰 <strong>${lowerEMI}</strong>
+          has lower EMI burden and may
+          provide better monthly cash flow.
+
+        </div>
+
+        <div class="smart-highlight">
+
+          Estimated ownership difference:
+
+          <br><br>
+
+          ${formatCurrency(savings)}
+
+        </div>
+
+      </div>
 
     </div>
   `;

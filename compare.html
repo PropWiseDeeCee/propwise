@@ -738,20 +738,29 @@ inputmode="numeric"
 </div>
 
     <!-- ACTIONS -->
-    <div style="
-      text-align:center;
-      margin-top:36px;
-    ">
-
-     <div class="compare-action-bar">
+<div class="compare-actions">
 
   <button
-  id="compareBtn"
-  class="compare-btn"
-  onclick="compareAdvanced()"
->
-  Compare Properties
-</button>
+    id="compareBtn"
+    class="compare-btn"
+    onclick="compareAdvanced()"
+  >
+    Compare Properties
+  </button>
+
+  <button
+    class="save-btn"
+    onclick="saveComparison()"
+  >
+    Save Comparison
+  </button>
+
+  <button
+    class="reset-btn"
+    onclick="resetComparison()"
+  >
+    Reset
+  </button>
 
 </div>
 
