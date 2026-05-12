@@ -1235,11 +1235,6 @@ li {
   font-size: 15px;
 }
 
-.compare-action-bar {
-  text-align: center;
-  margin-top: 30px;
-}
-
 .compare-btn {
   width: 100%;
   padding: 18px;
@@ -2310,5 +2305,91 @@ input.invalid {
 
   .smart-highlight {
     font-size: 20px;
+  }
+}
+
+/* =========================
+   FINAL COMPARE PAGE FIX
+========================= */
+
+.compare-layout,
+.compare-actions,
+#resultCard,
+.card {
+
+  width: 100%;
+  max-width: 100%;
+}
+
+.compare-layout {
+
+  align-items: start;
+}
+
+.compare-card {
+
+  width: 100%;
+  overflow: hidden;
+}
+
+.compare-actions {
+
+  margin-bottom: 40px;
+}
+
+#resultCard {
+
+  margin-left: auto;
+  margin-right: auto;
+
+  overflow: hidden;
+}
+
+#comparisonTable {
+
+  overflow-x: auto;
+}
+
+.pdf-table {
+
+  width: 100%;
+}
+
+.pdf-table th,
+.pdf-table td {
+
+  white-space: nowrap;
+}
+
+.winner-box {
+
+  width: 100%;
+  text-align: center;
+}
+
+.chart-container {
+
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#appreciationChart {
+
+  display: block;
+}
+
+@media (max-width: 900px) {
+
+  .compare-actions {
+
+    grid-template-columns: 1fr;
+  }
+
+  .compare-btn,
+  .save-btn,
+  .reset-btn {
+
+    width: 100%;
   }
 }
