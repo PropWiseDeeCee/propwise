@@ -378,6 +378,59 @@ async function initPage(protectedPage = false) {
 }
 
 // ==============================
+// NAVBAR DROPDOWN
+// ==============================
+
+function initNavbarDropdown() {
+
+  const dropdownBtn =
+    document.querySelector(".dropdown-btn");
+
+  const dropdownMenu =
+    document.querySelector(".dropdown-menu");
+
+  const dropdown =
+    document.querySelector(".dropdown");
+
+  if (
+    !dropdownBtn ||
+    !dropdownMenu ||
+    !dropdown
+  ) {
+    return;
+  }
+
+  // TOGGLE MENU
+
+  dropdownBtn.addEventListener(
+    "click",
+    function(event) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      dropdownMenu.classList.toggle("show");
+    }
+  );
+
+  // CLOSE ON OUTSIDE CLICK
+
+  document.addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        !dropdown.contains(event.target)
+      ) {
+
+        dropdownMenu.classList.remove("show");
+      }
+    }
+  );
+
+}
+
+// ==============================
 // FILE PARSING
 // ==============================
 
@@ -1395,6 +1448,7 @@ async function loadSharedComponents() {
 
       navbar.innerHTML =
         await navResponse.text();
+        initNavbarDropdown();
 
     } catch (e) {
 
