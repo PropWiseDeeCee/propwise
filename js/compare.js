@@ -513,7 +513,9 @@ async function compareAdvanced() {
       "comparisonTable"
     ).innerHTML = `
 
-      <table class="pdf-table">
+    <div class="result-card">
+    <div class="comparison-table">  
+    <table class="pdf-table">
 
         <tr>
           <th>Metric</th>
@@ -546,6 +548,8 @@ async function compareAdvanced() {
         </tr>
 
       </table>
+      </div>
+      </div>
     `;
 
     // ==========================
