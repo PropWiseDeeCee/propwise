@@ -217,6 +217,8 @@
 
   margin-top:
     var(--space-16);
+
+  width: 100%;
 }
 
 
@@ -247,6 +249,8 @@
 .compare-table-wrapper {
 
   overflow-x: auto;
+
+  width: 100%;
 
   margin-top:
     var(--space-10);

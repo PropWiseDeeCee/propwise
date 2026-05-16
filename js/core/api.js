@@ -23,40 +23,7 @@ function requireSupabase() {
   return client;
 }
 
-// =====================
-// API_BASEURL
-// =====================
-const API_BASE =
-  window.PROPWISE_CONFIG.API.BASE_URL;
 
-async function analyzeAgreement(file) {
-
-  const formData =
-    new FormData();
-
-  formData.append("file", file);
-
-  const response =
-    await fetch(
-      `${window.PROPWISE_CONFIG.API.BASE_URL}/analyze`,
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-
-  const data =
-    await response.json();
-
-  if (!data.success) {
-
-    throw new Error(
-      data.error || "Analysis failed"
-    );
-  }
-
-  return data.analysis;
-}
 
 // ==============================
 // AUTH

@@ -22,10 +22,6 @@ function destroyExistingChart() {
 // CREATE APPRECIATION CHART
 // ==============================
 
-// ==============================
-// CREATE APPRECIATION CHART
-// ==============================
-
 function renderAppreciationChart({
 
   aName,
@@ -38,16 +34,7 @@ function renderAppreciationChart({
 
 }) {
 
-  // DESTROY OLD CHART
-  if (
-    window.appreciationChartInstance
-  ) {
-
-    window.appreciationChartInstance.destroy();
-
-    window.appreciationChartInstance =
-      null;
-  }
+  destroyExistingChart();
 
   const canvas =
     document.getElementById(
@@ -108,7 +95,7 @@ function renderAppreciationChart({
   const appreciationB =
     buildProjection(bBase);
 
-  window.appreciationChartInstance =
+  appreciationChartInstance =
     new Chart(ctx, {
 
       type: "line",
@@ -125,7 +112,9 @@ function renderAppreciationChart({
 
             data: appreciationA,
 
-            tension: 0.35
+            tension: 0.35,
+
+            borderWidth: 3
           },
 
           {
@@ -134,7 +123,9 @@ function renderAppreciationChart({
 
             data: appreciationB,
 
-            tension: 0.35
+            tension: 0.35,
+
+            borderWidth: 3
           }
         ]
       },
@@ -146,6 +137,13 @@ function renderAppreciationChart({
         maintainAspectRatio: false,
 
         animation: false,
+
+        interaction: {
+
+          mode: "index",
+
+          intersect: false
+        },
 
         plugins: {
 
@@ -196,7 +194,7 @@ function renderAppreciationChart({
 }
 
 // ==============================
-// OWNERSHIP PROJECTION TABLE
+// OWNERSHIP PROJECTION
 // ==============================
 
 function renderOwnershipProjection({
@@ -219,21 +217,25 @@ function renderOwnershipProjection({
 
   if (!container) return;
 
-  const fiveYearA =
-    totalA +
+  const maintenance5A =
     calculateFiveYearMaintenance(
       maintenanceA
     );
 
-  const fiveYearB =
-    totalB +
+  const maintenance5B =
     calculateFiveYearMaintenance(
       maintenanceB
     );
 
+  const fiveYearA =
+    totalA + maintenance5A;
+
+  const fiveYearB =
+    totalB + maintenance5B;
+
   container.innerHTML = `
 
-    <div class="card">
+    <div class="summary-card">
 
       <h2 style="margin-bottom:20px;">
 
@@ -241,75 +243,71 @@ function renderOwnershipProjection({
 
       </h2>
 
-      <table class="pdf-table">
+      <div class="compare-table-wrapper">
 
-        <tr>
+        <table class="compare-table">
 
-          <th>Metric</th>
+          <tr>
 
-          <th>${aName}</th>
+            <th>Metric</th>
 
-          <th>${bName}</th>
+            <th>${aName}</th>
 
-        </tr>
+            <th>${bName}</th>
 
-        <tr>
+          </tr>
 
-          <td>
-            Initial Acquisition Cost
-          </td>
+          <tr>
 
-          <td>
-            ${formatCurrency(totalA)}
-          </td>
+            <td>
+              Initial Acquisition Cost
+            </td>
 
-          <td>
-            ${formatCurrency(totalB)}
-          </td>
+            <td>
+              ${formatCurrency(totalA)}
+            </td>
 
-        </tr>
+            <td>
+              ${formatCurrency(totalB)}
+            </td>
 
-        <tr>
+          </tr>
 
-          <td>
-            5-Year Maintenance
-          </td>
+          <tr>
 
-          <td>
-            ${formatCurrency(
-              calculateFiveYearMaintenance(
-                maintenanceA
-              )
-            )}
-          </td>
+            <td>
+              5-Year Maintenance
+            </td>
 
-          <td>
-            ${formatCurrency(
-              calculateFiveYearMaintenance(
-                maintenanceB
-              )
-            )}
-          </td>
+            <td>
+              ${formatCurrency(maintenance5A)}
+            </td>
 
-        </tr>
+            <td>
+              ${formatCurrency(maintenance5B)}
+            </td>
 
-        <tr>
+          </tr>
 
-          <td>
-            Total 5-Year Ownership
-          </td>
+          <tr>
 
-          <td>
-            ${formatCurrency(fiveYearA)}
-          </td>
+            <td>
+              Total 5-Year Ownership
+            </td>
 
-          <td>
-            ${formatCurrency(fiveYearB)}
-          </td>
+            <td>
+              ${formatCurrency(fiveYearA)}
+            </td>
 
-        </tr>
+            <td>
+              ${formatCurrency(fiveYearB)}
+            </td>
 
-      </table>
+          </tr>
+
+        </table>
+
+      </div>
 
     </div>
   `;

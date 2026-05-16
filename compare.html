@@ -3,12 +3,12 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
   <title>
     Compare Property Costs India | PropWise India
@@ -17,100 +17,85 @@
   <meta
     name="description"
     content="Compare apartments, villas and property ownership costs including GST, registration, maintenance and hidden charges in India."
-  />
-
-  <link
-    rel="canonical"
-    href="https://propwise-zeta.vercel.app/compare.html"
-  />
+  >
 
   <!-- FAVICON -->
   <link
     rel="icon"
     type="image/png"
     href="/assets/favicon.png"
-  />
+  >
 
-  <!-- OPEN GRAPH -->
-  <meta property="og:type" content="website" />
-
-  <meta
-    property="og:title"
-    content="Compare Property Costs India | PropWise India"
-  />
-
-  <meta
-    property="og:description"
-    content="Compare total property ownership costs including registration, GST, maintenance and hidden builder charges."
-  />
-
-  <meta
-    property="og:url"
-    content="https://propwise-zeta.vercel.app/compare.html"
-  />
-
-  <meta
-    property="og:image"
-    content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
-  />
-
-  <!-- GOOGLE FONTS -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+    rel="shortcut icon"
+    href="/assets/favicon.ico"
+  >
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/core/variables.css">
-  <link rel="stylesheet" href="css/core/reset.css">
-  <link rel="stylesheet" href="css/core/typography.css">
-  <link rel="stylesheet" href="css/core/layout.css">
+  <link
+    rel="apple-touch-icon"
+    href="/assets/favicon.png"
+  >
 
-  <link rel="stylesheet" href="css/components/buttons.css">
-  <link rel="stylesheet" href="css/components/cards.css">
-  <link rel="stylesheet" href="css/components/navbar.css">
-  <link rel="stylesheet" href="css/components/footer.css">
-  <link rel="stylesheet" href="css/components/forms.css">
-  <link rel="stylesheet" href="css/components/loaders.css">
-  <link rel="stylesheet" href="css/components/dropdowns.css">
+  <!-- FONT -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
 
-  <link rel="stylesheet" href="css/features/compare.css">
+<!-- CORE CSS -->
+<link rel="stylesheet" href="css/core/variables.css">
+<link rel="stylesheet" href="css/core/reset.css">
+<link rel="stylesheet" href="css/core/typography.css">
+<link rel="stylesheet" href="css/core/layout.css">
 
-  <link rel="stylesheet" href="styles.css">
+<!-- COMPONENTS -->
+<link rel="stylesheet" href="css/components/buttons.css">
+<link rel="stylesheet" href="css/components/cards.css">
+<link rel="stylesheet" href="css/components/navbar.css">
+<link rel="stylesheet" href="css/components/footer.css">
+<link rel="stylesheet" href="css/components/forms.css">
+<link rel="stylesheet" href="css/components/loaders.css">
+<link rel="stylesheet" href="css/components/dropdowns.css">
 
-  <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/core/config.js"></script>
-  <script src="js/core/path.js"></script>
-  <script src="js/core/dom.js"></script>
-  <script src="js/core/utils.js"></script>
-  <script src="js/core/supabase-client.js"></script>
-  <script src="js/core/component-loader.js"></script>
-  <script src="js/core/api.js"></script>
-  <script src="js/core/dropdowns.js"></script>
-  <script src="js/core/analytics.js"></script>
+<!-- FEATURE -->
+<link rel="stylesheet" href="css/features/compare.css">
 
-  <!-- APP -->
+<!-- GLOBAL -->
+<link rel="stylesheet" href="styles.css">
 
-  <!-- COMPARE -->
-  <script src="js/features/compare/charts.js"></script>
-  <script src="js/features/compare/compare-core.js"></script>
-  <script defer src="js/core/bootstrap.js"></script>
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- CORE JS -->
+<script src="js/core/config.js"></script>
+<script src="js/core/path.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/component-loader.js"></script>
+<script src="js/core/api.js"></script>
+<script src="js/core/dropdowns.js"></script>
 
-  <!-- PDF -->
-  <script defer src="js/pdf-generator.js"></script>
+<!-- APP -->
+<script defer src="app.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- CHART -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- COMPARE -->
+<script src="js/features/compare/charts.js"></script>
+<script src="js/features/compare/compare-core.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<!-- PDF -->
+<script defer src="js/pdf-generator.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
+
 
   <!-- NAVBAR -->
   <div id="navbar"></div>
@@ -138,11 +123,11 @@
 
       </div>
 
-      <!-- PROPERTY GRID -->
+      <!-- GRID -->
       <div class="compare-grid">
 
         <!-- PROPERTY A -->
-        <div class="property-card card">
+        <div class="property-card">
 
           <div class="property-header">
 
@@ -153,10 +138,7 @@
               </h2>
 
               <p class="card-subtext">
-
-                Enter ownership details for
-                the first property.
-
+                Enter details for the first property.
               </p>
 
             </div>
@@ -189,7 +171,7 @@
               id="aBase"
               type="text"
               inputmode="numeric"
-              placeholder="Enter property price"
+              placeholder="Property price"
             >
 
           </div>
@@ -261,7 +243,7 @@
           <div class="form-group">
 
             <label for="aMaintenance">
-              1 Year Maintenance
+              Maintenance Charges
             </label>
 
             <input
@@ -274,74 +256,10 @@
 
           </div>
 
-          <div class="form-group">
-
-            <label for="aFloorRise">
-              Floor Rise Charges
-            </label>
-
-            <input
-              class="form-input"
-              id="aFloorRise"
-              type="text"
-              inputmode="numeric"
-              placeholder="Floor rise charges"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="aLegal">
-              Legal Fees
-            </label>
-
-            <input
-              class="form-input"
-              id="aLegal"
-              type="text"
-              inputmode="numeric"
-              placeholder="Legal fees"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="aSuperArea">
-              Super Built-up Area
-            </label>
-
-            <input
-              class="form-input"
-              id="aSuperArea"
-              type="text"
-              inputmode="numeric"
-              placeholder="1500 sq.ft"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="aCarpetArea">
-              Carpet Area
-            </label>
-
-            <input
-              class="form-input"
-              id="aCarpetArea"
-              type="text"
-              inputmode="numeric"
-              placeholder="1200 sq.ft"
-            >
-
-          </div>
-
         </div>
 
         <!-- PROPERTY B -->
-        <div class="property-card card">
+        <div class="property-card">
 
           <div class="property-header">
 
@@ -352,10 +270,7 @@
               </h2>
 
               <p class="card-subtext">
-
-                Enter ownership details for
-                the second property.
-
+                Enter details for the second property.
               </p>
 
             </div>
@@ -388,7 +303,7 @@
               id="bBase"
               type="text"
               inputmode="numeric"
-              placeholder="Enter property price"
+              placeholder="Property price"
             >
 
           </div>
@@ -460,7 +375,7 @@
           <div class="form-group">
 
             <label for="bMaintenance">
-              1 Year Maintenance
+              Maintenance Charges
             </label>
 
             <input
@@ -473,84 +388,12 @@
 
           </div>
 
-          <div class="form-group">
-
-            <label for="bFloorRise">
-              Floor Rise Charges
-            </label>
-
-            <input
-              class="form-input"
-              id="bFloorRise"
-              type="text"
-              inputmode="numeric"
-              placeholder="Floor rise charges"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="bLegal">
-              Legal Fees
-            </label>
-
-            <input
-              class="form-input"
-              id="bLegal"
-              type="text"
-              inputmode="numeric"
-              placeholder="Legal fees"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="bSuperArea">
-              Super Built-up Area
-            </label>
-
-            <input
-              class="form-input"
-              id="bSuperArea"
-              type="text"
-              inputmode="numeric"
-              placeholder="1500 sq.ft"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label for="bCarpetArea">
-              Carpet Area
-            </label>
-
-            <input
-              class="form-input"
-              id="bCarpetArea"
-              type="text"
-              inputmode="numeric"
-              placeholder="1200 sq.ft"
-            >
-
-          </div>
-
         </div>
 
       </div>
 
       <!-- ACTIONS -->
-      <div
-        class="flex"
-        style="
-          gap:16px;
-          margin-top:32px;
-          flex-wrap:wrap;
-          justify-content:center;
-        "
-      >
+      <div class="compare-actions">
 
         <button
           id="compareBtn"
@@ -576,13 +419,14 @@
 
       </div>
 
-      <!-- RESULTS -->
+      <!-- RESULT -->
       <div
         id="resultCard"
-        class="analysis-result"
+        class="result-section"
         style="display:none;"
       >
 
+        <!-- SUMMARY -->
         <div class="summary-card">
 
           <h2 style="margin-bottom:20px;">
@@ -597,9 +441,13 @@
         <div
           id="comparisonTable"
           class="compare-table-wrapper"
-          style="margin-top:40px;"
-        >
-        </div>
+        ></div>
+
+        <!-- OWNERSHIP -->
+        <div
+          id="ownershipProjection"
+          style="margin-top:32px;"
+        ></div>
 
         <!-- CHART -->
         <div
@@ -610,10 +458,6 @@
 
           <div class="chart-card">
 
-            <h2 style="margin-bottom:20px;">
-              Financial Projection
-            </h2>
-
             <canvas id="appreciationChart"></canvas>
 
           </div>
@@ -623,7 +467,8 @@
         <!-- AI -->
         <div
           id="aiSection"
-          style="display:none; margin-top:30px;"
+          class="ai-section"
+          style="display:none;"
         >
 
           <div class="summary-card">
@@ -641,16 +486,22 @@
         <!-- PDF -->
         <div
           style="
-            margin-top:20px;
-            text-align:center;
+            margin-top: 28px;
+            text-align: center;
           "
         >
 
           <button
             class="btn btn-primary"
-            onclick="downloadComparisonPDF(window.latestComparisonData)"
+            onclick="
+              downloadComparisonPDF(
+                window.latestComparisonData
+              )
+            "
           >
+
             Download Comparison PDF
+
           </button>
 
         </div>
@@ -663,8 +514,43 @@
 
   <!-- FOOTER -->
   <div id="footer"></div>
+  <script>
 
-  <div id="pdfRoot"></div>
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    try {
+
+      // LOAD NAVBAR + FOOTER
+      if (
+        typeof loadSharedComponents ===
+        "function"
+      ) {
+
+        await loadSharedComponents();
+      }
+
+      // INIT DROPDOWNS
+      if (
+        typeof initDropdowns ===
+        "function"
+      ) {
+
+        initDropdowns();
+      }
+
+    } catch (err) {
+
+      console.error(
+        "Compare page init failed:",
+        err
+      );
+    }
+  }
+);
+
+</script>
 
 </body>
 

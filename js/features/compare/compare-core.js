@@ -44,20 +44,25 @@ function formatNumberInput(input) {
 // AUTO FORMAT
 // ==============================
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-  document
-     .querySelectorAll('input[inputmode="numeric"]')
-    .forEach(input => {
+    document
+      .querySelectorAll(
+        'input[inputmode="numeric"]'
+      )
+      .forEach(input => {
 
-      formatNumberInput(input);
-    });
+        formatNumberInput(input);
+      });
 
-  loadSavedComparison();
-});
+    loadSavedComparison();
+  }
+);
 
 // ==============================
-// LOCAL STORAGE AUTOSAVE
+// LOCAL STORAGE
 // ==============================
 
 function autoSaveComparison() {
@@ -82,7 +87,9 @@ function loadSavedComparison() {
 
   const saved =
     JSON.parse(
-      localStorage.getItem("compareDraft")
+      localStorage.getItem(
+        "compareDraft"
+      )
     );
 
   if (!saved) return;
@@ -93,6 +100,7 @@ function loadSavedComparison() {
       document.getElementById(id);
 
     if (input) {
+
       input.value = saved[id];
     }
   });
@@ -104,86 +112,14 @@ document.addEventListener(
 );
 
 // ==============================
-// GLOBAL TOTALS
+// GLOBALS
 // ==============================
 
 let totalA = 0;
 let totalB = 0;
 
 // ==============================
-// VALIDATION
-// ==============================
-
-function validateCompareForm() {
-
-  const requiredFields = [
-
-    "aName",
-    "aBase",
-    "aRegistration",
-    "aMaintenance",
-    "aSuperArea",
-
-    "bName",
-    "bBase",
-    "bRegistration",
-    "bMaintenance",
-    "bSuperArea"
-  ];
-
-  let valid = true;
-  let firstInvalid = null;
-
-  requiredFields.forEach(id => {
-
-    const input =
-      document.getElementById(id);
-
-    const error =
-      document.getElementById(`${id}Error`);
-
-    const value =
-      input?.value?.trim();
-
-    if (!value) {
-
-      valid = false;
-
-      input.classList.add("invalid");
-
-      if (error) {
-        error.classList.add("show");
-      }
-
-      if (!firstInvalid) {
-        firstInvalid = input;
-      }
-
-    } else {
-
-      input.classList.remove("invalid");
-
-      if (error) {
-        error.classList.remove("show");
-      }
-    }
-  });
-
-  if (firstInvalid) {
-
-    firstInvalid.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-
-    firstInvalid.focus();
-  }
-
-  return valid;
-}
-
-// ==============================
-// EMI
+// EMI CALCULATOR
 // ==============================
 
 function calculateEMI(
@@ -196,7 +132,10 @@ function calculateEMI(
     !principal ||
     !annualRate ||
     !years
-  ) return 0;
+  ) {
+
+    return 0;
+  }
 
   const monthlyRate =
     annualRate / 12 / 100;
@@ -225,9 +164,12 @@ function calculateEMI(
 // MAINTENANCE
 // ==============================
 
-function calculateFiveYearMaintenance(initial) {
+function calculateFiveYearMaintenance(
+  initial
+) {
 
   let total = 0;
+
   let current = initial;
 
   for (let i = 0; i < 5; i++) {
@@ -251,8 +193,91 @@ function calculateFutureValue(
 ) {
 
   return Math.round(
-    value * Math.pow(1 + rate, years)
+    value * Math.pow(
+      1 + rate,
+      years
+    )
   );
+}
+
+// ==============================
+// VALIDATION
+// ==============================
+
+function showValidationError(id) {
+
+  const input =
+    document.getElementById(id);
+
+  const error =
+    document.getElementById(
+      `${id}Error`
+    );
+
+  if (input) {
+
+    input.classList.add("invalid");
+  }
+
+  if (error) {
+
+    error.classList.add("show");
+  }
+}
+
+function clearValidationErrors() {
+
+  document
+    .querySelectorAll(".validation-error")
+    .forEach(error => {
+
+      error.classList.remove("show");
+    });
+
+  document
+    .querySelectorAll("input")
+    .forEach(input => {
+
+      input.classList.remove("invalid");
+    });
+}
+
+function validateComparisonInputs() {
+
+  clearValidationErrors();
+
+  let isValid = true;
+
+  const requiredFields = [
+
+    "aName",
+    "aBase",
+    "aRegistration",
+    "aMaintenance",
+
+    "bName",
+    "bBase",
+    "bRegistration",
+    "bMaintenance"
+  ];
+
+  requiredFields.forEach(id => {
+
+    const input =
+      document.getElementById(id);
+
+    if (
+      !input ||
+      !input.value.trim()
+    ) {
+
+      showValidationError(id);
+
+      isValid = false;
+    }
+  });
+
+  return isValid;
 }
 
 // ==============================
@@ -262,31 +287,39 @@ function calculateFutureValue(
 async function compareAdvanced() {
 
   const btn =
-    document.getElementById("compareBtn");
+    document.getElementById(
+      "compareBtn"
+    );
 
   btn.disabled = true;
-  btn.innerText = "Analyzing...";
 
-  try {
+  btn.innerText =
+    "Analyzing...";
+    if (!validateComparisonInputs()) {
 
-    const valid =
-      validateCompareForm();
-
-    if (!valid) {
   btn.disabled = false;
-  btn.innerText = "Compare Properties";
+
+  btn.innerText =
+    "Compare Properties";
+
   return;
 }
+
+  try {
 
     // ==========================
     // PROPERTY NAMES
     // ==========================
 
     const aName =
-      document.getElementById("aName").value;
+      document.getElementById(
+        "aName"
+      )?.value || "Property A";
 
     const bName =
-      document.getElementById("bName").value;
+      document.getElementById(
+        "bName"
+      )?.value || "Property B";
 
     // ==========================
     // PROPERTY A
@@ -294,20 +327,66 @@ async function compareAdvanced() {
 
     const a = {
 
-      base: getCompareValue("aBase"),
-      gst: getCompareValue("aGst"),
-      registration: getCompareValue("aRegistration"),
-      parking: getCompareValue("aParking"),
-      clubhouse: getCompareValue("aClubhouse"),
-      maintenance: getCompareValue("aMaintenance"),
-      floorRise: getCompareValue("aFloorRise"),
-      legal: getCompareValue("aLegal"),
-      superArea: getCompareValue("aSuperArea"),
-      carpetArea: getCompareValue("aCarpetArea"),
-      rent: getCompareValue("aRent"),
-      loan: getCompareValue("aLoan"),
-      interest: getCompareValue("aInterest"),
-      tenure: getCompareValue("aTenure")
+      base:
+        getCompareValue("aBase"),
+
+      gst:
+        getCompareValue("aGst"),
+
+      registration:
+        getCompareValue(
+          "aRegistration"
+        ),
+
+      parking:
+        getCompareValue(
+          "aParking"
+        ),
+
+      clubhouse:
+        getCompareValue(
+          "aClubhouse"
+        ),
+
+      maintenance:
+        getCompareValue(
+          "aMaintenance"
+        ),
+
+      floorRise:
+        getCompareValue(
+          "aFloorRise"
+        ),
+
+      legal:
+        getCompareValue(
+          "aLegal"
+        ),
+
+      superArea:
+        getCompareValue(
+          "aSuperArea"
+        ),
+
+      rent:
+        getCompareValue(
+          "aRent"
+        ),
+
+      loan:
+        getCompareValue(
+          "aLoan"
+        ),
+
+      interest:
+        getCompareValue(
+          "aInterest"
+        ),
+
+      tenure:
+        getCompareValue(
+          "aTenure"
+        )
     };
 
     // ==========================
@@ -316,24 +395,70 @@ async function compareAdvanced() {
 
     const b = {
 
-      base: getCompareValue("bBase"),
-      gst: getCompareValue("bGst"),
-      registration: getCompareValue("bRegistration"),
-      parking: getCompareValue("bParking"),
-      clubhouse: getCompareValue("bClubhouse"),
-      maintenance: getCompareValue("bMaintenance"),
-      floorRise: getCompareValue("bFloorRise"),
-      legal: getCompareValue("bLegal"),
-      superArea: getCompareValue("bSuperArea"),
-      carpetArea: getCompareValue("bCarpetArea"),
-      rent: getCompareValue("bRent"),
-      loan: getCompareValue("bLoan"),
-      interest: getCompareValue("bInterest"),
-      tenure: getCompareValue("bTenure")
+      base:
+        getCompareValue("bBase"),
+
+      gst:
+        getCompareValue("bGst"),
+
+      registration:
+        getCompareValue(
+          "bRegistration"
+        ),
+
+      parking:
+        getCompareValue(
+          "bParking"
+        ),
+
+      clubhouse:
+        getCompareValue(
+          "bClubhouse"
+        ),
+
+      maintenance:
+        getCompareValue(
+          "bMaintenance"
+        ),
+
+      floorRise:
+        getCompareValue(
+          "bFloorRise"
+        ),
+
+      legal:
+        getCompareValue(
+          "bLegal"
+        ),
+
+      superArea:
+        getCompareValue(
+          "bSuperArea"
+        ),
+
+      rent:
+        getCompareValue(
+          "bRent"
+        ),
+
+      loan:
+        getCompareValue(
+          "bLoan"
+        ),
+
+      interest:
+        getCompareValue(
+          "bInterest"
+        ),
+
+      tenure:
+        getCompareValue(
+          "bTenure"
+        )
     };
 
     // ==========================
-    // TOTALS
+    // TOTAL COST
     // ==========================
 
     totalA =
@@ -356,23 +481,33 @@ async function compareAdvanced() {
       b.floorRise +
       b.legal;
 
+    // ==========================
+    // WINNER
+    // ==========================
+
     const winner =
       totalA < totalB
         ? aName
         : bName;
 
     const savings =
-      Math.abs(totalA - totalB);
+      Math.abs(
+        totalA - totalB
+      );
 
     // ==========================
-    // PRICE PER SQFT
+    // PRICE / SQFT
     // ==========================
 
     const priceSqftA =
-      totalA / a.superArea;
+      a.superArea
+        ? totalA / a.superArea
+        : 0;
 
     const priceSqftB =
-      totalB / b.superArea;
+      b.superArea
+        ? totalB / b.superArea
+        : 0;
 
     // ==========================
     // EMI
@@ -399,19 +534,25 @@ async function compareAdvanced() {
     const yieldA =
       a.rent
         ? (
-          ((a.rent * 12) / totalA) * 100
+          (
+            (a.rent * 12) /
+            totalA
+          ) * 100
         ).toFixed(2)
         : 0;
 
     const yieldB =
       b.rent
         ? (
-          ((b.rent * 12) / totalB) * 100
+          (
+            (b.rent * 12) /
+            totalB
+          ) * 100
         ).toFixed(2)
         : 0;
 
     // ==========================
-    // GLOBAL PDF DATA
+    // PDF DATA
     // ==========================
 
     window.latestComparisonData = {
@@ -419,59 +560,17 @@ async function compareAdvanced() {
       aName,
       bName,
 
-      winner,
+      totalA,
+      totalB,
 
+      winner,
       savings,
 
-      timestamp:
-        new Date().toLocaleString(),
-        score:
-  totalA < totalB
-    ? 84
-    : 79,
+      yieldA,
+      yieldB,
 
-      recommendation:
-        `${winner} appears financially stronger based on ownership cost, appreciation potential and financial efficiency.`,
-
-        ownershipProjection: {
-
-  propertyA:
-    calculateFutureValue(
-      totalA
-    ),
-
-  propertyB:
-    calculateFutureValue(
-      totalB
-    )
-    },
-
-      rows: [
-
-        {
-          label: "Total Cost",
-          a: formatCurrency(totalA),
-          b: formatCurrency(totalB)
-        },
-
-        {
-          label: "Price/Sq.ft",
-          a: formatCurrency(priceSqftA),
-          b: formatCurrency(priceSqftB)
-        },
-
-        {
-          label: "Monthly EMI",
-          a: formatCurrency(emiA),
-          b: formatCurrency(emiB)
-        },
-
-        {
-          label: "Rental Yield",
-          a: `${yieldA}%`,
-          b: `${yieldB}%`
-        }
-      ]
+      emiA,
+      emiB
     };
 
     // ==========================
@@ -482,8 +581,16 @@ async function compareAdvanced() {
       "resultCard"
     ).style.display = "block";
 
+    document.getElementById(
+      "chartSection"
+    ).style.display = "block";
+
+    document.getElementById(
+      "aiSection"
+    ).style.display = "block";
+
     // ==========================
-    // SUMMARY
+    // RESULT SUMMARY
     // ==========================
 
     document.getElementById(
@@ -498,8 +605,15 @@ async function compareAdvanced() {
         </h2>
 
         <p>
+
           Estimated Savings:
-          ${formatCurrency(savings)}
+
+          <strong>
+            ${formatCurrency(
+              savings
+            )}
+          </strong>
+
         </p>
 
       </div>
@@ -513,102 +627,172 @@ async function compareAdvanced() {
       "comparisonTable"
     ).innerHTML = `
 
-    <div class="result-card">
-    <div class="comparison-table">  
-    <table class="pdf-table">
+      <div class="compare-table-wrapper">
 
-        <tr>
-          <th>Metric</th>
-          <th>${aName}</th>
-          <th>${bName}</th>
-        </tr>
+        <table class="compare-table">
 
-        <tr>
-          <td>Total Cost</td>
-          <td>${formatCurrency(totalA)}</td>
-          <td>${formatCurrency(totalB)}</td>
-        </tr>
+          <tr>
 
-        <tr>
-          <td>Price/Sq.ft</td>
-          <td>${formatCurrency(priceSqftA)}</td>
-          <td>${formatCurrency(priceSqftB)}</td>
-        </tr>
+            <th>
+              Metric
+            </th>
 
-        <tr>
-          <td>Rental Yield</td>
-          <td>${yieldA}%</td>
-          <td>${yieldB}%</td>
-        </tr>
+            <th>
+              ${aName}
+            </th>
 
-        <tr>
-          <td>Monthly EMI</td>
-          <td>${formatCurrency(emiA)}</td>
-          <td>${formatCurrency(emiB)}</td>
-        </tr>
+            <th>
+              ${bName}
+            </th>
 
-      </table>
-      </div>
+          </tr>
+
+          <tr>
+
+            <td>
+              Total Cost
+            </td>
+
+            <td>
+              ${formatCurrency(
+                totalA
+              )}
+            </td>
+
+            <td>
+              ${formatCurrency(
+                totalB
+              )}
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>
+              Price / Sq.ft
+            </td>
+
+            <td>
+              ${formatCurrency(
+                priceSqftA
+              )}
+            </td>
+
+            <td>
+              ${formatCurrency(
+                priceSqftB
+              )}
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>
+              Rental Yield
+            </td>
+
+            <td>
+              ${yieldA}%
+            </td>
+
+            <td>
+              ${yieldB}%
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td>
+              Monthly EMI
+            </td>
+
+            <td>
+              ${formatCurrency(
+                emiA
+              )}
+            </td>
+
+            <td>
+              ${formatCurrency(
+                emiB
+              )}
+            </td>
+
+          </tr>
+
+        </table>
+
       </div>
     `;
-
-    // ==========================
-    // SHOW SECTIONS
-    // ==========================
-
-    document.getElementById(
-      "chartSection"
-    ).style.display = "block";
-
-    document.getElementById(
-      "aiSection"
-    ).style.display = "block";
 
     // ==========================
     // CHARTS
     // ==========================
 
-    renderAppreciationChart({
+    if (
+      typeof renderAppreciationChart ===
+      "function"
+    ) {
 
-      aName,
-      bName,
+      renderAppreciationChart({
 
-      aBase: a.base,
-      bBase: b.base
-    });
+        aName,
+        bName,
+
+        aBase: a.base,
+        bBase: b.base
+      });
+    }
 
     // ==========================
     // OWNERSHIP
     // ==========================
 
-    renderOwnershipProjection({
+    if (
+      typeof renderOwnershipProjection ===
+      "function"
+    ) {
 
-      aName,
-      bName,
+      renderOwnershipProjection({
 
-      totalA,
-      totalB,
+        aName,
+        bName,
 
-      maintenanceA: a.maintenance,
-      maintenanceB: b.maintenance
-    });
+        totalA,
+        totalB,
+
+        maintenanceA:
+          a.maintenance,
+
+        maintenanceB:
+          b.maintenance
+      });
+    }
 
     // ==========================
-    // AI RECOMMENDATION
+    // AI
     // ==========================
 
-    renderAIRecommendation({
+    if (
+      typeof renderAIRecommendation ===
+      "function"
+    ) {
 
-      winner,
+      renderAIRecommendation({
 
-      savings,
+        winner,
+        savings,
 
-      yieldA,
-      yieldB,
+        yieldA,
+        yieldB,
 
-      emiA,
-      emiB
-    });
+        emiA,
+        emiB
+      });
+    }
 
   } catch (err) {
 
@@ -628,37 +812,49 @@ async function compareAdvanced() {
 }
 
 // ==============================
-// Reset
+// SAVE
+// ==============================
+
+function saveComparison() {
+
+  localStorage.setItem(
+
+    "lastComparison",
+
+    JSON.stringify(
+      window.latestComparisonData || {}
+    )
+  );
+
+  alert(
+    "Comparison saved successfully"
+  );
+}
+
+// ==============================
+// RESET
 // ==============================
 
 function resetComparison() {
 
-  // CLEAR ALL INPUTS
   document
     .querySelectorAll("input")
     .forEach(input => {
 
       input.value = "";
-
-      input.classList.remove(
-        "invalid"
-      );
     });
 
-  // CLEAR VALIDATION ERRORS
-  document
-    .querySelectorAll(".validation-error")
-    .forEach(error => {
-
-      error.classList.remove("show");
-    });
-
-  // REMOVE LOCAL STORAGE
   localStorage.removeItem(
     "compareDraft"
   );
 
-  // HIDE RESULT SECTIONS
+  localStorage.removeItem(
+    "lastComparison"
+  );
+
+  window.latestComparisonData =
+    null;
+
   document.getElementById(
     "resultCard"
   ).style.display = "none";
@@ -671,107 +867,11 @@ function resetComparison() {
     "aiSection"
   ).style.display = "none";
 
-  // CLEAR CONTENT
-  document.getElementById(
-    "resultDetails"
-  ).innerHTML = "";
-
-  document.getElementById(
-    "comparisonTable"
-  ).innerHTML = "";
-
-  document.getElementById(
-    "ownershipProjection"
-  ).innerHTML = "";
-
-  document.getElementById(
-    "aiRecommendation"
-  ).innerHTML = "";
-
-  // DESTROY CHARTS
   if (
-    window.appreciationChartInstance
+    typeof destroyExistingChart ===
+    "function"
   ) {
 
-    window.appreciationChartInstance.destroy();
-
-    window.appreciationChartInstance =
-      null;
+    destroyExistingChart();
   }
-
-  // RESET DATA
-  window.latestComparisonData =
-    null;
-
-  // SCROLL TO TOP
-  window.scrollTo({
-
-    top: 0,
-
-    behavior: "smooth"
-  });
-}
-
-// ==============================
-// SAVE COMPARISON
-// ==============================
-
-async function saveComparison() {
-
-  if (!totalA || !totalB) {
-
-    alert(
-      "Please compare properties first"
-    );
-
-    return;
-  }
-
-  const user =
-    await getUser();
-
-  if (!user) {
-
-    alert(
-      "Please login"
-    );
-
-    return;
-  }
-
-  const payload = {
-
-    user_id: user.id,
-
-    property_a:
-      document.getElementById("aName").value,
-
-    property_b:
-      document.getElementById("bName").value,
-
-    property_a_price: totalA,
-
-    property_b_price: totalB,
-
-    created_at:
-      new Date().toISOString()
-  };
-
-  const { error } =
-    await requireSupabase()
-      .from("comparisons")
-      .insert([payload]);
-
-  if (error) {
-
-    console.error(error);
-
-    alert(error.message);
-
-    return;
-  }
-
-  alert(
-    "Comparison saved successfully"
-  );
 }
