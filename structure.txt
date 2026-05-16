@@ -1,0 +1,66 @@
+Frontend -
+
+propwise/
+│
+├── assets/
+│
+├── components/
+│
+├── css/
+│   ├── core/
+│   ├── layout/
+│   ├── components/
+│   ├── pages/
+│   └── main.css
+│
+├── js/
+│   ├── core/
+│   │   ├── config.js
+│   │   ├── api.js
+│   │   ├── supabase.js
+│   │   ├── storage.js
+│   │   ├── component-loader.js
+│   │   └── utils.js
+│   │
+│   ├── features/
+│   │   ├── analyzer/
+│   │   ├── compare/
+│   │   ├── reports/
+│   │   └── dashboard/
+│   │
+│   ├── pages/
+│   │   ├── home.js
+│   │   ├── compare-page.js
+│   │   ├── report-page.js
+│   │   └── dashboard-page.js
+│   │
+│   └── bootstrap.js
+│
+├── pages...
+│
+└── index.html
+
+Backend -
+backend/
+│
+├── app/
+│   │
+│   ├── routes/
+│   │   └── analyze.py
+│   │
+│   ├── services/
+│   │   ├── pdf_service.py
+│   │   ├── ai_service.py
+│   │   └── clause_service.py
+│   │
+│   ├── core/
+│   │   ├── config.py
+│   │   └── prompts.py
+│   │
+│   ├── models/
+│   │   └── response_models.py
+│   │
+│   └── main.py
+│
+├── requirements.txt
+└── .env

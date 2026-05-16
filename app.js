@@ -9,9 +9,9 @@ function initSupabase() {
 
   if (!supabaseClient) {
     supabaseClient = window.supabase.createClient(
-      "https://awlgjsfhoeijpyusjthl.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw"
-    );
+  window.PROPWISE_CONFIG.SUPABASE.URL,
+  window.PROPWISE_CONFIG.SUPABASE.ANON_KEY
+);
   }
 }
 
@@ -21,7 +21,7 @@ initSupabase();
 // API_BASEURL
 // =====================
 const API_BASE =
-  "https://propwise-backend-0b32.onrender.com";
+  window.PROPWISE_CONFIG.API.BASE_URL;
 
 async function analyzeAgreement(text, file = null) {
 
@@ -46,7 +46,7 @@ async function analyzeAgreement(text, file = null) {
 
 const timeout = setTimeout(() => {
   controller.abort();
-}, 90000); // 90 sec timeout for Render cold start
+}, window.PROPWISE_CONFIG.API.TIMEOUT);// 90 sec timeout for Render cold start
 
 const response = await fetch(
   `${API_BASE}/analyze`,
