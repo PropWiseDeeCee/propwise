@@ -150,6 +150,20 @@ async function analyzeAgreementHandler() {
   }
 }
 
+function loadSampleAgreement() {
+  const input =
+    document.getElementById("agreementText");
+
+  if (!input) return;
+
+  input.value = `
+Builder shall not be liable for delay.
+No penalty clause mentioned.
+Parking not defined.
+Maintenance applicable.
+`;
+}
+
 
 // ==============================
 // GLOBAL EXPORT
@@ -157,3 +171,6 @@ async function analyzeAgreementHandler() {
 
 window.analyzeAgreementHandler =
   analyzeAgreementHandler;
+
+window.loadSampleAgreement =
+  loadSampleAgreement;

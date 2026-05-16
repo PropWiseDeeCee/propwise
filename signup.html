@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login | PropWise India</title>
+  <title>Sign Up | PropWise India</title>
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
   <meta
     name="description"
-    content="Login to PropWise India to access saved property reports, comparisons, and agreement analysis history."
+    content="Create a PropWise India account to save property comparisons and agreement analysis reports."
   >
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,20 +50,33 @@
   <div id="navbar"></div>
 
   <main class="auth-page">
-    <section class="auth-card" aria-labelledby="loginTitle">
+    <section class="auth-card" aria-labelledby="signupTitle">
       <div class="auth-header">
         <div class="auth-icon" aria-hidden="true">
           PW
         </div>
-        <h1 id="loginTitle" class="auth-title">
-          Welcome Back
+        <h1 id="signupTitle" class="auth-title">
+          Create Account
         </h1>
         <p class="auth-subtitle">
-          Login to access your reports and saved data.
+          Save reports, comparisons, and property checks in one place.
         </p>
       </div>
 
-      <form id="loginForm" class="auth-form">
+      <form id="signupForm" class="auth-form">
+        <div class="form-group">
+          <label class="form-label" for="fullName">
+            Full Name
+          </label>
+          <input
+            id="fullName"
+            class="form-input"
+            type="text"
+            autocomplete="name"
+            placeholder="Your name"
+          >
+        </div>
+
         <div class="form-group">
           <label class="form-label" for="email">
             Email
@@ -86,18 +99,19 @@
             id="password"
             class="form-input"
             type="password"
-            autocomplete="current-password"
-            placeholder="Enter your password"
+            autocomplete="new-password"
+            placeholder="At least 6 characters"
+            minlength="6"
             required
           >
         </div>
 
         <button
-          id="loginBtn"
+          id="signupBtn"
           class="btn btn-primary btn-block"
           type="submit"
         >
-          Login
+          Create Account
         </button>
 
         <div
@@ -109,12 +123,12 @@
       </form>
 
       <p class="auth-switch">
-        New to PropWise?
-        <a href="signup.html">Create an account</a>
+        Already have an account?
+        <a href="login.html">Login</a>
       </p>
 
       <p class="auth-legal">
-        By continuing, you agree to our
+        By creating an account, you agree to our
         <a href="terms.html">Terms</a> and
         <a href="privacy.html">Privacy Policy</a>.
       </p>

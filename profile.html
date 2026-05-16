@@ -25,15 +25,20 @@
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- APP -->
   <script src="js/core/config.js"></script>
+  <script src="js/core/path.js"></script>
+  <script src="js/core/dom.js"></script>
   <script src="js/core/utils.js"></script>
+  <script src="js/core/supabase-client.js"></script>
   <script src="js/core/component-loader.js"></script>
   <script src="js/core/api.js"></script>
+  <script src="js/core/dropdowns.js"></script>
+  <script src="js/core/analytics.js"></script>
+
+  <!-- APP -->
   
-  <script src="js/features/dashboard/dashboard-ui.js"></script>
-  <script defer src="app.js"></script>
+  <script src="js/features/profile/profile-ui.js"></script>
+  <script defer src="js/core/bootstrap.js"></script>
   <!-- Favicon -->
 <link
   rel="icon"
@@ -52,12 +57,10 @@
 />
 </head>
 
-<body onload="initPage(true); loadProfilePage()">
+<body data-page="profile">
 
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div id="navbar"></div>
-  </header>
+  <div id="navbar"></div>
 
   <!-- CONTENT -->
   <div class="container">
@@ -133,137 +136,6 @@
     <a href="terms.html">Terms & Conditions</a>
   </footer>
 
-  <!-- PAGE SCRIPT -->
-  <script>
-
-    async function loadProfilePage() {
-
-      const profile = await getProfile();
-
-      const el = document.getElementById("profileContent");
-
-      if (!profile) {
-        el.innerHTML = `
-          <p>Unable to load profile.</p>
-        `;
-        return;
-      }
-
-      // SHOW ADMIN CARD
-      if (profile.role === "super_admin") {
-        document.getElementById("adminQuickCard").style.display = "block";
-      }
-
-      el.innerHTML = `
-
-        <!-- PROFILE INFO -->
-        <div>
-
-          <div style="margin-bottom:25px;">
-
-            <label><strong>Full Name</strong></label>
-
-            <input
-              id="fullName"
-              type="text"
-              placeholder="Enter your full name"
-              value="${escapeHtml(profile.full_name || "")}"
-            />
-
-          </div>
-
-          <div style="margin-bottom:25px;">
-
-            <label><strong>Email Address</strong></label>
-
-            <input
-              type="email"
-              value="${escapeHtml(profile.email)}"
-              disabled
-              style="background:#f3f4f6;"
-            />
-
-          </div>
-
-          <div style="margin-bottom:25px;">
-
-            <label><strong>Role</strong></label>
-
-            <input
-              type="text"
-              value="${escapeHtml(profile.role)}"
-              disabled
-              style="background:#f3f4f6;"
-            />
-
-          </div>
-
-          <div style="margin-bottom:25px;">
-
-            <label><strong>Member Since</strong></label>
-
-            <input
-              type="text"
-              value="${escapeHtml(new Date(profile.created_at).toLocaleDateString())}"
-              disabled
-              style="background:#f3f4f6;"
-            />
-
-          </div>
-
-          <!-- SAVE BUTTON -->
-          <button onclick="updateProfile()">
-            Save Profile
-          </button>
-
-          <!-- STATUS -->
-          <div
-            id="profileMessage"
-            style="margin-top:15px; font-size:13px;"
-          ></div>
-
-        </div>
-
-      `;
-    }
-
-    async function updateProfile() {
-
-      const msg = document.getElementById("profileMessage");
-
-      msg.innerHTML = "Saving...";
-
-      const user = await getUser();
-      const profile = await getProfile();
-
-      const fullName = document.getElementById("fullName").value;
-
-      const { error } = await supabaseClient
-        .from("profiles")
-        .update({
-  full_name: fullName
-})
-.eq("id", user.id);
-
-      if (error) {
-
-        msg.innerHTML = `
-          <span style="color:#dc2626;">
-            ${escapeHtml(error.message)}
-          </span>
-        `;
-
-        return;
-      }
-
-      msg.innerHTML = `
-        <span style="color:#16a34a;">
-          Profile updated successfully
-        </span>
-      `;
-    }
-
-  </script>
 
   <div id="footer"></div>
 

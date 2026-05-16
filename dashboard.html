@@ -36,29 +36,30 @@ Dashboard | Saved Reports & Comparisons | PropWise India
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/core/config.js"></script>
+  <script src="js/core/path.js"></script>
+  <script src="js/core/dom.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/supabase-client.js"></script>
+  <script src="js/core/component-loader.js"></script>
+  <script src="js/core/api.js"></script>
+  <script src="js/core/dropdowns.js"></script>
+  <script src="js/core/analytics.js"></script>
 
   <!-- APP -->
-   <script src="js/core/config.js"></script>
-   <script src="js/core/utils.js"></script>
-   <script src="js/core/component-loader.js"></script>
-   <script src="js/core/api.js"></script>
    
    <script src="js/features/dashboard/dashboard-ui.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="js/core/bootstrap.js"></script>
    <!-- Favicon -->
 <link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="shortcut icon" href="/assets/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/favicon.png">
 </head>
 
-<body onload="initPage(true); loadDashboard(); loadReports()">
+<body data-page="dashboard">
 
 <!-- NAVBAR -->
-<header class="navbar">
-
-   <div id="navbar"></div>
-
-</header>
+<div id="navbar"></div>
 
 <!-- CONTENT -->
 <div class="container">

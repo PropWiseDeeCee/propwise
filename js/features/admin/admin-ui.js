@@ -2,80 +2,100 @@
 // ADMIN UI
 // ==============================
 
-async function loadAdminDashboard() {
+async function loadAdmin() {
+  const adminEl =
+    document.getElementById("admin");
 
-  try {
+  if (!adminEl) return;
 
-    const user =
-      await getUser();
+  adminEl.innerHTML = `
+    <section class="admin-section">
+      <div class="loading">Checking admin access...</div>
+    </section>
+  `;
 
-    if (!user) {
+  const user = await getUser();
 
-      window.location.href =
-        appPath("login.html");
+  if (!user) {
+    window.location.href =
+      appPath("login.html");
 
-      return;
-    }
-
-    const allowed =
-      await isSuperAdmin(user.id);
-
-    if (!allowed) {
-
-      alert("Unauthorized");
-
-      window.location.href =
-        appPath("index.html");
-
-      return;
-    }
-
-    const adminEl =
-      document.getElementById(
-        "adminMetrics"
-      );
-
-    if (!adminEl) return;
-
-    adminEl.innerHTML = `
-      <div class="loading">
-        Loading admin dashboard...
-      </div>
-    `;
-
-    const { data, error } =
-      await window
-        .getSupabaseClient()
-        .from("comparisons")
-        .select("*");
-
-    if (error) {
-      throw error;
-    }
-
-    adminEl.innerHTML = `
-
-      <div class="metric-card">
-        <h3>Total Reports</h3>
-        <h2>${data.length}</h2>
-      </div>
-
-    `;
-
-  } catch (error) {
-
-    console.error(error);
-
-    showError(
-      "Failed to load admin dashboard"
-    );
+    return;
   }
+
+  const profile = await getProfile();
+
+  if (!isAdminRole(profile?.role)) {
+    adminEl.innerHTML = `
+      <section class="admin-section">
+        <div class="admin-access-card">
+          <h1>Admin Access Required</h1>
+          <p>
+            You are signed in as
+            <strong>${escapeHtml(user.email || "this user")}</strong>,
+            but this account is not marked as an admin.
+          </p>
+          <p class="small-text">
+            Current role: ${escapeHtml(profile?.role || "user")}
+          </p>
+          <a class="btn btn-primary" href="dashboard.html">
+            Go to Dashboard
+          </a>
+        </div>
+      </section>
+    `;
+
+    return;
+  }
+
+  adminEl.innerHTML = `
+    <section class="admin-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Admin Dashboard</h1>
+          <p class="admin-subtitle">
+            Platform activity, saved comparisons, users and visitor journeys.
+          </p>
+        </div>
+
+        <div class="admin-actions">
+          <a class="btn btn-outline" href="dashboard.html">
+            Dashboard
+          </a>
+        </div>
+      </div>
+
+      <div id="adminMetrics" class="admin-metrics">
+        <div class="loading">Loading admin metrics...</div>
+      </div>
+
+      <div class="admin-panel-grid">
+        <div class="card">
+          <h2>Top Pages</h2>
+          <div id="adminTopPages" class="admin-list">
+            <div class="loading">Loading top pages...</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Recent Activity</h2>
+          <div id="adminRecentActivity" class="admin-list">
+            <div class="loading">Loading recent activity...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>User Journeys</h2>
+        <div id="adminJourneys" class="admin-list">
+          <div class="loading">Loading journeys...</div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  await loadAdminAnalytics();
 }
 
-
-// ==============================
-// GLOBAL EXPORTS
-// ==============================
-
-window.loadAdminDashboard =
-  loadAdminDashboard;
+window.loadAdmin = loadAdmin;
+window.loadAdminDashboard = loadAdmin;

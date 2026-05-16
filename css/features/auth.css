@@ -4,7 +4,8 @@
 
 .auth-page {
 
-  min-height: 100vh;
+  min-height:
+    calc(100vh - var(--navbar-height));
 
   display: flex;
 
@@ -12,7 +13,8 @@
   justify-content: center;
 
   padding:
-    var(--space-12);
+    var(--space-16)
+    var(--space-6);
 
   background:
     linear-gradient(
@@ -48,6 +50,11 @@
     1px solid var(--color-border);
 }
 
+.auth-card:hover {
+
+  transform: none;
+}
+
 
 /* =========================================
    AUTH HEADER
@@ -80,13 +87,16 @@
   justify-content: center;
 
   border-radius:
-    50%;
+    var(--radius-lg);
 
   background:
     var(--color-primary-light);
 
   color:
     var(--color-primary);
+
+  font-weight:
+    var(--font-bold);
 }
 
 
@@ -104,7 +114,7 @@
 .auth-title {
 
   font-size:
-    var(--text-2xl);
+    var(--text-3xl);
 
   margin-bottom:
     var(--space-2);
@@ -122,4 +132,110 @@
 
   font-size:
     var(--text-base);
+}
+
+
+/* =========================================
+   AUTH FORM
+========================================= */
+
+.auth-form {
+
+  display: grid;
+
+  gap:
+    var(--space-5);
+}
+
+.auth-form .form-group {
+
+  margin-bottom: 0;
+}
+
+.auth-message {
+
+  min-height: 22px;
+
+  font-size:
+    var(--text-sm);
+
+  text-align: center;
+}
+
+.auth-message-error {
+
+  color:
+    var(--color-danger);
+}
+
+.auth-message-success {
+
+  color:
+    var(--color-success);
+}
+
+.auth-switch,
+.auth-legal {
+
+  text-align: center;
+}
+
+.auth-switch {
+
+  margin-top:
+    var(--space-6);
+
+  font-size:
+    var(--text-sm);
+}
+
+.auth-switch a,
+.auth-legal a {
+
+  color:
+    var(--color-primary);
+
+  font-weight:
+    var(--font-semibold);
+}
+
+.auth-legal {
+
+  margin-top:
+    var(--space-4);
+
+  font-size:
+    var(--text-xs);
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 640px) {
+
+  .auth-page {
+
+    align-items: flex-start;
+
+    padding:
+      var(--space-10)
+      var(--space-4);
+  }
+
+  .auth-card {
+
+    padding:
+      var(--space-6);
+  }
+
+  .auth-title {
+
+    font-size:
+      var(--text-2xl);
+  }
 }

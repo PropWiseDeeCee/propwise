@@ -66,6 +66,17 @@
   />
 
   <!-- CSS -->
+  <link rel="stylesheet" href="../css/core/variables.css" />
+  <link rel="stylesheet" href="../css/core/reset.css" />
+  <link rel="stylesheet" href="../css/core/typography.css" />
+  <link rel="stylesheet" href="../css/core/layout.css" />
+  <link rel="stylesheet" href="../css/components/buttons.css" />
+  <link rel="stylesheet" href="../css/components/cards.css" />
+  <link rel="stylesheet" href="../css/components/navbar.css" />
+  <link rel="stylesheet" href="../css/components/footer.css" />
+  <link rel="stylesheet" href="../css/components/forms.css" />
+  <link rel="stylesheet" href="../css/components/loaders.css" />
+  <link rel="stylesheet" href="../css/components/dropdowns.css" />
   <link rel="stylesheet" href="../styles.css" />
 
   <!-- FONTS -->
@@ -76,7 +87,16 @@
 
   <!-- APP -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="../app.js"></script>
+  <script src="../js/core/config.js"></script>
+  <script src="../js/core/path.js"></script>
+  <script src="../js/core/dom.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/core/supabase-client.js"></script>
+  <script src="../js/core/component-loader.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/dropdowns.js"></script>
+  <script src="../js/core/analytics.js"></script>
+  <script defer src="../js/core/bootstrap.js"></script>
 
   <!-- SCHEMA -->
   <script type="application/ld+json">
@@ -105,11 +125,9 @@
 
 </head>
 
-<body onload="initPage(false)">
+<body>
 
-<header class="navbar">
-  <div id="navbar"></div>
-</header>
+<div id="navbar"></div>
 
 <main class="container guide-page">
 

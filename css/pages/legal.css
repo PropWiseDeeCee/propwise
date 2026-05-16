@@ -1,0 +1,54 @@
+/* =========================================
+   LEGAL PAGES
+========================================= */
+
+.legal-page {
+
+  max-width: 900px;
+
+  margin: auto;
+
+  line-height: 1.8;
+}
+
+
+.legal-page h1 {
+
+  margin-bottom: 10px;
+}
+
+
+.legal-page h2 {
+
+  margin-top: 40px;
+
+  margin-bottom: 12px;
+}
+
+
+.legal-page ul {
+
+  padding-left: 22px;
+}
+
+
+.last-updated {
+
+  color: #6b7280;
+
+  margin-bottom: 30px;
+}
+
+
+.legal-disclaimer-box {
+
+  margin-top: 40px;
+
+  padding: 20px;
+
+  border-radius: 12px;
+
+  background: #f9fafb;
+
+  border: 1px solid #e5e7eb;
+}

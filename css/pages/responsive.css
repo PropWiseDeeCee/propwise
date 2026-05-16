@@ -1,0 +1,31 @@
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .hero-sub {
+
+    font-size: 17px;
+  }
+
+  .trust-row {
+
+    gap: 10px;
+  }
+
+  .final-cta h2 {
+
+    font-size: 30px;
+  }
+
+  .guide-hero h1 {
+
+    font-size: 32px;
+  }
+
+  .guide-subtitle {
+
+    font-size: 16px;
+  }
+}

@@ -28,10 +28,15 @@ About PropWise India | AI Property Intelligence Platform
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/core/config.js"></script>
+  <script src="js/core/path.js"></script>
+  <script src="js/core/dom.js"></script>
   <script src="js/core/utils.js"></script>
+  <script src="js/core/supabase-client.js"></script>
   <script src="js/core/component-loader.js"></script>
   <script src="js/core/api.js"></script>
-  <script defer src="app.js"></script>
+  <script src="js/core/dropdowns.js"></script>
+  <script src="js/core/analytics.js"></script>
+  <script defer src="js/core/bootstrap.js"></script>
 
   <!-- AdSense -->
   <script async 
@@ -101,11 +106,9 @@ About PropWise India | AI Property Intelligence Platform
 <link rel="apple-touch-icon" href="/assets/favicon.png">
 </head>
 
-<body onload="initPage(false)">
+<body>
 
-<header class="navbar">
-  <div id="navbar"></div>
-</header>
+<div id="navbar"></div>
 
 <div class="container legal-page">
 

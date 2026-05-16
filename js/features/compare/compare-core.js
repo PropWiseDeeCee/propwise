@@ -758,7 +758,7 @@ async function saveComparison() {
   };
 
   const { error } =
-    await supabaseClient
+    await requireSupabase()
       .from("comparisons")
       .insert([payload]);
 

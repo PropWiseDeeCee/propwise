@@ -44,6 +44,12 @@
   </url>
 
   <url>
+    <loc>https://propwise-zeta.vercel.app/signup.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
   <loc>
     https://propwise-zeta.vercel.app/guides/builder-buyer-agreement-checklist.html
   </loc>

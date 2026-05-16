@@ -26,10 +26,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/core/config.js"></script>
+  <script src="js/core/path.js"></script>
+  <script src="js/core/dom.js"></script>
   <script src="js/core/utils.js"></script>
+  <script src="js/core/supabase-client.js"></script>
   <script src="js/core/component-loader.js"></script>
   <script src="js/core/api.js"></script>
-  <script defer src="app.js"></script>
+  <script src="js/core/dropdowns.js"></script>
+  <script src="js/core/analytics.js"></script>
+  <script defer src="js/core/bootstrap.js"></script>
 
   <!-- Open Graph -->
 <meta property="og:type" content="website" />
@@ -84,11 +89,9 @@
 <link rel="shortcut icon" href="/assets/favicon.ico">
 <link rel="apple-touch-icon" href="/assets/favicon.png">
 </head>
-<body onload="initPage(false)">
+<body>
 
-<header class="navbar">
-  <div id="navbar"></div>
-</header>
+<div id="navbar"></div>
 
 <div class="container">
 
@@ -125,7 +128,7 @@
 
   <!-- GUIDE -->
   <a class="guide-card"
-     href="guides/hidden-charges-india.html">
+     href="guides/hidden-builder-charges-guide.html">
 
     <h3>
       Hidden Charges While Buying Property in India

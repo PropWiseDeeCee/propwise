@@ -43,7 +43,7 @@ as $$
     select 1
     from profiles
     where profiles.id = auth.uid()
-      and profiles.role = 'super_admin'
+      and replace(lower(profiles.role), '-', '_') in ('admin', 'super_admin')
   );
 $$;
 
@@ -82,7 +82,7 @@ to authenticated
 using (public.is_super_admin());
 
 update profiles
-set role = 'super_admin'
+set role = 'admin'
 where lower(email) = 'choudhury.diganta17@example.com';
 
 drop policy if exists "Super admins can read profiles" on profiles;

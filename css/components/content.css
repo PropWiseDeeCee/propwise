@@ -1,0 +1,125 @@
+/* =========================================
+   LISTS
+========================================= */
+
+ul {
+  padding-left: 18px;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+/* =========================================
+   PAYWALL
+========================================= */
+
+.paywall {
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7ed,
+      #ffffff
+    );
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  margin-top: 20px;
+}
+
+/* =========================================
+   DISCLAIMERS
+========================================= */
+
+.upload-consent {
+
+  margin-top: 18px;
+
+  padding: 16px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  background: #f9fafb;
+
+  font-size: 13px;
+
+  color: #4b5563;
+
+  line-height: 1.7;
+}
+
+
+.upload-consent ul {
+
+  margin-top: 10px;
+
+  padding-left: 18px;
+}
+
+
+.ai-disclaimer {
+
+  margin-top: 16px;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  color: #6b7280;
+
+  padding: 14px 16px;
+
+  border-left: 4px solid #d1d5db;
+
+  background: #f9fafb;
+
+  border-radius: 10px;
+}
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.validation-error {
+
+  display: none;
+
+  margin-top: 6px;
+
+  font-size: 13px;
+
+  color: #dc2626;
+}
+
+
+.validation-error.show {
+
+  display: block;
+}
+
+
+input.invalid {
+
+  border-color: #dc2626 !important;
+
+  background: #fef2f2;
+}
+
+
+.error-message {
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  margin-top: 10px;
+}
