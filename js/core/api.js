@@ -29,75 +29,33 @@ function requireSupabase() {
 const API_BASE =
   window.PROPWISE_CONFIG.API.BASE_URL;
 
-async function analyzeAgreement(text, file = null) {
+async function analyzeAgreement(file) {
 
-  try {
+  const formData =
+    new FormData();
 
-    const formData = new FormData();
+  formData.append("file", file);
 
-    if (file) {
+  const response =
+    await fetch(
+      `${window.PROPWISE_CONFIG.API.BASE_URL}/analyze`,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
 
-      formData.append("file", file);
+  const data =
+    await response.json();
 
-    } else {
+  if (!data.success) {
 
-      const blob = new Blob([text], {
-        type: "text/plain"
-      });
-
-      formData.append("file", blob, "agreement.txt");
-    }
-
-    const controller = new AbortController();
-
-const timeout = setTimeout(() => {
-  controller.abort();
-}, window.PROPWISE_CONFIG.API.TIMEOUT);// 90 sec timeout for Render cold start
-
-const response = await fetch(
-  `${API_BASE}/analyze`,
-  {
-    method: "POST",
-    body: formData,
-    signal: controller.signal
+    throw new Error(
+      data.error || "Analysis failed"
+    );
   }
-);
 
-clearTimeout(timeout);
-
-if (!response.ok) {
-  throw new Error("Backend request failed");
-}
-
-const data = await response.json();
-
-    if (!data.success) {
-
-      console.error(data);
-
-      return runChecks(text);
-    }
-
-    return {
-      critical: data.analysis.critical || [],
-      moderate: data.analysis.moderate || [],
-      info: [
-        data.analysis.summary || "AI analysis completed"
-      ],
-      aiScore: data.analysis.score || 50,
-      aiRisk: data.analysis.risk_level || "Medium"
-    };
-
-  } catch (err) {
-
-    console.warn(
-  "AI backend unavailable, using fallback rules"
-);
-
-console.error(err);
-
-return runChecks(text);
-  }
+  return data.analysis;
 }
 
 // ==============================

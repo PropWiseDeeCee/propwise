@@ -6,10 +6,18 @@ import json
 
 load_dotenv()
 
+# ==============================
+# OPENROUTER CLIENT
+# ==============================
+
 client = OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
 )
+
+# ==============================
+# SYSTEM PROMPT
+# ==============================
 
 SYSTEM_PROMPT = """
 You analyze Indian property agreements.
@@ -60,6 +68,9 @@ If agreement is incomplete or unclear:
 - mention ambiguity briefly
 """
 
+# ==============================
+# IMPORTANT KEYWORDS
+# ==============================
 
 IMPORTANT_KEYWORDS = [
     "possession",
@@ -79,6 +90,9 @@ IMPORTANT_KEYWORDS = [
     "default"
 ]
 
+# ==============================
+# CLAUSE EXTRACTION
+# ==============================
 
 def extract_relevant_clauses(text):
 
@@ -100,11 +114,15 @@ def extract_relevant_clauses(text):
     return "\n".join(selected[:80])
 
 
+# ==============================
+# MAIN ANALYZER
+# ==============================
+
 def analyze_agreement(text):
 
     relevant_text = extract_relevant_clauses(text)
 
-    # FALLBACK if keyword extraction weak
+    # Fallback if extraction weak
     if len(relevant_text.strip()) < 300:
         relevant_text = text[:4000]
 
@@ -114,52 +132,107 @@ Agreement clauses:
 {relevant_text[:6000]}
 """
 
-    response = client.chat.completions.create(
-        model="qwen/qwen-2.5-72b-instruct",
-        messages=[
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        temperature=0.1,
-        max_tokens=300
-    )
-
-    content = response.choices[0].message.content
-
-    # REMOVE markdown if model adds it
-    content = content.replace("```json", "").replace("```", "").strip()
-
-    # SAFETY CHECK
-    if not content.startswith("{"):
-
-        return {
-            "risk_level": "Medium",
-            "score": 50,
-            "critical": [],
-            "moderate": [
-                "Unexpected AI response format"
-            ],
-            "summary": content[:200]
-        }
-
     try:
-        return json.loads(content)
 
-    except Exception:
+        response = client.chat.completions.create(
+            model="openai/gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": SYSTEM_PROMPT
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.1,
+            max_tokens=300
+        )
+
+        print("RAW RESPONSE:")
+        print(response)
+
+        # ==============================
+        # SAFE CONTENT EXTRACTION
+        # ==============================
+
+        content = (
+            response
+            .choices[0]
+            .message
+            .content
+        )
+
+        # NULL SAFETY
+        if not content:
+
+            return {
+                "risk_level": "Medium",
+                "score": 50,
+                "critical": [],
+                "moderate": [
+                    "AI returned empty response"
+                ],
+                "summary": "No usable AI response received."
+            }
+
+        # ==============================
+        # CLEAN RESPONSE
+        # ==============================
+
+        content = (
+            content
+            .replace("```json", "")
+            .replace("```", "")
+            .strip()
+        )
+
+        # ==============================
+        # FORMAT VALIDATION
+        # ==============================
+
+        if not content.startswith("{"):
+
+            return {
+                "risk_level": "Medium",
+                "score": 50,
+                "critical": [],
+                "moderate": [
+                    "Unexpected AI response format"
+                ],
+                "summary": content[:200]
+            }
+
+        # ==============================
+        # PARSE JSON
+        # ==============================
+
+        result = json.loads(content)
+
+        # ==============================
+        # SAFETY DEFAULTS
+        # ==============================
+
+        result.setdefault("risk_level", "Medium")
+        result.setdefault("score", 50)
+        result.setdefault("critical", [])
+        result.setdefault("moderate", [])
+        result.setdefault("summary", "")
+
+        return result
+
+    except Exception as e:
+
+        print("AI ANALYSIS ERROR:")
+        print(str(e))
 
         return {
             "risk_level": "Medium",
             "score": 50,
             "critical": [],
             "moderate": [
-                "AI response parsing failed"
+                f"Analysis failed: {str(e)}"
             ],
-            "summary": "Agreement analyzed but structured parsing failed.",
-            "raw_response": content[:500]
+            "summary": "AI analysis could not be completed."
         }
