@@ -104,6 +104,13 @@
 
   <!-- PDF + DOCX -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+<script>
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
+</script>
   <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
 
 
@@ -426,8 +433,51 @@
   <div id="footer"></div>
 
   <script>
-    lucide.createIcons();
-  </script>
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    try {
+
+      // LOAD SHARED COMPONENTS
+      if (
+        typeof loadSharedComponents ===
+        "function"
+      ) {
+
+        await loadSharedComponents();
+      }
+
+      // INIT DROPDOWNS
+      if (
+        typeof initDropdowns ===
+        "function"
+      ) {
+
+        initDropdowns();
+      }
+
+      // LUCIDE ICONS
+      if (
+        typeof lucide !==
+        "undefined"
+      ) {
+
+        lucide.createIcons();
+      }
+
+    } catch (err) {
+
+      console.error(
+        "Tools page init failed:",
+        err
+      );
+    }
+  }
+);
+
+</script>
 
 </body>
 </html>
