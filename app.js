@@ -83,6 +83,77 @@ function toggleUserMenu() {
   menu.classList.toggle("show");
 }
 
+// ==============================
+// DROPDOWN INIT
+// ==============================
+
+function initDropdowns() {
+
+  const dropdowns =
+    document.querySelectorAll(
+      ".dropdown"
+    );
+
+  dropdowns.forEach(dropdown => {
+
+    const toggle =
+      dropdown.querySelector(
+        ".dropdown-toggle"
+      );
+
+    const menu =
+      dropdown.querySelector(
+        ".dropdown-menu"
+      );
+
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener(
+      "click",
+      function (e) {
+
+        e.stopPropagation();
+
+        // Close others
+        document
+          .querySelectorAll(
+            ".dropdown-menu"
+          )
+          .forEach(m => {
+
+            if (m !== menu) {
+              m.classList.remove(
+                "show"
+              );
+            }
+          });
+
+        menu.classList.toggle(
+          "show"
+        );
+      }
+    );
+  });
+
+  // Outside click close
+  document.addEventListener(
+    "click",
+    function () {
+
+      document
+        .querySelectorAll(
+          ".dropdown-menu"
+        )
+        .forEach(menu => {
+
+          menu.classList.remove(
+            "show"
+          );
+        });
+    }
+  );
+}
+
 
 // ==============================
 // CLOSE DROPDOWN ON OUTSIDE CLICK
@@ -203,6 +274,7 @@ async function initPage() {
     ) {
 
       await loadSharedComponents();
+      initDropdowns();
     }
 
     // Auth UI

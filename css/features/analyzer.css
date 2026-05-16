@@ -1,0 +1,416 @@
+/* =========================================
+   AGREEMENT ANALYZER
+========================================= */
+
+
+/* =========================================
+   ANALYZER SECTION
+========================================= */
+
+.analyzer-section {
+
+  padding:
+    var(--space-20) 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc,
+      #ffffff
+    );
+}
+
+
+/* =========================================
+   ANALYZER WRAPPER
+========================================= */
+
+.analyzer-wrapper {
+
+  max-width:
+    900px;
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================
+   ANALYZER HEADER
+========================================= */
+
+.analyzer-header {
+
+  text-align:
+    center;
+
+  margin-bottom:
+    var(--space-12);
+}
+
+
+.analyzer-title {
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3.5rem
+    );
+
+  font-weight:
+    var(--font-bold);
+
+  margin-bottom:
+    var(--space-4);
+}
+
+
+.analyzer-subtitle {
+
+  font-size:
+    var(--text-lg);
+
+  color:
+    var(--color-text-light);
+
+  max-width:
+    700px;
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================
+   UPLOAD CARD
+========================================= */
+
+.upload-card {
+
+  background:
+    var(--color-white);
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-10);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   DROP ZONE
+========================================= */
+
+.drop-zone {
+
+  border:
+    2px dashed var(--color-border);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-12);
+
+  text-align:
+    center;
+
+  background:
+    var(--color-surface-alt);
+
+  transition:
+    all var(--transition-normal);
+
+  cursor: pointer;
+}
+
+
+.drop-zone:hover {
+
+  border-color:
+    var(--color-primary);
+
+  background:
+    var(--color-primary-light);
+}
+
+
+.drop-zone.active {
+
+  border-color:
+    var(--color-primary);
+
+  background:
+    var(--color-primary-light);
+}
+
+
+/* =========================================
+   UPLOAD ICON
+========================================= */
+
+.upload-icon {
+
+  width: 72px;
+  height: 72px;
+
+  margin:
+    0 auto
+    var(--space-5);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--color-primary-light);
+
+  color:
+    var(--color-primary);
+
+  font-size:
+    2rem;
+}
+
+
+/* =========================================
+   FILE NAME
+========================================= */
+
+.file-name {
+
+  margin-top:
+    var(--space-4);
+
+  font-weight:
+    var(--font-medium);
+
+  color:
+    var(--color-primary);
+}
+
+
+/* =========================================
+   ANALYZE BUTTON
+========================================= */
+
+.analyze-btn {
+
+  margin-top:
+    var(--space-8);
+
+  width: 100%;
+}
+
+
+/* =========================================
+   ANALYSIS RESULT
+========================================= */
+
+.analysis-result {
+
+  margin-top:
+    var(--space-10);
+}
+
+
+/* =========================================
+   RISK SCORE CARD
+========================================= */
+
+.risk-score-card {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-10);
+
+  text-align:
+    center;
+
+  box-shadow:
+    var(--shadow-md);
+
+  margin-bottom:
+    var(--space-8);
+}
+
+
+.risk-score {
+
+  font-size:
+    clamp(
+      3rem,
+      6vw,
+      5rem
+    );
+
+  font-weight:
+    var(--font-bold);
+
+  margin:
+    var(--space-4) 0;
+}
+
+
+.risk-low {
+
+  color:
+    var(--color-success);
+}
+
+
+.risk-medium {
+
+  color:
+    var(--color-warning);
+}
+
+
+.risk-high {
+
+  color:
+    var(--color-danger);
+}
+
+
+/* =========================================
+   FINDINGS GRID
+========================================= */
+
+.findings-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(300px, 1fr)
+    );
+
+  gap:
+    var(--space-6);
+}
+
+
+/* =========================================
+   FINDING CARD
+========================================= */
+
+.finding-card {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  border-left:
+    5px solid var(--color-primary);
+}
+
+
+.finding-card.critical {
+
+  border-left-color:
+    var(--color-danger);
+}
+
+
+.finding-card.moderate {
+
+  border-left-color:
+    var(--color-warning);
+}
+
+
+.finding-title {
+
+  font-size:
+    var(--text-lg);
+
+  font-weight:
+    var(--font-semibold);
+
+  margin-bottom:
+    var(--space-3);
+}
+
+
+/* =========================================
+   SUMMARY CARD
+========================================= */
+
+.summary-card {
+
+  margin-top:
+    var(--space-8);
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .upload-card,
+  .risk-score-card,
+  .summary-card {
+
+    padding:
+      var(--space-6);
+  }
+
+  .drop-zone {
+
+    padding:
+      var(--space-8);
+  }
+
+  .findings-grid {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .analyzer-title {
+
+    font-size:
+      2.5rem;
+  }
+}

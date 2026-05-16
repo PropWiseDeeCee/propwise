@@ -35,28 +35,37 @@
 
         <button
           type="button"
-          class="dropdown-btn"
-          id="toolsDropdownBtn"
+          class="dropdown-toggle"
         >
 
           Tools
 
-          <span class="dropdown-arrow">
+          <span>
             ▾
           </span>
 
         </button>
 
-        <div
-          class="dropdown-menu"
-          id="toolsDropdownMenu"
-        >
+        <div class="dropdown-menu">
 
-          <a href="compare.html">
+          <a
+            href="compare.html"
+            class="dropdown-item"
+          >
             Compare Properties
           </a>
 
-          <a href="index.html#upload-section">
+          <a
+            href="calculator.html"
+            class="dropdown-item"
+          >
+            Cost Calculator
+          </a>
+
+          <a
+            href="index.html#upload-section"
+            class="dropdown-item"
+          >
             Agreement Analyzer
           </a>
 
@@ -78,7 +87,106 @@
 
     </nav>
 
+    <!-- NAV ACTIONS -->
+    <div class="nav-actions">
+
+      <!-- LOGIN / SIGNUP -->
+      <div
+        id="authButtons"
+        class="auth-buttons"
+      >
+
+        <a
+          href="login.html"
+          class="btn btn-outline btn-sm"
+        >
+          Login
+        </a>
+
+        <a
+          href="signup.html"
+          class="btn btn-primary btn-sm"
+        >
+          Sign Up
+        </a>
+
+      </div>
+
+      <!-- USER MENU -->
+      <div
+        id="profileSection"
+        class="dropdown dropdown-right"
+        style="display:none;"
+      >
+
+        <button
+          type="button"
+          class="profile-btn dropdown-toggle"
+        >
+
+          <span id="profileName">
+            User
+          </span>
+
+          <span>
+            ▾
+          </span>
+
+        </button>
+
+        <div
+          class="dropdown-menu"
+          id="userDropdown"
+        >
+
+          <div class="dropdown-header">
+
+            <div
+              class="dropdown-title"
+              id="profileNameDropdown"
+            >
+              User
+            </div>
+
+            <div
+              class="dropdown-subtitle"
+              id="profileEmail"
+            >
+              user@email.com
+            </div>
+
+          </div>
+
+          <a
+            href="dashboard.html"
+            class="dropdown-item"
+          >
+            Dashboard
+          </a>
+
+          <a
+            href="reports.html"
+            class="dropdown-item"
+          >
+            Reports
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button
+            type="button"
+            class="dropdown-item"
+            onclick="handleLogout()"
+          >
+            Logout
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 
 </header>
-

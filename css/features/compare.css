@@ -1,0 +1,488 @@
+/* =========================================
+   PROPERTY COMPARE
+========================================= */
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.compare-section {
+
+  padding:
+    var(--space-16) 0;
+
+  background:
+    #f8fafc;
+
+  min-height:
+    100vh;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.compare-header {
+
+  text-align: center;
+
+  max-width: 850px;
+
+  margin:
+    0 auto
+    var(--space-12);
+}
+
+
+.compare-title {
+
+  font-size:
+    clamp(
+      2.2rem,
+      5vw,
+      4rem
+    );
+
+  font-weight:
+    var(--font-bold);
+
+  line-height: 1.1;
+
+  margin-bottom:
+    var(--space-4);
+}
+
+
+.compare-subtitle {
+
+  font-size:
+    var(--text-lg);
+
+  line-height: 1.8;
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* =========================================
+   PROPERTY GRID
+========================================= */
+
+.compare-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    var(--space-8);
+
+  align-items: start;
+}
+
+
+/* =========================================
+   PROPERTY CARD
+========================================= */
+
+.property-card {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    var(--space-5);
+
+  height: 100%;
+
+  background:
+    var(--color-white);
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius:
+    var(--radius-2xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  transition:
+    all var(--transition-normal);
+}
+
+
+.property-card:hover {
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    var(--shadow-lg);
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.property-header {
+
+  margin-bottom:
+    var(--space-2);
+}
+
+
+.property-title {
+
+  font-size:
+    var(--text-2xl);
+
+  font-weight:
+    var(--font-bold);
+
+  margin-bottom:
+    var(--space-2);
+}
+
+
+/* =========================================
+   FORM OVERRIDES
+========================================= */
+
+.property-card .form-group {
+
+  margin-bottom:
+    var(--space-2);
+}
+
+
+.property-card label {
+
+  display: block;
+
+  margin-bottom:
+    8px;
+
+  font-weight:
+    var(--font-medium);
+
+  color:
+    var(--color-text);
+}
+
+
+.property-card .form-input {
+
+  width: 100%;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.compare-actions {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap:
+    var(--space-4);
+
+  flex-wrap: wrap;
+
+  margin-top:
+    var(--space-10);
+}
+
+
+/* =========================================
+   RESULT SECTION
+========================================= */
+
+.result-section {
+
+  margin-top:
+    var(--space-16);
+}
+
+
+/* =========================================
+   SUMMARY CARD
+========================================= */
+
+.summary-card {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-2xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.compare-table-wrapper {
+
+  overflow-x: auto;
+
+  margin-top:
+    var(--space-10);
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-2xl);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+.compare-table {
+
+  width: 100%;
+
+  min-width: 760px;
+
+  border-collapse:
+    collapse;
+}
+
+
+.compare-table th {
+
+  background:
+    var(--color-primary);
+
+  color:
+    var(--color-white);
+
+  padding:
+    18px;
+
+  text-align: left;
+
+  font-weight:
+    var(--font-semibold);
+}
+
+
+.compare-table td {
+
+  padding:
+    18px;
+
+  border-bottom:
+    1px solid var(--color-border);
+
+  color:
+    var(--color-text-light);
+}
+
+
+.compare-table tr:hover {
+
+  background:
+    #f8fafc;
+}
+
+
+/* =========================================
+   WINNER
+========================================= */
+
+.compare-winner {
+
+  background:
+    rgba(22,163,74,0.08);
+}
+
+
+/* =========================================
+   CHART SECTION
+========================================= */
+
+.chart-section {
+
+  margin-top:
+    var(--space-12);
+}
+
+
+/* =========================================
+   CHART CARD
+========================================= */
+
+.chart-card {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 480px;
+
+  overflow: hidden;
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-2xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   CHART FIX
+========================================= */
+
+.chart-card canvas {
+
+  width: 100% !important;
+
+  max-width: 100%;
+
+  height: 380px !important;
+}
+
+
+/* =========================================
+   AI SECTION
+========================================= */
+
+.ai-section {
+
+  margin-top:
+    var(--space-12);
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+.validation-error {
+
+  display: none;
+
+  font-size:
+    13px;
+
+  color:
+    #dc2626;
+
+  margin-top:
+    6px;
+}
+
+
+.validation-error.show {
+
+  display: block;
+}
+
+
+.form-input.invalid {
+
+  border-color:
+    #dc2626;
+
+  background:
+    #fef2f2;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+
+  .compare-grid {
+
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .compare-section {
+
+    padding:
+      var(--space-12) 0;
+  }
+
+  .property-card,
+  .summary-card,
+  .chart-card {
+
+    padding:
+      var(--space-5);
+  }
+
+  .compare-title {
+
+    font-size:
+      2.6rem;
+  }
+
+  .compare-subtitle {
+
+    font-size:
+      1rem;
+  }
+
+  .chart-card {
+
+    height:
+      360px;
+  }
+
+  .chart-card canvas {
+
+    height:
+      260px !important;
+  }
+
+  .compare-actions {
+
+    flex-direction:
+      column;
+  }
+
+  .compare-actions .btn {
+
+    width: 100%;
+  }
+}

@@ -31,16 +31,6 @@
     href="/assets/favicon.png"
   />
 
-  <link
-    rel="shortcut icon"
-    href="/assets/favicon.ico"
-  />
-
-  <link
-    rel="apple-touch-icon"
-    href="/assets/favicon.png"
-  />
-
   <!-- OPEN GRAPH -->
   <meta property="og:type" content="website" />
 
@@ -64,44 +54,6 @@
     content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
   />
 
-  <meta
-    property="og:site_name"
-    content="PropWise India"
-  />
-
-  <!-- TWITTER -->
-  <meta
-    name="twitter:card"
-    content="summary_large_image"
-  />
-
-  <meta
-    name="twitter:title"
-    content="Compare Property Costs India | PropWise India"
-  />
-
-  <meta
-    name="twitter:description"
-    content="Compare apartments, villas and property purchase costs before buying."
-  />
-
-  <meta
-    name="twitter:image"
-    content="https://propwise-zeta.vercel.app/assets/og-compare.jpg"
-  />
-
-  <!-- SCHEMA -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "PropWise Property Comparison Tool",
-    "url": "https://propwise-zeta.vercel.app/compare.html",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All"
-  }
-  </script>
-
   <!-- GOOGLE FONTS -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -109,836 +61,607 @@
   />
 
   <!-- CSS -->
- <link rel="stylesheet" href="css/core/variables.css">
-<link rel="stylesheet" href="css/core/reset.css">
-<link rel="stylesheet" href="css/core/typography.css">
-<link rel="stylesheet" href="css/core/layout.css">
-<link rel="stylesheet" href="css/components/buttons.css">
-<link rel="stylesheet" href="css/components/cards.css">
-<link rel="stylesheet" href="css/components/navbar.css">
-<link rel="stylesheet" href="css/components/footer.css">
-<link rel="stylesheet" href="css/components/forms.css">
-<link rel="stylesheet" href="css/components/loaders.css">
-<link rel="stylesheet" href="css/components/dropdowns.css">
+  <link rel="stylesheet" href="css/core/variables.css">
+  <link rel="stylesheet" href="css/core/reset.css">
+  <link rel="stylesheet" href="css/core/typography.css">
+  <link rel="stylesheet" href="css/core/layout.css">
 
-<link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/footer.css">
+  <link rel="stylesheet" href="css/components/forms.css">
+  <link rel="stylesheet" href="css/components/loaders.css">
+  <link rel="stylesheet" href="css/components/dropdowns.css">
+
+  <link rel="stylesheet" href="css/features/compare.css">
+
+  <link rel="stylesheet" href="styles.css">
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- APP -->
-   <script src="js/core/config.js"></script>
-   <script src="js/core/utils.js"></script>
-   <script src="js/core/component-loader.js"></script>
-   <script src="js/core/api.js"></script>
-   <script src="js/features/auth/auth-ui.js"></script>
+  <script src="js/core/config.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/component-loader.js"></script>
+  <script src="js/core/api.js"></script>
+
   <script defer src="app.js"></script>
 
   <!-- COMPARE -->
   <script src="js/features/compare/charts.js"></script>
-<script src="js/features/compare/compare-core.js"></script>
+  <script src="js/features/compare/compare-core.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <!-- PDF Generator -->
-   <script defer src="js/pdf-generator.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- PDF -->
+  <script defer src="js/pdf-generator.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-<meta name="robots" content="index, follow">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
 </head>
 
 <body onload="initPage(false)">
 
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div id="navbar"></div>
-  </header>
+  <div id="navbar"></div>
 
   <!-- MAIN -->
-  <div class="container">
+  <main class="compare-section">
 
-    <!-- HERO -->
-    <div style="text-align:center; margin-bottom:40px;">
+    <div class="container">
 
-      <h1 style="margin-bottom:12px;">
-        Compare Property Costs
-      </h1>
+      <!-- HEADER -->
+      <div class="compare-header">
 
-      <p style="
-        color:#6b7280;
-        max-width:800px;
-        margin:auto;
-        line-height:1.8;
-      ">
+        <h1 class="compare-title">
+          Compare Property Costs
+        </h1>
 
-        Compare apartments, villas and property investments
-        using total ownership cost including GST,
-        registration, parking, maintenance,
-        clubhouse charges and hidden builder fees.
+        <p class="compare-subtitle">
 
-      </p>
+          Compare apartments, villas and property investments
+          using total ownership cost including GST,
+          registration, parking, maintenance,
+          clubhouse charges and hidden builder fees.
 
-    </div>
+        </p>
 
-    <!-- GRID -->
- <!-- =========================
-     PROPERTY COMPARISON GRID
-========================= -->
+      </div>
 
-<div class="compare-layout">
+      <!-- PROPERTY GRID -->
+      <div class="compare-grid">
 
-  <!-- PROPERTY A -->
-  <div class="compare-card">
+        <!-- PROPERTY A -->
+        <div class="property-card card">
 
-    <div class="compare-card-header">
-      <h2>Property A</h2>
-      <p>
-        Enter pricing, charges and ownership costs
-        for the first property.
-      </p>
-    </div>
+          <div class="property-header">
 
-    <div class="compare-field">
+            <div>
 
-  <label for="aName">
-    Property Name
-    <span class="required-star">*</span>
-  </label>
+              <h2 class="property-title">
+                Property A
+              </h2>
 
-  <input
-    id="aName"
-    type="text"
-    placeholder="Example: Sobha Dream Acres"
-  >
+              <p class="card-subtext">
 
-  <div
-    class="validation-error"
-    id="aNameError"
-  >
-    Please enter property name
-  </div>
+                Enter ownership details for
+                the first property.
 
-</div>
+              </p>
 
-   <div class="compare-field">
+            </div>
 
-  <label for="aBase">
-    Base Property Price
-    <span class="required-star">*</span>
-  </label>
+          </div>
 
-  <input
-    id="aBase"
-    type="text"
-inputmode="numeric"
-    placeholder="Enter base property price"
-  >
+          <div class="form-group">
 
-  <div
-    class="validation-error"
-    id="aBaseError"
-  >
-    Please enter base property price
-  </div>
+            <label for="aName">
+              Property Name
+            </label>
 
-</div>
+            <input
+              class="form-input"
+              id="aName"
+              type="text"
+              placeholder="Sobha Dream Acres"
+            >
 
-    <div class="compare-field">
+          </div>
 
-      <label for="aGst">
-        GST Charges
-      </label>
+          <div class="form-group">
 
-      <input
-        id="aGst"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter GST amount"
+            <label for="aBase">
+              Base Property Price
+            </label>
+
+            <input
+              class="form-input"
+              id="aBase"
+              type="text"
+              inputmode="numeric"
+              placeholder="Enter property price"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aGst">
+              GST Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="aGst"
+              type="text"
+              inputmode="numeric"
+              placeholder="GST amount"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aRegistration">
+              Registration & Stamp Duty
+            </label>
+
+            <input
+              class="form-input"
+              id="aRegistration"
+              type="text"
+              inputmode="numeric"
+              placeholder="Registration cost"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aParking">
+              Parking Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="aParking"
+              type="text"
+              inputmode="numeric"
+              placeholder="Parking charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aClubhouse">
+              Clubhouse Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="aClubhouse"
+              type="text"
+              inputmode="numeric"
+              placeholder="Clubhouse charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aMaintenance">
+              1 Year Maintenance
+            </label>
+
+            <input
+              class="form-input"
+              id="aMaintenance"
+              type="text"
+              inputmode="numeric"
+              placeholder="Maintenance charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aFloorRise">
+              Floor Rise Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="aFloorRise"
+              type="text"
+              inputmode="numeric"
+              placeholder="Floor rise charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aLegal">
+              Legal Fees
+            </label>
+
+            <input
+              class="form-input"
+              id="aLegal"
+              type="text"
+              inputmode="numeric"
+              placeholder="Legal fees"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aSuperArea">
+              Super Built-up Area
+            </label>
+
+            <input
+              class="form-input"
+              id="aSuperArea"
+              type="text"
+              inputmode="numeric"
+              placeholder="1500 sq.ft"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="aCarpetArea">
+              Carpet Area
+            </label>
+
+            <input
+              class="form-input"
+              id="aCarpetArea"
+              type="text"
+              inputmode="numeric"
+              placeholder="1200 sq.ft"
+            >
+
+          </div>
+
+        </div>
+
+        <!-- PROPERTY B -->
+        <div class="property-card card">
+
+          <div class="property-header">
+
+            <div>
+
+              <h2 class="property-title">
+                Property B
+              </h2>
+
+              <p class="card-subtext">
+
+                Enter ownership details for
+                the second property.
+
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bName">
+              Property Name
+            </label>
+
+            <input
+              class="form-input"
+              id="bName"
+              type="text"
+              placeholder="Prestige Lakeside Habitat"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bBase">
+              Base Property Price
+            </label>
+
+            <input
+              class="form-input"
+              id="bBase"
+              type="text"
+              inputmode="numeric"
+              placeholder="Enter property price"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bGst">
+              GST Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="bGst"
+              type="text"
+              inputmode="numeric"
+              placeholder="GST amount"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bRegistration">
+              Registration & Stamp Duty
+            </label>
+
+            <input
+              class="form-input"
+              id="bRegistration"
+              type="text"
+              inputmode="numeric"
+              placeholder="Registration cost"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bParking">
+              Parking Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="bParking"
+              type="text"
+              inputmode="numeric"
+              placeholder="Parking charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bClubhouse">
+              Clubhouse Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="bClubhouse"
+              type="text"
+              inputmode="numeric"
+              placeholder="Clubhouse charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bMaintenance">
+              1 Year Maintenance
+            </label>
+
+            <input
+              class="form-input"
+              id="bMaintenance"
+              type="text"
+              inputmode="numeric"
+              placeholder="Maintenance charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bFloorRise">
+              Floor Rise Charges
+            </label>
+
+            <input
+              class="form-input"
+              id="bFloorRise"
+              type="text"
+              inputmode="numeric"
+              placeholder="Floor rise charges"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bLegal">
+              Legal Fees
+            </label>
+
+            <input
+              class="form-input"
+              id="bLegal"
+              type="text"
+              inputmode="numeric"
+              placeholder="Legal fees"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bSuperArea">
+              Super Built-up Area
+            </label>
+
+            <input
+              class="form-input"
+              id="bSuperArea"
+              type="text"
+              inputmode="numeric"
+              placeholder="1500 sq.ft"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="bCarpetArea">
+              Carpet Area
+            </label>
+
+            <input
+              class="form-input"
+              id="bCarpetArea"
+              type="text"
+              inputmode="numeric"
+              placeholder="1200 sq.ft"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ACTIONS -->
+      <div
+        class="flex"
+        style="
+          gap:16px;
+          margin-top:32px;
+          flex-wrap:wrap;
+          justify-content:center;
+        "
       >
 
-    </div>
+        <button
+          id="compareBtn"
+          class="btn btn-primary"
+          onclick="compareAdvanced()"
+        >
+          Compare Properties
+        </button>
 
-   <div class="compare-field">
+        <button
+          class="btn btn-success"
+          onclick="saveComparison()"
+        >
+          Save Comparison
+        </button>
 
-  <label for="aRegistration">
-    Registration & Stamp Duty
-    <span class="required-star">*</span>
-  </label>
+        <button
+          class="btn btn-outline"
+          onclick="resetComparison()"
+        >
+          Reset
+        </button>
 
-  <input
-    id="aRegistration"
-    type="text"
-inputmode="numeric"
-    placeholder="Enter registration cost"
-  >
+      </div>
 
-  <div
-    class="validation-error"
-    id="aRegistrationError"
-  >
-    Please enter registration charges
-  </div>
-
-</div>
-
-    <div class="compare-field">
-
-      <label for="aParking">
-        Parking Charges
-      </label>
-
-      <input
-        id="aParking"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter parking charges"
+      <!-- RESULTS -->
+      <div
+        id="resultCard"
+        class="analysis-result"
+        style="display:none;"
       >
 
-    </div>
+        <div class="summary-card">
 
-    <div class="compare-field">
+          <h2 style="margin-bottom:20px;">
+            Comparison Result
+          </h2>
 
-      <label for="aClubhouse">
-        Clubhouse Charges
-      </label>
+          <div id="resultDetails"></div>
 
-      <input
-        id="aClubhouse"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter clubhouse charges"
-      >
+        </div>
 
-    </div>
+        <!-- TABLE -->
+        <div
+          id="comparisonTable"
+          class="compare-table-wrapper"
+          style="margin-top:40px;"
+        >
+        </div>
 
-    <div class="compare-field">
+        <!-- CHART -->
+        <div
+          id="chartSection"
+          class="chart-section"
+          style="display:none;"
+        >
 
-  <label for="aMaintenance">
-    1 Year Maintenance
-    <span class="required-star">*</span>
-  </label>
+          <div class="chart-card">
 
-  <input
-    id="aMaintenance"
-    type="text"
-    inputmode="numeric"
-    placeholder="Enter maintenance cost"
-  >
+            <h2 style="margin-bottom:20px;">
+              Financial Projection
+            </h2>
 
-  <div
-    class="validation-error"
-    id="aMaintenanceError"
-  >
-    Please enter maintenance cost
-  </div>
+            <canvas id="appreciationChart"></canvas>
 
-</div>
+          </div>
 
-    <div class="compare-field">
+        </div>
 
-      <label for="aFloorRise">
-        Floor Rise Charges
-      </label>
+        <!-- AI -->
+        <div
+          id="aiSection"
+          style="display:none; margin-top:30px;"
+        >
 
-      <input
-        id="aFloorRise"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter floor rise charges"
-      >
+          <div class="summary-card">
 
-    </div>
+            <h2 style="margin-bottom:20px;">
+              Smart Recommendation
+            </h2>
 
-    <div class="compare-field">
+            <div id="aiRecommendation"></div>
 
-      <label for="aLegal">
-        Legal Fees
-      </label>
+          </div>
 
-      <input
-        id="aLegal"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter legal fees"
-      >
+        </div>
 
-    </div>
-    
-<div class="compare-field">
+        <!-- PDF -->
+        <div
+          style="
+            margin-top:20px;
+            text-align:center;
+          "
+        >
 
-  <label for="aSuperArea">
-    Super Built-up Area (sq.ft)
-  </label>
+          <button
+            class="btn btn-primary"
+            onclick="downloadComparisonPDF(window.latestComparisonData)"
+          >
+            Download Comparison PDF
+          </button>
 
-  <input
-    id="aSuperArea"
-    type="text"
-inputmode="numeric"
-    placeholder="1500"
-  >
+        </div>
 
-  <div
-    class="validation-error"
-    id="aSuperAreaError"
-  >
-    Please enter super built-up area
-  </div>
-
-</div>
-
-<div class="compare-field">
-
-  <label for="aCarpetArea">
-    Carpet Area (sq.ft)
-  </label>
-
-  <input
-    id="aCarpetArea"
-    type="text"
-    inputmode="numeric"
-    placeholder="Enter carpet area"
-  >
-
-</div>
-<div class="compare-field">
-  <label for="aRent">
-    Expected Monthly Rent
-  </label>
-
-  <input
-    id="aRent"
-    type="text"
-inputmode="numeric"
-    placeholder="Expected monthly rent"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="aLoan">
-    Loan Amount
-  </label>
-
-  <input
-    id="aLoan"
-    type="text"
-    inputmode="numeric"
-    placeholder="Loan amount"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="aInterest">
-    Interest Rate (%)
-  </label>
-
-  <input
-    id="aInterest"
-    type="text"
-inputmode="numeric"
-    step="0.1"
-    placeholder="Interest rate"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="aTenure">
-    Loan Tenure (Years)
-  </label>
-
-  <input
-    id="aTenure"
-    type="text"
-inputmode="numeric"
-    placeholder="Loan tenure"
-  >
-</div>
-<div class="compare-field">
-
-  <label for="aLocality">
-    Locality
-  </label>
-
-  <input
-    id="aLocality"
-    type="text"
-    placeholder="Locality (e.g Whitefield)"
-  >
-
-</div>
-
-  </div>
-  
-
-  <!-- PROPERTY B -->
-  <div class="compare-card">
-
-    <div class="compare-card-header">
-      <h2>Property B</h2>
-      <p>
-        Enter pricing, charges and ownership costs
-        for the second property.
-      </p>
-    </div>
-
-    <div class="compare-field">
-
-  <label for="bName">
-    Property Name
-    <span class="required-star">*</span>
-  </label>
-
-  <input
-    id="bName"
-    type="text"
-    placeholder="Example: Prestige Lakeside Habitat"
-  >
-
-  <div
-    class="validation-error"
-    id="bNameError"
-  >
-    Please enter property name
-  </div>
-
-</div>
-
-    <div class="compare-field">
-
-  <label for="bBase">
-    Base Property Price
-    <span class="required-star">*</span>
-  </label>
-
-  <input
-    id="bBase"
-    type="text"
-inputmode="numeric"
-    placeholder="Enter base property price"
-  >
-
-  <div
-    class="validation-error"
-    id="bBaseError"
-  >
-    Please enter base property price
-  </div>
-
-</div>
-
-    <div class="compare-field">
-
-      <label for="bGst">
-        GST Charges
-      </label>
-
-      <input
-        id="bGst"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter GST amount"
-      >
+      </div>
 
     </div>
 
-   <div class="compare-field">
-
-  <label for="bRegistration">
-    Registration & Stamp Duty
-    <span class="required-star">*</span>
-  </label>
-
-  <input
-    id="bRegistration"
-    type="text"
-inputmode="numeric"
-    placeholder="Enter registration cost"
-  >
-
-  <div
-    class="validation-error"
-    id="bRegistrationError"
-  >
-    Please enter registration charges
-  </div>
-
-</div>
-
-    <div class="compare-field">
-
-      <label for="bParking">
-        Parking Charges
-      </label>
-
-      <input
-        id="bParking"
-        type="text"
-inputmode="numeric"
-        placeholder="Enter parking charges"
-      >
-
-    </div>
-
-    <div class="compare-field">
-
-      <label for="bClubhouse">
-        Clubhouse Charges
-      </label>
-
-      <input
-        id="bClubhouse"
-        type="text"
-        inputmode="numeric"
-        placeholder="Enter clubhouse charges"
-      >
-
-    </div>
-
-    <div class="compare-field">
-
-  <label for="bMaintenance">
-    1 Year Maintenance
-    <span class="required-star">*</span>
-  </label>
-
-  <input
-    id="bMaintenance"
-    type="text"
-    inputmode="numeric"
-    placeholder="Enter maintenance cost"
-  >
-
-  <div
-    class="validation-error"
-    id="bMaintenanceError"
-  >
-    Please enter maintenance cost
-  </div>
-
-</div>
-
-    <div class="compare-field">
-
-      <label for="bFloorRise">
-        Floor Rise Charges
-      </label>
-
-      <input
-        id="bFloorRise"
-        type="text"
-        inputmode="numeric"
-        placeholder="Enter floor rise charges"
-      >
-
-    </div>
-
-    <div class="compare-field">
-
-      <label for="bLegal">
-        Legal Fees
-      </label>
-
-      <input
-        id="bLegal"
-        type="text"
-        inputmode="numeric"
-        placeholder="Enter legal fees"
-      >
-
-    </div>
-    <div class="compare-field">
-
-  <label for="bSuperArea">
-    Super Built-up Area (sq.ft)
-  </label>
-
-  <input
-    id="bSuperArea"
-    type="text"
-    inputmode="numeric"
-    placeholder="1500"
-  >
-
-  <div
-    class="validation-error"
-    id="bSuperAreaError"
-  >
-    Please enter super built-up area
-  </div>
-
-</div>
-
-<div class="compare-field">
-
-  <label for="bCarpetArea">
-    Carpet Area (sq.ft)
-  </label>
-
-  <input
-    id="bCarpetArea"
-    type="text"
-    inputmode="numeric"
-    placeholder="Enter carpet area"
-  >
-
-</div>
-<div class="compare-field">
-  <label for="bRent">
-    Expected Monthly Rent
-  </label>
-
-  <input
-    id="bRent"
-    type="text"
-    inputmode="numeric"
-    placeholder="Expected monthly rent"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="bLoan">
-    Loan Amount
-  </label>
-
-  <input
-    id="bLoan"
-    type="text"
-    inputmode="numeric"
-    placeholder="Loan amount"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="bInterest">
-    Interest Rate (%)
-  </label>
-
-  <input
-    id="bInterest"
-    type="text"
-    inputmode="numeric"
-    step="0.1"
-    placeholder="Interest rate"
-  >
-</div>
-
-<div class="compare-field">
-  <label for="bTenure">
-    Loan Tenure (Years)
-  </label>
-
-  <input
-    id="bTenure"
-    type="text"
-inputmode="numeric"
-    placeholder="Loan tenure"
-  >
-</div>
-<div class="compare-field">
-
-  <label for="bLocality">
-    Locality
-  </label>
-
-  <input
-    id="bLocality"
-    type="text"
-    placeholder="Locality (e.g Sarjapur)"
-  >
-
-</div>
-
-  </div>
-
-</div>
-
-    <!-- ACTIONS -->
-<div class="compare-actions">
-
-  <button
-    id="compareBtn"
-    class="compare-btn"
-    onclick="compareAdvanced()"
-  >
-    Compare Properties
-  </button>
-
-  <button
-    class="save-btn"
-    onclick="saveComparison()"
-  >
-    Save Comparison
-  </button>
-
-  <button
-    class="reset-btn"
-    onclick="resetComparison()"
-  >
-    Reset
-  </button>
-
-</div>
-
-    <!-- RESULT -->
-    <div
-      id="resultCard"
-      class="result-section"
-      style="
-        display:none;
-      "
-    >
-
-      <h2 style="margin-bottom:20px;">
-        Comparison Result
-      </h2>
-
-      <div id="resultDetails"></div>
-
-<!-- DETAILED TABLE -->
-<div
-  id="comparisonTable"
-  style="margin-top:40px;"
->
-</div>
-
-<!-- 5 YEAR PROJECTION -->
-<div
-  id="ownershipProjection"
-  style="margin-top:40px;"
->
-</div>
-
-<!-- CHART -->
-
-<div id="comparisonResult"></div>
-<!-- CHARTS -->
-<div id="chartSection" style="display:none; margin-top:30px;">
-
-  <h2 style="margin-bottom:20px;">
-    Financial Projection
-  </h2>
-
- <div class="chart-container">
-
-  <canvas id="appreciationChart"></canvas>
-
-</div>
-
-</div>
-
-<!-- AI RECOMMENDATION -->
-<div id="aiSection" style="display:none; margin-top:30px;">
-
-  <h2 style="margin-bottom:20px;">
-    Smart Recommendation
-  </h2>
-
-  <div id="aiRecommendation"></div>
-
-</div>
-
-<!-- PDF -->
-<div style="margin-top:20px;">
-
-  <button
-  class="primary-btn"
-  onclick="downloadComparisonPDF(window.latestComparisonData)">
-    Download Comparison PDF
-  </button>
-
-</div>
-
-    </div>
-
-    <!-- SEO CONTENT -->
-    <section
-      class="card"
-      style="
-        margin-top:50px;
-        line-height:1.9;
-      "
-    >
-
-      <h2>
-        How to Compare Property Costs in India
-      </h2>
-
-      <p>
-
-        Most home buyers compare only the base property price,
-        but the actual ownership cost can be significantly higher.
-        GST, registration charges, maintenance deposits,
-        parking fees, floor rise charges and clubhouse costs
-        can increase the total investment substantially.
-
-      </p>
-
-      <p>
-
-        PropWise India helps buyers compare real total ownership cost
-        before purchasing apartments, villas or investment properties.
-
-      </p>
-
-      <h3 style="margin-top:24px;">
-        Important Property Charges
-      </h3>
-
-      <ul style="padding-left:20px;">
-
-        <li>
-          GST on under-construction properties
-        </li>
-
-        <li>
-          Stamp duty and registration fees
-        </li>
-
-        <li>
-          Parking allocation charges
-        </li>
-
-        <li>
-          Maintenance deposits
-        </li>
-
-        <li>
-          Clubhouse and amenities charges
-        </li>
-
-        <li>
-          Floor rise premiums
-        </li>
-
-        <li>
-          Legal verification fees
-        </li>
-
-      </ul>
-
-      <h3 style="margin-top:24px;">
-        Why Property Comparison Matters
-      </h3>
-
-      <p>
-
-        Two apartments with similar base prices
-        may have completely different final ownership costs.
-        Comparing complete acquisition expenses
-        helps buyers make financially smarter decisions.
-
-      </p>
-
-    </section>
-
-  </div>
+  </main>
 
   <!-- FOOTER -->
   <div id="footer"></div>
 
   <div id="pdfRoot"></div>
+
 </body>
 
 </html>

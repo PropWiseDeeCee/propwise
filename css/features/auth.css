@@ -1,0 +1,125 @@
+/* =========================================
+   AUTH PAGE
+========================================= */
+
+.auth-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    var(--space-12);
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #eef4ff
+    );
+}
+
+
+/* =========================================
+   AUTH CARD
+========================================= */
+
+.auth-card {
+
+  width: 100%;
+  max-width: 460px;
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-10);
+
+  box-shadow:
+    var(--shadow-lg);
+
+  border:
+    1px solid var(--color-border);
+}
+
+
+/* =========================================
+   AUTH HEADER
+========================================= */
+
+.auth-header {
+
+  text-align: center;
+
+  margin-bottom:
+    var(--space-8);
+}
+
+
+/* =========================================
+   AUTH ICON
+========================================= */
+
+.auth-icon {
+
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto
+    var(--space-5);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--color-primary-light);
+
+  color:
+    var(--color-primary);
+}
+
+
+.auth-icon svg {
+
+  width: 30px;
+  height: 30px;
+}
+
+
+/* =========================================
+   AUTH TITLE
+========================================= */
+
+.auth-title {
+
+  font-size:
+    var(--text-2xl);
+
+  margin-bottom:
+    var(--space-2);
+}
+
+
+/* =========================================
+   AUTH SUBTITLE
+========================================= */
+
+.auth-subtitle {
+
+  color:
+    var(--color-text-muted);
+
+  font-size:
+    var(--text-base);
+}

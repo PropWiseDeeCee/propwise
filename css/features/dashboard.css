@@ -1,0 +1,353 @@
+/* =========================================
+   DASHBOARD
+========================================= */
+
+
+/* =========================================
+   DASHBOARD SECTION
+========================================= */
+
+.dashboard-section {
+
+  padding:
+    var(--space-16) 0;
+
+  background:
+    #f8fafc;
+
+  min-height:
+    calc(100vh - 120px);
+}
+
+
+/* =========================================
+   DASHBOARD HEADER
+========================================= */
+
+.dashboard-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap:
+    var(--space-6);
+
+  margin-bottom:
+    var(--space-10);
+
+  flex-wrap: wrap;
+}
+
+
+.dashboard-title {
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  font-weight:
+    var(--font-bold);
+}
+
+
+.dashboard-subtitle {
+
+  color:
+    var(--color-text-light);
+
+  margin-top:
+    var(--space-2);
+}
+
+
+/* =========================================
+   DASHBOARD GRID
+========================================= */
+
+.dashboard-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(260px, 1fr)
+    );
+
+  gap:
+    var(--space-6);
+
+  margin-bottom:
+    var(--space-10);
+}
+
+
+/* =========================================
+   METRIC CARD
+========================================= */
+
+.metric-card {
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+.metric-card::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 6px;
+  height: 100%;
+
+  background:
+    var(--color-primary);
+}
+
+
+.metric-value {
+
+  font-size:
+    clamp(
+      2rem,
+      5vw,
+      3rem
+    );
+
+  font-weight:
+    var(--font-bold);
+
+  color:
+    var(--color-primary);
+
+  margin-top:
+    var(--space-4);
+}
+
+
+.metric-label {
+
+  color:
+    var(--color-text-muted);
+
+  font-size:
+    var(--text-sm);
+
+  margin-top:
+    var(--space-2);
+}
+
+
+/* =========================================
+   DASHBOARD CONTENT
+========================================= */
+
+.dashboard-content {
+
+  display: grid;
+
+  grid-template-columns:
+    2fr 1fr;
+
+  gap:
+    var(--space-8);
+}
+
+
+/* =========================================
+   RECENT REPORTS
+========================================= */
+
+.recent-reports {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+.reports-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom:
+    var(--space-6);
+}
+
+
+.report-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap:
+    var(--space-4);
+
+  padding:
+    var(--space-4) 0;
+
+  border-bottom:
+    1px solid var(--color-border);
+}
+
+
+.report-item:last-child {
+
+  border-bottom: none;
+}
+
+
+.report-name {
+
+  font-weight:
+    var(--font-medium);
+}
+
+
+.report-date {
+
+  font-size:
+    var(--text-sm);
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* =========================================
+   QUICK ACTIONS
+========================================= */
+
+.quick-actions {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+.quick-actions-grid {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    var(--space-4);
+
+  margin-top:
+    var(--space-6);
+}
+
+
+.quick-action-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding:
+    var(--space-4);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    var(--color-surface-alt);
+
+  transition:
+    all var(--transition-fast);
+}
+
+
+.quick-action-btn:hover {
+
+  background:
+    var(--color-primary-light);
+
+  transform:
+    translateY(-2px);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+
+  .dashboard-content {
+
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .dashboard-section {
+
+    padding:
+      var(--space-12) 0;
+  }
+
+  .dashboard-header {
+
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+
+  .recent-reports,
+  .quick-actions {
+
+    padding:
+      var(--space-5);
+  }
+
+  .dashboard-title {
+
+    font-size:
+      2.3rem;
+  }
+}
