@@ -1,0 +1,322 @@
+/* =========================================
+   CARD SYSTEM
+========================================= */
+
+
+/* =========================================
+   BASE CARD
+========================================= */
+
+.card {
+
+  background:
+    var(--color-card-bg);
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  transition:
+    all var(--transition-normal);
+}
+
+
+.card:hover {
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.card-header {
+
+  margin-bottom:
+    var(--space-4);
+}
+
+
+.card-title {
+
+  font-size:
+    var(--text-xl);
+
+  font-weight:
+    var(--font-bold);
+
+  margin-bottom:
+    var(--space-2);
+
+  color:
+    var(--color-text);
+}
+
+
+.card-subtitle {
+
+  font-size:
+    var(--text-sm);
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* =========================================
+   CARD BODY
+========================================= */
+
+.card-body {
+
+  color:
+    var(--color-text-light);
+}
+
+
+/* =========================================
+   CARD FOOTER
+========================================= */
+
+.card-footer {
+
+  margin-top:
+    var(--space-6);
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    var(--space-4);
+}
+
+
+/* =========================================
+   FEATURE CARD
+========================================= */
+
+.feature-card {
+
+  background:
+    var(--color-surface);
+
+  border-radius:
+    var(--radius-xl);
+
+  padding:
+    var(--space-8);
+
+  box-shadow:
+    var(--shadow-md);
+
+  transition:
+    all var(--transition-normal);
+}
+
+
+.feature-card:hover {
+
+  transform:
+    translateY(-6px);
+
+  box-shadow:
+    var(--shadow-lg);
+}
+
+
+/* =========================================
+   METRIC CARD
+========================================= */
+
+.metric-card {
+
+  background:
+    var(--color-surface);
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  text-align:
+    center;
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+
+.metric-card h2 {
+
+  font-size:
+    var(--text-3xl);
+
+  color:
+    var(--color-primary);
+
+  margin-top:
+    var(--space-2);
+}
+
+
+/* =========================================
+   RESULT CARD
+========================================= */
+
+.result-card {
+
+  background:
+    var(--color-white);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  border-left:
+    5px solid var(--color-primary);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   DASHBOARD CARD
+========================================= */
+
+.dashboard-card {
+
+  background:
+    var(--color-surface);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  border:
+    1px solid var(--color-border);
+
+  transition:
+    all var(--transition-normal);
+}
+
+
+.dashboard-card:hover {
+
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+
+/* =========================================
+   REPORT CARD
+========================================= */
+
+.report-card {
+
+  background:
+    var(--color-surface);
+
+  border-radius:
+    var(--radius-lg);
+
+  padding:
+    var(--space-6);
+
+  border:
+    1px solid var(--color-border);
+}
+
+
+/* =========================================
+   USER CARD
+========================================= */
+
+.user-card {
+
+  background:
+    var(--color-surface);
+
+  border-radius:
+    var(--radius-md);
+
+  padding:
+    var(--space-5);
+
+  border:
+    1px solid var(--color-border);
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-state {
+
+  text-align:
+    center;
+
+  padding:
+    var(--space-16);
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .card,
+  .feature-card,
+  .dashboard-card,
+  .metric-card,
+  .report-card,
+  .result-card {
+
+    padding:
+      var(--space-5);
+  }
+
+  .card-footer {
+
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+}

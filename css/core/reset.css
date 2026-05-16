@@ -1,0 +1,177 @@
+/* =========================================
+   GLOBAL RESET
+========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* =========================================
+   HTML / BODY
+========================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+
+  font-family:
+    var(--font-primary);
+
+  font-size:
+    var(--text-base);
+
+  line-height:
+    var(--line-normal);
+
+  background:
+    var(--color-bg);
+
+  color:
+    var(--color-text);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   MEDIA
+========================================= */
+
+img,
+picture,
+video,
+canvas,
+svg {
+
+  display: block;
+  max-width: 100%;
+}
+
+
+/* =========================================
+   FORM ELEMENTS
+========================================= */
+
+input,
+button,
+textarea,
+select {
+
+  font: inherit;
+}
+
+
+button {
+
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
+textarea {
+  resize: vertical;
+}
+
+
+/* =========================================
+   LINKS
+========================================= */
+
+a {
+
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================
+   LISTS
+========================================= */
+
+ul,
+ol {
+
+  list-style: none;
+}
+
+
+/* =========================================
+   TABLES
+========================================= */
+
+table {
+
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+  font-family:
+    var(--font-heading);
+
+  line-height:
+    var(--line-tight);
+
+  color:
+    var(--color-text);
+}
+
+
+/* =========================================
+   PARAGRAPHS
+========================================= */
+
+p {
+
+  color:
+    var(--color-text-light);
+}
+
+
+/* =========================================
+   INPUT PLACEHOLDERS
+========================================= */
+
+::placeholder {
+
+  color:
+    var(--color-text-muted);
+
+  opacity: 1;
+}
+
+
+/* =========================================
+   SELECTION
+========================================= */
+
+::selection {
+
+  background:
+    var(--color-primary);
+
+  color:
+    var(--color-white);
+}
