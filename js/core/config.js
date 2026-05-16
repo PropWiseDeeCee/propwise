@@ -14,8 +14,8 @@ window.PROPWISE_CONFIG = {
   },
 
   SUPABASE: {
-    URL:
-      "https://YOUR_PROJECT.supabase.co",
+  URL:
+    "https://awlgjsfhoeijpyusjthl.supabase.co",
 
     ANON_KEY:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bGdqc2Zob2VpanB5dXNqdGhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODUzMTEsImV4cCI6MjA5MzM2MTMxMX0.NnLZJxpBGC-m5Rr7nrgYQsHm0ptJdK4TtUMVjykvixw"
