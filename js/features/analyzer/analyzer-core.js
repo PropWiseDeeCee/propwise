@@ -217,27 +217,56 @@ async function analyzeAgreement(input) {
 
     return {
 
-      summary:
-        data.summary || "",
+  summary:
 
-      critical:
-        data.critical || [],
+    data.summary ||
 
-      moderate:
-        data.moderate || [],
+    data.analysis ||
 
-      positive:
-        data.positive || [],
+    "",
 
-      recommendations:
-        data.recommendations || [],
+  critical:
 
-      score:
-        data.score || 0,
+    data.critical ||
 
-      riskLevel:
-        data.risk_level || "Medium"
-    };
+    data.findings ||
+
+    [],
+
+  moderate:
+
+    data.moderate ||
+
+    [],
+
+  positive:
+
+    data.positive ||
+
+    [],
+
+  recommendations:
+
+    data.recommendations ||
+
+    [],
+
+  score:
+
+    data.score ||
+
+    data.risk_score ||
+
+    0,
+
+  riskLevel:
+
+    data.riskLevel ||
+
+    data.risk_level ||
+
+    "Medium"
+};
 
   } catch (err) {
 
