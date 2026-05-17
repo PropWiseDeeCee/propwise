@@ -82,6 +82,8 @@
 <link rel="stylesheet" href="css/components/loaders.css">
 <link rel="stylesheet" href="css/components/dropdowns.css">
 <link rel="stylesheet" href="css/features/analyzer.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="js/report-generator.js"></script>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -337,6 +339,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
           id="analysisResult"
           style="margin-top:28px;">
         </div>
+        <div id="reportActions" style="display:none;"></div>
 
       </div>
 
@@ -432,7 +435,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   <!-- FOOTER -->
   <div id="footer"></div>
 
-  <script>
+
+        <script>
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -449,7 +453,140 @@ document.addEventListener(
         await loadSharedComponents();
       }
 
-      // INIT DROPDOWNS
+      // RESTORE PENDING ANALYSIS
+      const savedAnalysis =
+
+        localStorage.getItem(
+          "pendingAnalysis"
+        );
+
+ if (savedAnalysis) {
+
+  const parsed =
+    JSON.parse(savedAnalysis);
+
+  window.latestAnalyzerResult =
+    parsed;
+
+  const resultDiv =
+    document.getElementById(
+      "analysisResult"
+    );
+
+  if (resultDiv) {
+
+    resultDiv.innerHTML = `
+
+      <div class="analysis-card modern-analysis-card">
+
+        <div class="analysis-top">
+
+          <div>
+
+            <div class="risk-score-label">
+              Risk Score
+            </div>
+
+            <h2 class="risk-score-value">
+              ${parsed.score}/100
+            </h2>
+
+            <div class="risk-pill ${parsed.riskLevel.toLowerCase()}">
+              ${parsed.riskLevel} Risk
+            </div>
+
+          </div>
+
+          <div class="analysis-summary-box">
+
+            <strong>
+              Full AI Agreement Analysis
+            </strong>
+
+            <p>
+              Your previous agreement analysis
+              has been restored successfully.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="analysis-grid">
+
+          <div class="analysis-section-box critical-box">
+
+            <h3>
+              Critical Risks
+            </h3>
+
+            <ul>
+              ${
+                (parsed.critical || [])
+                  .map(issue => `
+                    <li>${issue}</li>
+                  `)
+                  .join("")
+              }
+            </ul>
+
+          </div>
+
+          <div class="analysis-section-box moderate-box">
+
+            <h3>
+              Moderate Risks
+            </h3>
+
+            <ul>
+              ${
+                (parsed.moderate || [])
+                  .map(issue => `
+                    <li>${issue}</li>
+                  `)
+                  .join("")
+              }
+            </ul>
+
+          </div>
+
+        </div>
+
+        <div class="recommendation-box">
+
+          <h3>
+            Recommendations
+          </h3>
+
+          <ul>
+            ${
+              (parsed.recommendations || [])
+                .map(issue => `
+                  <li>${issue}</li>
+                `)
+                .join("")
+            }
+          </ul>
+
+        </div>
+
+        <div class="premium-actions">
+
+          <button
+            class="primary-btn"
+            onclick="downloadAnalysisPDF(window.latestAnalyzerResult)"
+          >
+            Download PDF Report
+          </button>
+
+        </div>
+
+      </div>
+    `;
+  }
+}
+
+            // INIT DROPDOWNS
       if (
         typeof initDropdowns ===
         "function"

@@ -212,59 +212,49 @@ async function analyzeAgreement(input) {
       );
     }
 
-    const data =
-      await response.json();
+    const responseData =
+  await response.json();
 
-    return {
+console.log(
+  "Analyzer API Response:",
+  responseData
+);
+
+// ==============================
+// BACKEND ANALYSIS OBJECT
+// ==============================
+
+const data =
+  responseData.analysis ||
+  responseData;
+
+// ==============================
+// NORMALIZED RESPONSE
+// ==============================
+
+return {
 
   summary:
-
-    data.summary ||
-
-    data.analysis ||
-
-    "",
+    data.summary || "",
 
   critical:
-
-    data.critical ||
-
-    data.findings ||
-
-    [],
+    data.critical || [],
 
   moderate:
-
-    data.moderate ||
-
-    [],
+    data.moderate || [],
 
   positive:
-
-    data.positive ||
-
-    [],
+    data.positive || [],
 
   recommendations:
-
-    data.recommendations ||
-
-    [],
+    data.recommendations || [],
 
   score:
-
-    data.score ||
-
-    data.risk_score ||
-
-    0,
+    data.score || 0,
 
   riskLevel:
-
-    data.riskLevel ||
-
     data.risk_level ||
-
+    data.riskLevel ||
     "Medium"
 };
 

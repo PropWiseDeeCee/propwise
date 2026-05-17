@@ -135,8 +135,28 @@ async function handleLogin(event) {
 
     await signIn();
 
-    window.location.href =
-      appPath("dashboard.html");
+    await signIn();
+
+// ==============================
+// SMART REDIRECT
+// ==============================
+
+const redirectPath =
+
+  localStorage.getItem(
+    "postLoginRedirect"
+  ) ||
+
+  "dashboard.html";
+
+// CLEANUP
+localStorage.removeItem(
+  "postLoginRedirect"
+);
+
+// REDIRECT
+window.location.href =
+  appPath(redirectPath);
 
   } catch (error) {
     setAuthMessage(error.message || "Login failed");

@@ -13,6 +13,9 @@ async function analyzeAgreementHandler() {
   const resultDiv =
     document.getElementById("analysisResult");
 
+  const reportActions =
+    document.getElementById("reportActions");
+
   if (!resultDiv) return;
 
   let file = null;
@@ -21,7 +24,7 @@ async function analyzeAgreementHandler() {
   try {
 
     // ==============================
-    // FILE MODE
+    // INPUT VALIDATION
     // ==============================
 
     if (fileInput?.files?.length) {
@@ -29,14 +32,9 @@ async function analyzeAgreementHandler() {
       file =
         fileInput.files[0];
 
-      // Local extraction for checks
       text =
         await extractTextFromFile(file);
     }
-
-    // ==============================
-    // TEXT MODE
-    // ==============================
 
     else if (
       textInput?.value?.trim()
@@ -56,12 +54,24 @@ async function analyzeAgreementHandler() {
     }
 
     // ==============================
-    // LOADING
+    // LOADING UI
     // ==============================
 
     resultDiv.innerHTML = `
-      <div class="loading">
-        Analyzing agreement...
+
+      <div class="analysis-loading-card">
+
+        <div class="loading-spinner"></div>
+
+        <h3>
+          AI Agreement Analysis Running...
+        </h3>
+
+        <p>
+          Detecting legal risks, financial clauses,
+          delay penalties and hidden issues.
+        </p>
+
       </div>
     `;
 
@@ -73,37 +83,72 @@ async function analyzeAgreementHandler() {
       runChecks(text);
 
     // ==============================
-    // BACKEND AI ANALYSIS
+    // AI ANALYSIS
     // ==============================
 
     let result = null;
 
-    // File upload mode
     if (file) {
 
       result =
         await analyzeAgreement(file);
     }
 
-    // Text mode fallback
     else {
 
-      result = {
-        critical: [],
-        moderate: checks,
-        positive: []
-      };
+      result =
+        await analyzeAgreement(text);
     }
 
     // ==============================
-    // SCORING
+    // SAFE FALLBACKS
     // ==============================
 
+    result = result || {};
+
     const score =
+      result.score ??
       calculateRiskScore(result);
 
     const riskLevel =
+      result.riskLevel ||
       getRiskLevel(score);
+
+    const critical =
+      result.critical || [];
+
+    const moderate =
+      result.moderate || [];
+
+    const recommendations =
+      result.recommendations || [];
+
+    // ==============================
+    // PREVIEW LIMITING
+    // ==============================
+
+    const previewCritical =
+      critical.slice(0, 2);
+
+    const previewModerate =
+      moderate.slice(0, 2);
+
+    const previewRecommendations =
+      recommendations.slice(0, 2);
+
+    // ==============================
+    // SAVE FOR PDF
+    // ==============================
+
+    window.latestAnalyzerResult = {
+
+      score,
+      riskLevel,
+      critical,
+      moderate,
+      recommendations,
+      text
+    };
 
     // ==============================
     // RENDER
@@ -111,46 +156,159 @@ async function analyzeAgreementHandler() {
 
     resultDiv.innerHTML = `
 
-      <div class="analysis-card">
+      <div class="analysis-card modern-analysis-card">
 
-        <h2>
-          Risk Score:
-          ${score}/100
-        </h2>
+        <div class="analysis-top">
 
-        <p>
-          Risk Level:
-          ${riskLevel}
-        </p>
+          <div>
 
-        <hr>
+            <div class="risk-score-label">
+              Risk Score
+            </div>
 
-        <h3>Local Checks</h3>
+            <h2 class="risk-score-value">
+              ${score}/100
+            </h2>
 
-        <ul>
-          ${
-            checks.map(issue => `
-              <li>${issue}</li>
-            `).join("")
-          }
-        </ul>
+            <div class="risk-pill ${riskLevel.toLowerCase()}">
+              ${riskLevel} Risk
+            </div>
+
+          </div>
+
+          <div class="analysis-summary-box">
+
+            <strong>
+              AI Agreement Review
+            </strong>
+
+            <p>
+              This agreement contains legal and financial risks.
+              Full report includes clause analysis,
+              recommendations and downloadable PDF.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="analysis-grid">
+
+          <div class="analysis-section-box critical-box">
+
+            <h3>
+              Critical Risks
+            </h3>
+
+            <ul>
+              ${previewCritical
+                .map(issue => `
+                  <li>${issue}</li>
+                `)
+                .join("")}
+            </ul>
+
+          </div>
+
+          <div class="analysis-section-box moderate-box">
+
+            <h3>
+              Moderate Risks
+            </h3>
+
+            <ul>
+              ${previewModerate
+                .map(issue => `
+                  <li>${issue}</li>
+                `)
+                .join("")}
+            </ul>
+
+          </div>
+
+        </div>
+
+        <div class="recommendation-box">
+
+          <h3>
+            Recommendations
+          </h3>
+
+          <ul>
+            ${previewRecommendations
+              .map(issue => `
+                <li>${issue}</li>
+              `)
+              .join("")}
+          </ul>
+
+        </div>
+
+        <div class="premium-lock-box">
+
+          <h3>
+            Unlock Full AI Report
+          </h3>
+
+          <p>
+            View complete clause analysis,
+            legal risk explanations,
+            financial warnings and export detailed PDF report.
+          </p>
+
+          <div class="premium-actions">
+
+            <button
+  class="primary-btn"
+  onclick="unlockFullReport()"
+>
+  Login to View Full Report
+</button>
+
+            <button
+              class="secondary-btn"
+              onclick="downloadAnalysisPDF(window.latestAnalyzerResult)"
+            >
+              Download PDF Report
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
     `;
+
+    if (reportActions) {
+
+      reportActions.style.display =
+        "flex";
+    }
 
   } catch (error) {
 
     console.error(error);
 
     resultDiv.innerHTML = `
-      <div class="error">
-        Failed to analyze agreement
+
+      <div class="analysis-error-card">
+
+        <h3>
+          Analysis Failed
+        </h3>
+
+        <p>
+          Unable to analyze agreement right now.
+          Please try again.
+        </p>
+
       </div>
     `;
   }
 }
 
 function loadSampleAgreement() {
+
   const input =
     document.getElementById("agreementText");
 
@@ -159,14 +317,37 @@ function loadSampleAgreement() {
   input.value = `
 Builder shall not be liable for delay.
 No penalty clause mentioned.
-Parking not defined.
-Maintenance applicable.
+Parking allocation not defined.
+Maintenance charges applicable.
+Builder reserves unilateral rights.
 `;
 }
 
+function unlockFullReport() {
+
+  // SAVE CURRENT ANALYSIS
+  localStorage.setItem(
+
+    "pendingAnalysis",
+
+    JSON.stringify(
+      window.latestAnalyzerResult
+    )
+  );
+
+  // SAVE REDIRECT PATH
+  localStorage.setItem(
+    "postLoginRedirect",
+    "tools.html"
+  );
+
+  // REDIRECT
+ window.location.href =
+  "login.html";
+}
 
 // ==============================
-// GLOBAL EXPORT
+// GLOBAL EXPORTS
 // ==============================
 
 window.analyzeAgreementHandler =
