@@ -17,15 +17,14 @@ li {
 .paywall {
 
   background:
-    linear-gradient(
-      135deg,
-      #fff7ed,
-      #ffffff
-    );
+    var(--color-primary-soft);
 
   padding: 20px;
 
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
+
+  border:
+    1px solid var(--color-border);
 
   margin-top: 20px;
 }
@@ -40,15 +39,15 @@ li {
 
   padding: 16px;
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
 
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 
-  background: #f9fafb;
+  background: var(--color-surface);
 
   font-size: 13px;
 
-  color: #4b5563;
+  color: var(--color-text-light);
 
   line-height: 1.7;
 }
@@ -70,15 +69,15 @@ li {
 
   line-height: 1.7;
 
-  color: #6b7280;
+  color: var(--color-text-muted);
 
   padding: 14px 16px;
 
-  border-left: 4px solid #d1d5db;
+  border-left: 4px solid var(--color-primary);
 
-  background: #f9fafb;
+  background: var(--color-primary-soft);
 
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 }
 
 /* =========================================
@@ -93,7 +92,7 @@ li {
 
   font-size: 13px;
 
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 
@@ -105,21 +104,21 @@ li {
 
 input.invalid {
 
-  border-color: #dc2626 !important;
+  border-color: var(--color-danger) !important;
 
-  background: #fef2f2;
+  background: var(--color-danger-soft);
 }
 
 
 .error-message {
 
-  background: #fee2e2;
+  background: var(--color-danger-soft);
 
   color: #991b1b;
 
   padding: 12px;
 
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 
   margin-top: 10px;
 }

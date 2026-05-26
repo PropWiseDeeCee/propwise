@@ -13,7 +13,7 @@
     var(--space-16) 0;
 
   background:
-    #f8fafc;
+    var(--color-bg);
 
   min-height:
     calc(100vh - 120px);
@@ -182,7 +182,7 @@
     var(--space-8);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 
@@ -257,7 +257,7 @@
     var(--space-8);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 

@@ -1,6 +1,17 @@
 /* Compatibility stylesheet manifest.
-   Page and component rules now live in css/components and css/pages. */
+   Page and component rules now live in css/core, css/components and css/pages. */
 
+@import url("css/core/variables.css");
+@import url("css/core/reset.css");
+@import url("css/core/typography.css");
+@import url("css/core/layout.css");
+@import url("css/components/buttons.css");
+@import url("css/components/cards.css");
+@import url("css/components/forms.css");
+@import url("css/components/navbar.css");
+@import url("css/components/footer.css");
+@import url("css/components/loaders.css");
+@import url("css/components/dropdowns.css");
 @import url("css/components/content.css");
 @import url("css/pages/home.css");
 @import url("css/pages/legal.css");

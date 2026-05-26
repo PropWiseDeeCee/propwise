@@ -76,8 +76,8 @@
     body {
       margin: 0;
       font-family: Inter, sans-serif;
-      background: #f8fafc;
-      color: #0f172a;
+      background: var(--color-bg);
+      color: var(--color-text);
       line-height: 1.8;
     }
 
@@ -88,10 +88,11 @@
     }
 
     .hero {
-      background: white;
+      background: var(--color-surface);
       padding: 50px;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-card);
     }
 
     h1 {
@@ -111,7 +112,7 @@
     }
 
     p {
-      color: #475569;
+      color: var(--color-text-light);
       font-size: 17px;
     }
 
@@ -121,47 +122,48 @@
 
     li {
       margin-bottom: 12px;
-      color: #475569;
+      color: var(--color-text-light);
     }
 
     .box {
-      background: white;
+      background: var(--color-surface);
       padding: 28px;
-      border-radius: 20px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
       margin-top: 24px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+      box-shadow: var(--shadow-sm);
     }
 
     .warning {
-      background: #fef2f2;
+      background: var(--color-danger-soft);
       border: 1px solid #fecaca;
       padding: 24px;
-      border-radius: 18px;
+      border-radius: var(--radius-lg);
       margin-top: 30px;
     }
 
     .cta {
       margin-top: 60px;
-      background: #0f172a;
+      background: var(--color-secondary);
       color: white;
       padding: 40px;
-      border-radius: 24px;
+      border-radius: var(--radius-2xl);
       text-align: center;
     }
 
     .cta a {
       display: inline-block;
       margin-top: 20px;
-      background: #14b8a6;
+      background: var(--color-primary);
       color: white;
       text-decoration: none;
       padding: 14px 24px;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       font-weight: 600;
     }
 
     .cta a:hover {
-      background: #0f766e;
+      background: var(--color-primary-dark);
     }
 
   </style>

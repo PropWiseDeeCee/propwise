@@ -25,7 +25,9 @@
     var(--shadow-sm);
 
   transition:
-    all var(--transition-normal);
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 
@@ -35,7 +37,7 @@
     translateY(-4px);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 
@@ -119,13 +121,13 @@
     var(--color-surface);
 
   border-radius:
-    var(--radius-xl);
+    var(--radius-2xl);
 
   padding:
     var(--space-8);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 
   transition:
     all var(--transition-normal);
@@ -197,7 +199,7 @@
     var(--space-6);
 
   border-left:
-    5px solid var(--color-primary);
+    4px solid var(--color-primary);
 
   box-shadow:
     var(--shadow-md);
@@ -233,7 +235,7 @@
     var(--color-primary);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 

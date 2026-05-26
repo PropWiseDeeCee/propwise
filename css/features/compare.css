@@ -13,7 +13,7 @@
     var(--space-16) 0;
 
   background:
-    #f8fafc;
+    var(--color-bg);
 
   min-height:
     100vh;
@@ -63,7 +63,7 @@
   line-height: 1.8;
 
   color:
-    var(--color-text-muted);
+    var(--color-text-light);
 }
 
 
@@ -110,13 +110,13 @@
     1px solid var(--color-border);
 
   border-radius:
-    var(--radius-2xl);
+    var(--radius-xl);
 
   padding:
     var(--space-8);
 
   box-shadow:
-    var(--shadow-sm);
+    var(--shadow-card);
 
   transition:
     all var(--transition-normal);
@@ -232,13 +232,13 @@
     var(--color-white);
 
   border-radius:
-    var(--radius-2xl);
+    var(--radius-xl);
 
   padding:
     var(--space-8);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 
@@ -259,10 +259,10 @@
     var(--color-white);
 
   border-radius:
-    var(--radius-2xl);
+    var(--radius-xl);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 
@@ -280,7 +280,7 @@
 .compare-table th {
 
   background:
-    var(--color-primary);
+    var(--color-secondary);
 
   color:
     var(--color-white);
@@ -311,7 +311,7 @@
 .compare-table tr:hover {
 
   background:
-    #f8fafc;
+    var(--color-primary-soft);
 }
 
 
@@ -322,7 +322,7 @@
 .compare-winner {
 
   background:
-    rgba(22,163,74,0.08);
+    var(--color-success-soft);
 }
 
 
@@ -355,13 +355,13 @@
     var(--color-white);
 
   border-radius:
-    var(--radius-2xl);
+    var(--radius-xl);
 
   padding:
     var(--space-8);
 
   box-shadow:
-    var(--shadow-md);
+    var(--shadow-card);
 }
 
 
@@ -402,7 +402,7 @@
     13px;
 
   color:
-    #dc2626;
+    var(--color-danger);
 
   margin-top:
     6px;
@@ -418,10 +418,10 @@
 .form-input.invalid {
 
   border-color:
-    #dc2626;
+    var(--color-danger);
 
   background:
-    #fef2f2;
+    var(--color-danger-soft);
 }
 
 

@@ -17,11 +17,7 @@
     var(--space-6);
 
   background:
-    linear-gradient(
-      135deg,
-      #f8fafc,
-      #eef4ff
-    );
+    var(--color-bg);
 }
 
 
@@ -38,13 +34,13 @@
     var(--color-white);
 
   border-radius:
-    var(--radius-xl);
+    var(--radius-2xl);
 
   padding:
     var(--space-10);
 
   box-shadow:
-    var(--shadow-lg);
+    var(--shadow-card);
 
   border:
     1px solid var(--color-border);
@@ -87,7 +83,7 @@
   justify-content: center;
 
   border-radius:
-    var(--radius-lg);
+    var(--radius-xl);
 
   background:
     var(--color-primary-light);
