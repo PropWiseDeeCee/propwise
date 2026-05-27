@@ -120,19 +120,22 @@
       >
 
         <button
-          type="button"
-          class="profile-btn dropdown-toggle"
-        >
+  type="button"
+  class="profile-btn dropdown-toggle"
+>
 
-          <span id="profileName">
-            User
-          </span>
+  <div
+    class="profile-avatar"
+    id="profileAvatar"
+  >
+    U
+  </div>
 
-          <span>
-            ▾
-          </span>
+  <span class="profile-chevron">
+    ▾
+  </span>
 
-        </button>
+</button>
 
         <div
           class="dropdown-menu"
@@ -141,21 +144,18 @@
 
           <div class="dropdown-header">
 
-            <div
-              class="dropdown-title"
-              id="profileNameDropdown"
-            >
-              User
-            </div>
+  <div class="dropdown-label">
+    Signed in as
+  </div>
 
-            <div
-              class="dropdown-subtitle"
-              id="profileEmail"
-            >
-              user@email.com
-            </div>
+  <div
+    class="dropdown-subtitle"
+    id="profileEmail"
+  >
+    user@email.com
+  </div>
 
-          </div>
+</div>
 
           <a
             href="dashboard.html"

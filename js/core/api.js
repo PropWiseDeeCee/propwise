@@ -227,31 +227,36 @@ async function updateAuthUI() {
     profileSection.style.display = "inline-block";
   }
 
-  const displayName =
+  const profileAvatar =
+  document.getElementById(
+    "profileAvatar"
+  );
+
+const profileEmail =
+  document.getElementById(
+    "profileEmail"
+  );
+
+const firstLetter =
+  (
     user.user_metadata?.full_name ||
-    user.email?.split("@")[0] ||
-    "User";
+    user.email ||
+    "U"
+  )
+    .charAt(0)
+    .toUpperCase();
 
-  const profileName =
-    document.getElementById("profileName");
+if (profileAvatar) {
 
-  const profileNameDropdown =
-    document.getElementById("profileNameDropdown");
+  profileAvatar.textContent =
+    firstLetter;
+}
 
-  const profileEmail =
-    document.getElementById("profileEmail");
+if (profileEmail) {
 
-  if (profileName) {
-    profileName.textContent = displayName;
-  }
-
-  if (profileNameDropdown) {
-    profileNameDropdown.textContent = displayName;
-  }
-
-  if (profileEmail) {
-    profileEmail.textContent = user.email || "";
-  }
+  profileEmail.textContent =
+    user.email || "";
+}
 
   const adminNavItem =
     document.getElementById("adminNavItem");

@@ -7,19 +7,19 @@
   position: sticky;
 
   top: 0;
+  padding: 0 12px;
 
   z-index: 1000;
 
-  width: 100%;
+  background: rgba(255,255,255,0.92);
 
-  background:
-    rgba(255, 255, 255, 0.94);
-
-  backdrop-filter:
-    blur(14px);
+  backdrop-filter: blur(12px);
 
   border-bottom:
-    1px solid rgba(226, 232, 240, 0.9);
+    1px solid rgba(15,23,42,0.06);
+
+  box-shadow:
+    0 4px 20px rgba(15,23,42,0.04);
 }
 
 
@@ -29,27 +29,19 @@
 
 .nav-container {
 
-  width: 100%;
-
   max-width: 1280px;
 
   margin: 0 auto;
 
-  padding:
-    0 var(--space-6);
-
-  min-height: 76px;
-  min-height:
-    var(--navbar-height);
+  height: 76px;
 
   display: flex;
 
   align-items: center;
 
-  justify-content: space-between;
+  gap: 40px;
 
-  gap:
-    var(--space-6);
+  padding: 0 24px;
 }
 
 
@@ -113,8 +105,7 @@
 
   align-items: center;
 
-  gap:
-    var(--space-6);
+  gap: 32px;
 
   margin-left: auto;
 }
@@ -129,8 +120,8 @@
 
   text-decoration: none;
 
-  font-weight:
-    var(--font-medium);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 
   transition:
     color var(--transition-fast);
@@ -154,11 +145,7 @@
 
   align-items: center;
 
-  gap:
-    var(--space-4);
-
-  margin-left:
-    var(--space-4);
+  margin-left: 8px;
 }
 
 
@@ -172,45 +159,88 @@
     var(--space-3);
 }
 
-
 .profile-btn {
 
-  display: inline-flex;
+  display: flex;
 
   align-items: center;
 
-  gap:
-    var(--space-2);
+  gap: 10px;
 
-  padding:
-    10px 14px;
+  padding: 8px 12px;
+
+  border-radius: 14px;
 
   border:
-    1px solid var(--color-border);
+    1px solid rgba(15,23,42,0.08);
 
-  border-radius:
-    var(--radius-md);
+  background: rgba(255,255,255,0.82);
 
-  background:
-    var(--color-white);
-
-  color:
-    var(--color-text);
-
-  font-weight:
-    var(--font-semibold);
+  transition: all 0.2s ease;
 }
+
 
 .profile-btn:hover {
 
+  background: #f8fafc;
+
   border-color:
-    var(--color-primary);
+    rgba(37,99,235,0.16);
 
-  color:
-    var(--color-primary-dark);
+  transform: translateY(-1px);
+}
 
-  background:
-    var(--color-primary-soft);
+.profile-avatar {
+
+  width: 36px;
+
+  height: 36px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.02em;
+
+  box-shadow:
+    0 8px 18px rgba(37,99,235,0.22);
+}
+
+.profile-chevron {
+
+  font-size: 11px;
+
+  color: #64748b;
+
+  transform: translateY(1px);
+}
+
+
+.dropdown-label {
+
+  font-size: 12px;
+
+  color: var(--color-text-muted);
+
+  margin-bottom: 4px;
+
+  font-weight: 500;
 }
 
 
