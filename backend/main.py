@@ -16,7 +16,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+    "https://propwiseindia.com",
+    "https://www.propwiseindia.com"
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,7 +30,7 @@ app.add_middleware(
 # CONFIG
 # ==============================
 
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
 
 
 # ==============================
@@ -171,7 +174,7 @@ async def analyze(file: UploadFile = File(...)):
 
             return {
                 "success": False,
-                "error": "File too large. Max 10MB allowed."
+                "error": "File too large. Max 20MB allowed."
             }
 
         # ==============================
