@@ -616,3 +616,416 @@ compare.html form
 8. Add a README with deployment and environment variable instructions.
 9. Add basic smoke tests for calculator, compare math, and analyzer response normalization.
 
+# PropWise Project Knowledge Guide — May 2026 Updates
+
+## Calculator System Major Upgrade
+
+The Property Cost Calculator has evolved from a basic registration calculator into a premium multi-state property financial planning engine.
+
+### Updated Calculator Architecture
+
+```text
+calculator.html
+js/features/calculator/calculator-state-rules.js
+js/features/calculator/calculator-core.js
+js/features/calculator/calculator-ui.js
+css/features/calculator.css
+```
+
+The calculator now follows a modular architecture:
+
+* `calculator-state-rules.js`
+
+  * Centralized taxation and city-rule engine.
+  * Contains state-level and city-level property rules.
+  * Handles authority-level logic and guidance multipliers.
+
+* `calculator-core.js`
+
+  * Core financial engine.
+  * Calculates:
+
+    * EMI
+    * total interest
+    * upfront cash requirement
+    * five-year ownership cost
+    * GST
+    * municipal surcharge
+    * stamp duty
+    * registration charges
+    * affordability analysis
+
+* `calculator-ui.js`
+
+  * Handles validation, rendering, charts, and dashboard behavior.
+  * Generates premium dashboard sections dynamically.
+  * Uses Chart.js for visualization.
+
+* `calculator.css`
+
+  * Dedicated calculator feature styling.
+  * Uses global design system with contextual overrides.
+  * Dark financial dashboard theme.
+
+---
+
+# Calculator Feature Enhancements
+
+## State-Wise Registration Logic
+
+Supported states currently include:
+
+* Karnataka
+* Assam
+* Kerala
+* Tamil Nadu
+* Uttar Pradesh
+* Haryana
+* Maharashtra
+* Gujarat
+* Andhra Pradesh
+* Telangana
+* Goa
+* West Bengal
+* Odisha
+* Delhi
+* Other States / UT
+
+Each state supports:
+
+* standard residential slabs
+* luxury residential slabs
+* agricultural property rules
+* women concession handling
+* registration percentages
+* authority-specific surcharges
+
+---
+
+# City-Level Rule Engine
+
+The calculator now supports city-level overrides.
+
+Examples:
+
+* Bangalore
+* Noida
+* Greater Noida
+* Gurgaon
+* Chennai
+* Hyderabad
+* Mumbai
+* Delhi
+
+City rules can define:
+
+* metro classification
+* luxury thresholds
+* authority mappings
+* parking premium factors
+* premium zone multipliers
+* guidance value multipliers
+* interior cost per sqft
+
+---
+
+# Authority-Level Logic
+
+Authority-specific taxation rules are now supported.
+
+Examples:
+
+```text
+BBMP
+BDA
+NOIDA
+GNIDA
+```
+
+Authority rules may include:
+
+* municipal surcharge percentages
+* guidance multipliers
+* premium taxation adjustments
+
+---
+
+# Guidance Value Logic
+
+The calculator now estimates adjustments based on guidance-value-style multipliers.
+
+This impacts:
+
+* municipal calculations
+* premium zone costing
+* estimated acquisition value
+* luxury threshold calculations
+
+The implementation is approximation-based and not connected to live government APIs.
+
+---
+
+# Affordable Housing Logic
+
+Affordable housing support was added.
+
+Supported logic:
+
+* metro vs non-metro classification
+* affordable housing GST reduction
+* size-based eligibility
+* price threshold eligibility
+
+The system evaluates:
+
+```text
+price
+sqft
+city metro classification
+```
+
+before applying GST benefits.
+
+---
+
+# Agricultural Property Logic
+
+The calculator now supports:
+
+* agricultural stamp duty logic
+* separate registration percentages
+* agricultural property categorization
+
+Agricultural handling differs from residential logic.
+
+---
+
+# Resale Property Logic
+
+Property type support now includes:
+
+* under construction
+* ready to move
+* resale property
+
+Resale properties bypass GST calculations.
+
+---
+
+# Women Concession Handling
+
+Certain states now support women concession calculations.
+
+Supported via:
+
+```text
+buyerGender
+```
+
+Women concession rules apply reduced stamp duty percentages where configured.
+
+---
+
+# Financial Dashboard System
+
+The calculator now renders a premium financial dashboard.
+
+Dashboard sections include:
+
+* total estimated property cost
+* monthly EMI
+* total interest
+* upfront cash requirement
+* five-year ownership cost
+* affordability analysis
+* financial health meter
+* smart insights panel
+* taxation breakdown
+* hidden charges analysis
+
+---
+
+# Chart.js Integration
+
+The calculator now integrates:
+
+```text
+Chart.js
+```
+
+via CDN.
+
+Charts include:
+
+* property cost composition chart
+* acquisition breakdown visualization
+
+The chart is rendered dynamically after calculation.
+
+---
+
+# Validation System
+
+The calculator now includes:
+
+* required field validation
+* inline validation UI
+* premium validation styling
+* reset functionality
+* invalid field highlighting
+
+Validation no longer uses browser `alert()` popups.
+
+---
+
+# Dashboard UX Improvements
+
+Major UX improvements implemented:
+
+* results hidden before calculation
+* dashboard revealed only after clicking calculate
+* smooth scroll to results
+* reset button support
+* sequential SaaS-style interaction flow
+* premium dark dashboard layout
+* improved responsive behavior
+
+---
+
+# CSS Architecture Improvements
+
+The calculator now follows:
+
+```text
+global component system
++ feature-level contextual overrides
+```
+
+Instead of duplicating global components.
+
+Example:
+
+```css
+.summary-panel .metric-card
+```
+
+is used to override dashboard metric cards for dark mode compatibility.
+
+This avoids:
+
+* duplicated component systems
+* CSS fragmentation
+* inconsistent UI behavior
+
+---
+
+# Known Technical Constraints
+
+Current calculator limitations:
+
+* no live government API integration
+* no real-time circle-rate fetching
+* guidance values are estimated multipliers
+* taxation logic is approximation-based
+* municipal calculations are simulated estimates
+
+The calculator is intended for:
+
+* estimation
+* planning
+* affordability analysis
+* acquisition comparison
+* hidden cost discovery
+
+not legal or government-certified taxation output.
+
+---
+
+# External Browser Libraries (Updated)
+
+The frontend currently depends on these CDN libraries:
+
+* Supabase JS v2
+* Chart.js
+* jsPDF
+* jsPDF AutoTable
+* html2canvas
+* pdf.js
+* Mammoth browser build
+* Lucide icons
+* Google Fonts
+
+Script order is important because the frontend is not bundled.
+
+Example:
+
+```text
+calculator-state-rules.js
+  -> calculator-core.js
+    -> calculator-ui.js
+```
+
+must load in that order.
+
+---
+
+# Agreement Report Improvements
+
+Agreement PDF export system improvements implemented:
+
+* compare report visual theme reused for agreement reports
+* legal disclaimer overflow fixes
+* jsPDF AutoTable dependency fixes
+* agreement PDF layout redesign
+* executive summary formatting improvements
+* risk card visual alignment improvements
+
+---
+
+# Home Page Tools Section Improvements
+
+Homepage tools cards were redesigned.
+
+Changes include:
+
+* three-card single-row layout
+* improved spacing
+* consistent button alignment
+* responsive card behavior
+* reduced excessive vertical gaps
+* improved visual hierarchy
+
+---
+
+# UI Architecture Direction
+
+The frontend is moving toward:
+
+```text
+shared design system
++ feature-level overrides
++ modular feature architecture
+```
+
+Recommended conventions:
+
+* shared reusable components remain global
+* feature-specific themes use contextual selectors
+* avoid duplicating entire component systems
+* reserve namespacing for fundamentally different behavior
+
+Example:
+
+```css
+.summary-panel .metric-card
+```
+
+preferred over:
+
+```css
+.calc-metric-card
+```
+
+unless behavior differs significantly.
+
+
