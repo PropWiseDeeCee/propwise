@@ -323,3 +323,6 @@ window.getRiskLevel =
 
 window.runChecks =
   runChecks;
+
+window.analyzeAgreement =
+  analyzeAgreement;

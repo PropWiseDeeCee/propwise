@@ -574,8 +574,10 @@ function renderInsightBox(
       158
     );
 
-  const boxHeight =
-    18 + (lines.length * 5);
+  const lineHeight = 6;
+
+const boxHeight =
+  24 + (lines.length * lineHeight);
 
   doc.setFillColor(
     239,
@@ -632,7 +634,7 @@ doc.setLineHeightFactor(
   doc.text(
     lines,
     PDF.margin + 8,
-    y + 18
+    y + 20
   );
 }
 

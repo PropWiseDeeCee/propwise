@@ -266,11 +266,11 @@ async function analyzeAgreementHandler() {
 </button>
 
             <button
-              class="secondary-btn"
-              onclick="downloadAnalysisPDF(window.latestAnalyzerResult)"
-            >
-              Download PDF Report
-            </button>
+  class="secondary-btn"
+  onclick="downloadAgreementReport()"
+>
+  Download PDF Report
+</button>
 
           </div>
 
