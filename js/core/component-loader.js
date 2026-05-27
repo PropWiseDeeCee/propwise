@@ -23,11 +23,20 @@ async function loadSharedComponents() {
       resolveComponentLinks(navbar);
 
       if (
-        typeof initNavbarDropdown ===
-        "function"
-      ) {
-        initNavbarDropdown();
-      }
+  typeof initNavbarDropdown ===
+  "function"
+) {
+
+  initNavbarDropdown();
+}
+
+if (
+  typeof initMobileNavbar ===
+  "function"
+) {
+
+  initMobileNavbar();
+}
 
     } catch (e) {
 

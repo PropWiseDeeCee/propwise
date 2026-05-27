@@ -65,33 +65,47 @@ function initDropdowns() {
    MOBILE NAVBAR
 ========================================= */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function initMobileNavbar() {
 
-    const toggle =
-      document.getElementById(
-        "mobileMenuToggle"
-      );
-
-    const wrapper =
-      document.getElementById(
-        "mobileNavWrapper"
-      );
-
-    if (!toggle || !wrapper) return;
-
-    toggle.addEventListener(
-      "click",
-      () => {
-
-        wrapper.classList.toggle(
-          "active"
-        );
-      }
+  const toggle =
+    document.getElementById(
+      "mobileMenuToggle"
     );
+
+  const wrapper =
+    document.getElementById(
+      "mobileNavWrapper"
+    );
+
+  if (!toggle || !wrapper) {
+
+    console.warn(
+      "Mobile navbar elements not found"
+    );
+
+    return;
   }
-);
+
+  if (toggle.dataset.mobileReady) {
+
+    return;
+  }
+
+  toggle.dataset.mobileReady = "true";
+
+  toggle.addEventListener(
+    "click",
+    () => {
+
+      wrapper.classList.toggle(
+        "active"
+      );
+    }
+  );
+}
+
+window.initMobileNavbar =
+  initMobileNavbar;
 
 window.toggleUserMenu = toggleUserMenu;
 window.initDropdowns = initDropdowns;
