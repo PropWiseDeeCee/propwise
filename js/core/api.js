@@ -135,8 +135,6 @@ async function handleLogin(event) {
 
     await signIn();
 
-    await signIn();
-
 // ==============================
 // SMART REDIRECT
 // ==============================

@@ -351,12 +351,28 @@ async function saveAgreementReport(
   analysis,
   agreementText
 ) {
+   console.log(
+    "Saving agreement report...",
+    analysis
+  );
 
   try {
 
-    const {
-      data: { user }
-    } = await window.supabase.auth.getUser();
+  const supabase =
+  window.getSupabaseClient?.();
+
+if (!supabase) {
+
+  console.error(
+    "Supabase client unavailable"
+  );
+
+  return;
+}
+
+const {
+  data: { user }
+} = await supabase.auth.getUser();
 
     if (!user) return;
 
@@ -388,7 +404,7 @@ async function saveAgreementReport(
     };
 
     const { error } =
-      await window.supabase
+      await supabase
         .from("agreement_reports")
         .insert(payload);
 
@@ -470,3 +486,6 @@ window.loadSampleAgreement =
 
 window.resetAgreementAnalyzer =
   resetAgreementAnalyzer;
+
+window.saveAgreementReport =
+  saveAgreementReport;
