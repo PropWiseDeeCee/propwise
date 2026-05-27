@@ -265,11 +265,11 @@ async function analyzeAgreementHandler() {
   Login to View Full Report
 </button>
 
-            <button
+<button
   class="secondary-btn"
-  onclick="downloadAgreementReport()"
+  onclick="unlockFullReport()"
 >
-  Download PDF Report
+  Login to Download PDF
 </button>
 
           </div>
@@ -346,6 +346,55 @@ function unlockFullReport() {
   "login.html";
 }
 
+function resetAgreementAnalyzer() {
+
+  const fileInput =
+    document.getElementById("pdfFile");
+
+  const textInput =
+    document.getElementById("agreementText");
+
+  const resultDiv =
+    document.getElementById(
+      "analysisResult"
+    );
+
+  const reportActions =
+    document.getElementById(
+      "reportActions"
+    );
+
+  if (fileInput) {
+    fileInput.value = "";
+  }
+
+  if (textInput) {
+    textInput.value = "";
+  }
+
+  if (resultDiv) {
+    resultDiv.innerHTML = "";
+  }
+
+  if (reportActions) {
+    reportActions.style.display =
+      "none";
+  }
+
+  localStorage.removeItem(
+    "pendingAnalysis"
+  );
+
+  window.latestAnalyzerResult = null;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+
 // ==============================
 // GLOBAL EXPORTS
 // ==============================
@@ -355,3 +404,6 @@ window.analyzeAgreementHandler =
 
 window.loadSampleAgreement =
   loadSampleAgreement;
+
+window.resetAgreementAnalyzer =
+  resetAgreementAnalyzer;

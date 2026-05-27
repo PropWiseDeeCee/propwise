@@ -86,8 +86,6 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <script src="js/pdf-generator.js"></script>
 <script src="js/report-generator.js"></script>
-<script src="js/features/analyzer/analyzer-core.js"></script>
-<script src="js/features/analyzer/analyzer-ui.js"></script>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -271,7 +269,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
           <textarea
             id="agreementText"
-            rows="8"
+            rows="4"
             placeholder="Paste agreement content here..."
           ></textarea>
 
@@ -290,15 +288,25 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 </div>
 
-        <!-- ANALYZE -->
-        <button
-          id="analyzeBtn"
-          class="hero-primary-btn analyzer-btn"
-          onclick="analyzeAgreementHandler()">
+        <!-- ACTIONS -->
+<div class="analyzer-action-row">
 
-          Analyze Agreement Risks
+  <button
+    class="secondary-btn analyzer-reset-btn"
+    onclick="resetAgreementAnalyzer()"
+  >
+    Reset
+  </button>
 
-        </button>
+  <button
+    id="analyzeBtn"
+    class="hero-primary-btn analyzer-btn"
+    onclick="analyzeAgreementHandler()"
+  >
+    Analyze Agreement Risks
+  </button>
+
+</div>
         <div class="upload-consent">
 
   By uploading a document, you confirm that:
@@ -472,6 +480,11 @@ document.addEventListener(
   window.latestAnalyzerResult =
     parsed;
 
+  localStorage.setItem(
+  "agreementAnalysis",
+  JSON.stringify(parsed)
+);
+
   const resultDiv =
     document.getElementById(
       "analysisResult"
@@ -578,7 +591,7 @@ document.addEventListener(
 
           <button
             class="primary-btn"
-            onclick="downloadAnalysisPDF(window.latestAnalyzerResult)"
+            onclick="downloadAgreementReport()"
           >
             Download PDF Report
           </button>
@@ -587,6 +600,9 @@ document.addEventListener(
 
       </div>
     `;
+    localStorage.removeItem(
+  "pendingAnalysis"
+);
   }
 }
 

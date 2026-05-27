@@ -582,7 +582,7 @@
 
   width: 100%;
 
-  min-height: 220px;
+  min-height: 120px;
 
   resize: vertical;
 }
@@ -842,4 +842,35 @@
   .modern-analysis-card {
     padding: 24px;
   }
+
+  .analyzer-action-row {
+
+    flex-direction: column;
+  }
+
+  .analyzer-reset-btn {
+
+    width: 100%;
+  }
+}
+
+.analyzer-action-row {
+
+  display: flex;
+
+  gap: 16px;
+
+  margin-top: 28px;
+}
+
+.analyzer-reset-btn {
+
+  min-width: 180px;
+}
+
+.analyzer-action-row .analyzer-btn {
+
+  margin-top: 0;
+
+  flex: 1;
 }
