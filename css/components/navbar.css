@@ -596,37 +596,57 @@
 
   .mobile-nav-wrapper {
 
-    position: absolute;
+  position: absolute;
 
-    top: 100%;
+  top: calc(100% + 1px);
 
-    left: 0;
-    right: 0;
+  left: 12px;
 
-    background: white;
+  right: 12px;
 
-    border-bottom-left-radius: 24px;
+  background: white;
 
-    border-bottom-right-radius: 24px;
+  border-radius: 24px;
 
-    padding: 24px;
+  padding: 24px;
 
-    box-shadow:
-      0 20px 40px rgba(15,23,42,0.08);
+  box-shadow:
+    0 20px 40px rgba(15,23,42,0.12);
 
-    flex-direction: column;
+  flex-direction: column;
 
-    align-items: stretch;
+  align-items: stretch;
 
-    gap: 24px;
+  gap: 24px;
 
-    display: none;
-  }
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transform: translateY(-10px);
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease;
+
+  display: flex;
+
+  z-index: 2000;
+}
 
   .mobile-nav-wrapper.active {
 
-    display: flex;
-  }
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+  transform: translateY(0);
+}
 
   .nav-links {
 
