@@ -370,10 +370,6 @@ function renderAIRecommendation({
 
         <div>
 
-          <h3>
-            Smart Recommendation
-          </h3>
-
           <p>
             AI-assisted financial insights
           </p>
