@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://propwise-zeta.vercel.app/sitemap.xml
+Sitemap: https://propwiseindia.com/sitemap.xml
