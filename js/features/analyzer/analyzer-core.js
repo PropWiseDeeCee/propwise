@@ -30,7 +30,6 @@ async function extractTextFromPDF(file) {
   return text;
 }
 
-
 async function extractTextFromFile(file) {
 
   const type =
@@ -63,7 +62,6 @@ async function extractTextFromFile(file) {
   return "";
 }
 
-
 // ==============================
 // ANALYSIS HELPERS
 // ==============================
@@ -83,7 +81,6 @@ function calculateRiskScore(result) {
   return Math.min(score, 100);
 }
 
-
 function getRiskLevel(score) {
 
   if (score >= 70) {
@@ -97,7 +94,6 @@ function getRiskLevel(score) {
   return "Low";
 }
 
-
 // ==============================
 // BASIC CHECKS
 // ==============================
@@ -110,6 +106,7 @@ function runChecks(text) {
   const issues = [];
 
   if (!lower.includes("rera")) {
+
     issues.push(
       "RERA registration details missing"
     );
@@ -119,18 +116,59 @@ function runChecks(text) {
     lower.includes("delay") &&
     !lower.includes("penalty")
   ) {
+
     issues.push(
       "Delay penalty clause missing"
     );
   }
 
   if (!lower.includes("parking")) {
+
     issues.push(
       "Parking clause missing"
     );
   }
 
   return issues;
+}
+
+// ==============================
+// NORMALIZE RESPONSE
+// ==============================
+
+function normalizeAnalysisResult(data = {}) {
+
+  const risk_score =
+    data.risk_score ??
+    data.score ??
+    0;
+
+  const risk_level =
+    data.risk_level ??
+    data.riskLevel ??
+    getRiskLevel(risk_score);
+
+  return {
+
+    summary:
+      data.summary || "",
+
+    critical:
+      data.critical || [],
+
+    moderate:
+      data.moderate || [],
+
+    positive:
+      data.positive || [],
+
+    recommendations:
+      data.recommendations || [],
+
+    risk_score,
+
+    risk_level
+  };
 }
 
 // ==============================
@@ -163,9 +201,7 @@ async function analyzeAgreement(input) {
           `${window.PROPWISE_CONFIG.API.BASE_URL}/analyze`,
 
           {
-
             method: "POST",
-
             body: formData
           }
         );
@@ -177,7 +213,7 @@ async function analyzeAgreement(input) {
 
     else {
 
-      return {
+      return normalizeAnalysisResult({
 
         critical:
           runChecks(input),
@@ -195,10 +231,10 @@ async function analyzeAgreement(input) {
           "Check payment schedule carefully."
         ],
 
-        score: 40,
+        risk_score: 40,
 
-        riskLevel: "Medium"
-      };
+        risk_level: "Medium"
+      });
     }
 
     // ==============================
@@ -213,50 +249,26 @@ async function analyzeAgreement(input) {
     }
 
     const responseData =
-  await response.json();
+      await response.json();
 
-console.log(
-  "Analyzer API Response:",
-  responseData
-);
+    console.log(
+      "Analyzer API Response:",
+      responseData
+    );
 
-// ==============================
-// BACKEND ANALYSIS OBJECT
-// ==============================
+    // ==============================
+    // BACKEND ANALYSIS OBJECT
+    // ==============================
 
-const data =
-  responseData.analysis ||
-  responseData;
+    const data =
+      responseData.analysis ||
+      responseData;
 
-// ==============================
-// NORMALIZED RESPONSE
-// ==============================
+    // ==============================
+    // NORMALIZED RESPONSE
+    // ==============================
 
-return {
-
-  summary:
-    data.summary || "",
-
-  critical:
-    data.critical || [],
-
-  moderate:
-    data.moderate || [],
-
-  positive:
-    data.positive || [],
-
-  recommendations:
-    data.recommendations || [],
-
-  score:
-    data.score || 0,
-
-  riskLevel:
-    data.risk_level ||
-    data.riskLevel ||
-    "Medium"
-};
+    return normalizeAnalysisResult(data);
 
   } catch (err) {
 
@@ -277,7 +289,7 @@ return {
     const issues =
       runChecks(fallbackText);
 
-    return {
+    return normalizeAnalysisResult({
 
       summary:
         "Basic local analysis completed.",
@@ -298,10 +310,10 @@ return {
         "Review hidden charges carefully."
       ],
 
-      score: 45,
+      risk_score: 45,
 
-      riskLevel: "Medium"
-    };
+      risk_level: "Medium"
+    });
   }
 }
 
@@ -323,6 +335,9 @@ window.getRiskLevel =
 
 window.runChecks =
   runChecks;
+
+window.normalizeAnalysisResult =
+  normalizeAnalysisResult;
 
 window.analyzeAgreement =
   analyzeAgreement;

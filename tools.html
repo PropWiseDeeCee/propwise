@@ -480,6 +480,11 @@ document.addEventListener(
   window.latestAnalyzerResult =
     parsed;
 
+  saveAgreementReport(
+  parsed,
+  parsed.text || ""
+);
+
   localStorage.setItem(
   "agreementAnalysis",
   JSON.stringify(parsed)
@@ -505,11 +510,11 @@ document.addEventListener(
             </div>
 
             <h2 class="risk-score-value">
-              ${parsed.score}/100
+              ${parsed.risk_score}/100
             </h2>
 
-            <div class="risk-pill ${parsed.riskLevel.toLowerCase()}">
-              ${parsed.riskLevel} Risk
+            <div class="risk-pill ${parsed.risk_level.toLowerCase()}">
+              ${parsed.risk_level} Risk
             </div>
 
           </div>

@@ -106,13 +106,14 @@ async function analyzeAgreementHandler() {
 
     result = result || {};
 
-    const score =
-      result.score ??
-      calculateRiskScore(result);
+    const risk_score =
+  result.risk_score ??
+  calculateRiskScore(result);
 
-    const riskLevel =
-      result.riskLevel ||
-      getRiskLevel(score);
+const risk_level =
+  result.risk_level ||
+  getRiskLevel(risk_score);
+
 
     const critical =
       result.critical || [];
@@ -142,8 +143,8 @@ async function analyzeAgreementHandler() {
 
     window.latestAnalyzerResult = {
 
-      score,
-      riskLevel,
+      risk_score,
+      risk_level,
       critical,
       moderate,
       recommendations,
@@ -167,11 +168,11 @@ async function analyzeAgreementHandler() {
             </div>
 
             <h2 class="risk-score-value">
-              ${score}/100
+              ${risk_score}/100
             </h2>
 
-            <div class="risk-pill ${riskLevel.toLowerCase()}">
-              ${riskLevel} Risk
+            <div class="risk-pill ${risk_level.toLowerCase()}">
+              ${risk_level} Risk
             </div>
 
           </div>
@@ -344,6 +345,68 @@ function unlockFullReport() {
   // REDIRECT
  window.location.href =
   "login.html";
+}
+
+async function saveAgreementReport(
+  analysis,
+  agreementText
+) {
+
+  try {
+
+    const {
+      data: { user }
+    } = await window.supabase.auth.getUser();
+
+    if (!user) return;
+
+    const reportName =
+      `Agreement Report - ${
+        new Date()
+          .toLocaleDateString("en-IN")
+      }`;
+
+    const payload = {
+
+      user_id:
+        user.id,
+
+      report_name:
+        reportName,
+
+      agreement_excerpt:
+        agreementText?.substring(0, 500),
+
+      risk_score:
+        analysis.risk_score || 0,
+
+      risk_level:
+        analysis.risk_level || "Medium",
+
+      result:
+        analysis
+    };
+
+    const { error } =
+      await window.supabase
+        .from("agreement_reports")
+        .insert(payload);
+
+    if (error) {
+
+      console.error(
+        "Agreement save failed:",
+        error
+      );
+    }
+
+  } catch (err) {
+
+    console.error(
+      "Agreement persistence failed:",
+      err
+    );
+  }
 }
 
 function resetAgreementAnalyzer() {
