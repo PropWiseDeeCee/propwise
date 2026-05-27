@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <title>Agreement Report - PropWise India</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Agreement Report | PropWise India
+  </title>
+
   <meta
-  name="description"
-  content="AI-powered agreement risk analysis report for Indian property buyers."
->
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<meta name="robots" content="noindex, nofollow">
+  <meta
+    name="description"
+    content="AI-powered agreement risk analysis report for Indian property buyers."
+  >
 
-<!-- Google tag (gtag.js) -->
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <!-- GOOGLE ANALYTICS -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1C1BB2QKT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', 'G-C1C1BB2QKT');
+  <script>
+
+    window.dataLayer =
+      window.dataLayer || [];
+
+    function gtag() {
+
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+
+    gtag(
+      "config",
+      "G-C1C1BB2QKT"
+    );
+
   </script>
 
-  <!-- CSS -->
- <link rel="stylesheet" href="css/core/variables.css">
-<link rel="stylesheet" href="css/core/reset.css">
-<link rel="stylesheet" href="css/core/typography.css">
-<link rel="stylesheet" href="css/core/layout.css">
-<link rel="stylesheet" href="css/components/buttons.css">
-<link rel="stylesheet" href="css/components/cards.css">
-<link rel="stylesheet" href="css/components/navbar.css">
-<link rel="stylesheet" href="css/components/footer.css">
-<link rel="stylesheet" href="css/components/forms.css">
-<link rel="stylesheet" href="css/components/loaders.css">
-<link rel="stylesheet" href="css/components/dropdowns.css">
-<link rel="stylesheet" href="css/features/dashboard.css">
 
-<link rel="stylesheet" href="styles.css">
+  <!-- CORE CSS -->
+  <link rel="stylesheet" href="css/core/variables.css">
+  <link rel="stylesheet" href="css/core/reset.css">
+  <link rel="stylesheet" href="css/core/typography.css">
+  <link rel="stylesheet" href="css/core/layout.css">
+
+  <!-- COMPONENT CSS -->
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/footer.css">
+  <link rel="stylesheet" href="css/components/forms.css">
+  <link rel="stylesheet" href="css/components/loaders.css">
+  <link rel="stylesheet" href="css/components/dropdowns.css">
+
+  <!-- PAGE CSS -->
+  <link rel="stylesheet" href="css/pages/report.css">
+
+  <!-- GLOBAL -->
+  <link rel="stylesheet" href="styles.css">
+
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <!-- CORE JS -->
   <script src="js/core/config.js"></script>
   <script src="js/core/path.js"></script>
   <script src="js/core/dom.js"></script>
@@ -49,92 +84,457 @@
   <script src="js/core/dropdowns.js"></script>
   <script src="js/core/analytics.js"></script>
 
-  <!-- APP -->
+  <!-- PDF -->
+  <script defer src="js/pdf-generator.js"></script>
+  <script defer src="js/report-generator.js"></script>
+
+  <!-- BOOTSTRAP -->
+  <script defer src="js/core/bootstrap.js"></script>
 
 
-  <!-- PDF Generator -->
-<script defer src="js/pdf-generator.js"></script>
+  <!-- JSPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- Report Generator -->
-<script defer src="js/report-generator.js"></script>
-<script defer src="js/core/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-   <!-- Favicon -->
-<link rel="icon" type="image/png" href="/assets/favicon.png">
-<link rel="shortcut icon" href="/assets/favicon.ico">
-<link rel="apple-touch-icon" href="/assets/favicon.png">
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+
+  <link rel="apple-touch-icon" href="/assets/favicon.png">
+
 </head>
+
 
 <body data-page="report">
 
-<!-- NAVBAR -->
-<div id="navbar"></div>
 
-<!-- CONTENT -->
-<div class="container">
+  <!-- NAVBAR -->
+  <div id="navbar"></div>
 
-  <!-- HEADER -->
-  <div style="text-align:center; margin-bottom:30px;">
-    <h1>Agreement Risk Report</h1>
-    <p style="color:#6b7280;">
-      Detailed breakdown of risks, clauses, and recommendations
-    </p>
-  </div>
 
-  <!-- REPORT CONTENT -->
-  <div id="reportContent" class="card">
-    <p>Loading report...</p>
-  </div>
+  <!-- PAGE -->
+  <div class="container">
 
-  <!-- ACTIONS -->
-  <div style="margin-top:30px; text-align:center;">
+    <div class="report-wrapper">
 
-    <!-- DOWNLOAD -->
-  
-<button
-  onclick="downloadAgreementReport()"
-  style="
-    max-width:300px;
-    width:100%;
-  "
->
-  Download PDF Report
-</button>
 
-    <!-- SECONDARY ACTIONS -->
-    <div style="margin-top:15px;">
-      <a href="tools.html" style="font-size:13px; color:#6b7280;">
-        ← Analyze another agreement
-      </a>
+      <!-- HERO -->
+      <div class="report-hero">
+
+        <h1 class="report-title">
+          Agreement Risk Report
+        </h1>
+
+        <p class="report-subtitle">
+
+          AI-powered legal and financial
+          agreement analysis for Indian
+          property buyers.
+
+        </p>
+
+        <div class="report-meta">
+
+          <div
+            class="meta-pill"
+            id="reportDate"
+          >
+            Loading...
+          </div>
+
+          <div
+            class="meta-pill"
+            id="reportName"
+          >
+            Agreement Report
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- REPORT CONTENT -->
+      <div id="reportContent">
+
+        <div class="card">
+
+          Loading report...
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+      <div class="action-bar">
+
+        <button
+          onclick="downloadAgreementReport()"
+        >
+          Download PDF Report
+        </button>
+
+        <button
+          class="secondary-btn"
+          onclick="location.href='dashboard.html'"
+        >
+          Back to Dashboard
+        </button>
+
+        <button
+          class="secondary-btn"
+          onclick="location.href='tools.html'"
+        >
+          Analyze Another Agreement
+        </button>
+
+      </div>
+
+
+      <!-- DISCLAIMER -->
+      <div class="report-disclaimer">
+
+        This is an AI-assisted analysis
+        intended for informational purposes
+        only and should not be considered
+        legal advice.
+
+      </div>
+
     </div>
 
-    <div style="margin-top:10px;">
-      <button onclick="location.href='compare.html'"
-        style="background:#e5e7eb; color:#111827;">
-        Compare Property
-      </button>
-    </div>
-
   </div>
 
-  <!-- TRUST / DISCLAIMER -->
-  <div style="
-    margin-top:30px;
-    text-align:center;
-    font-size:12px;
-    color:#6b7280;
-  ">
-    This is an AI-assisted analysis and not legal advice.
-  </div>
 
-</div>
+  <!-- FOOTER -->
+  <div id="footer"></div>
 
-<!-- FOOTER -->
-<div id="footer"></div>
-<div id="pdfRoot"></div>
+  <div id="pdfRoot"></div>
+
+
+  <!-- REPORT ENGINE -->
+  <script>
+
+    async function loadAgreementReport() {
+
+      try {
+
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const reportId =
+          params.get("id");
+
+        if (!reportId) {
+
+          showErrorState(
+            "Invalid report link"
+          );
+
+          return;
+        }
+
+        const user =
+          await getUser();
+
+        if (!user) {
+
+          localStorage.setItem(
+            "postLoginRedirect",
+            window.location.pathname +
+            window.location.search
+          );
+
+          window.location.href =
+            appPath("login.html");
+
+          return;
+        }
+
+        const supabase =
+          window.getSupabaseClient();
+
+        if (!supabase) {
+
+          throw new Error(
+            "Supabase unavailable"
+          );
+        }
+
+        const { data, error } =
+          await supabase
+
+            .from("agreement_reports")
+
+            .select("*")
+
+            .eq("id", reportId)
+
+            .eq("user_id", user.id)
+
+            .single();
+
+        if (error) {
+
+          throw error;
+        }
+
+        if (!data) {
+
+          throw new Error(
+            "Report not found"
+          );
+        }
+
+        document.getElementById(
+          "reportDate"
+        ).textContent =
+
+          new Date(
+            data.created_at
+          ).toLocaleDateString(
+            "en-IN",
+            {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            }
+          );
+
+        document.getElementById(
+          "reportName"
+        ).textContent =
+
+          data.report_name ||
+          "Agreement Report";
+
+        const result =
+          data.result || {};
+
+        window.latestAnalyzerResult =
+          result;
+
+        renderReport(result);
+
+      } catch (err) {
+
+        console.error(err);
+
+        showErrorState(
+          "Failed to load report"
+        );
+      }
+    }
+
+
+    function renderReport(result) {
+
+      const reportEl =
+        document.getElementById(
+          "reportContent"
+        );
+
+      const riskScore =
+        result.risk_score || 0;
+
+      const riskLevel =
+        result.risk_level || "Medium";
+
+      const critical =
+        result.critical || [];
+
+      const moderate =
+        result.moderate || [];
+
+      const recommendations =
+        result.recommendations || [];
+
+
+      reportEl.innerHTML = `
+
+        <div class="score-card">
+
+          <div class="
+            score-circle
+            ${riskLevel.toLowerCase()}
+          ">
+
+            ${riskScore}/100
+
+          </div>
+
+          <div class="risk-label">
+
+            ${riskLevel} Risk
+
+          </div>
+
+          <p class="score-summary">
+
+            This agreement contains
+            ${riskLevel.toLowerCase()}
+            legal and financial risks
+            based on clause clarity,
+            compliance indicators,
+            payment structure,
+            and buyer protection analysis.
+
+          </p>
+
+        </div>
+
+
+        <div class="report-section">
+
+          <h2>
+            Critical Risks
+          </h2>
+
+          ${
+            critical.length
+
+            ? critical.map(item => `
+
+              <div class="
+                risk-item critical
+              ">
+
+                <div class="risk-icon">
+                  ⚠
+                </div>
+
+                <div>
+                  ${item}
+                </div>
+
+              </div>
+
+            `).join("")
+
+            : `
+
+              <p>
+                No critical risks detected.
+              </p>
+            `
+          }
+
+        </div>
+
+
+        <div class="report-section">
+
+          <h2>
+            Moderate Risks
+          </h2>
+
+          ${
+            moderate.length
+
+            ? moderate.map(item => `
+
+              <div class="
+                risk-item moderate
+              ">
+
+                <div class="risk-icon">
+                  ⚠
+                </div>
+
+                <div>
+                  ${item}
+                </div>
+
+              </div>
+
+            `).join("")
+
+            : `
+
+              <p>
+                No moderate risks detected.
+              </p>
+            `
+          }
+
+        </div>
+
+
+        <div class="report-section">
+
+          <h2>
+            Recommendations
+          </h2>
+
+          ${
+            recommendations.length
+
+            ? recommendations.map(item => `
+
+              <div class="
+                recommendation-item
+              ">
+
+                <div class="
+                  recommendation-check
+                ">
+                  ✓
+                </div>
+
+                <div>
+                  ${item}
+                </div>
+
+              </div>
+
+            `).join("")
+
+            : `
+
+              <p>
+                No recommendations available.
+              </p>
+            `
+          }
+
+        </div>
+      `;
+    }
+
+
+    function showErrorState(message) {
+
+      document.getElementById(
+        "reportContent"
+      ).innerHTML = `
+
+        <div class="empty-state">
+
+          <h2>
+            ${message}
+          </h2>
+
+        </div>
+      `;
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        loadAgreementReport();
+      }
+    );
+
+  </script>
 
 </body>
+
 </html>

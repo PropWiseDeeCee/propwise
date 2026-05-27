@@ -1,0 +1,515 @@
+/* =========================================
+   REPORT PAGE
+========================================= */
+
+.report-wrapper {
+
+  max-width: 980px;
+
+  margin: auto;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.report-hero {
+
+  background:
+    linear-gradient(
+      135deg,
+      #020617,
+      #0f172a,
+      #1e293b
+    );
+
+  color: white;
+
+  border-radius: 32px;
+
+  padding: 48px 40px 95px;
+
+  text-align: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 0;
+}
+
+.report-hero::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(59,130,246,0.22),
+      transparent 42%
+    );
+
+  pointer-events: none;
+}
+
+.report-title {
+
+  font-size: clamp(
+    2.3rem,
+    5vw,
+    4.4rem
+  );
+
+  line-height: 1.05;
+
+  margin-bottom: 18px;
+
+  color: white;
+
+  font-weight: 800;
+
+  letter-spacing: -2px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.report-subtitle {
+
+  color:
+    rgba(255,255,255,0.82);
+
+  font-size: 1.02rem;
+
+  line-height: 1.8;
+
+  max-width: 720px;
+
+  margin: auto;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.report-meta {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+
+  margin-top: 28px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.meta-pill {
+
+  background:
+    rgba(255,255,255,0.1);
+
+  backdrop-filter: blur(10px);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  color: white;
+
+  padding: 11px 18px;
+
+  border-radius: 999px;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   SCORE CARD
+========================================= */
+
+.score-card {
+
+  background: white;
+
+  border-radius: 30px;
+
+  padding: 32px 28px;
+
+  max-width: 390px;
+
+  margin:
+    -60px auto 26px;
+
+  position: relative;
+
+  z-index: 10;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px
+    rgba(15,23,42,0.08);
+}
+
+.score-circle {
+
+  width: 145px;
+  height: 145px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin:
+    auto auto 20px;
+
+  color: white;
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+
+  box-shadow:
+    inset 0 0 30px
+    rgba(255,255,255,0.12);
+}
+
+.score-circle.low {
+
+  background:
+    linear-gradient(
+      135deg,
+      #16a34a,
+      #15803d
+    );
+}
+
+.score-circle.medium {
+
+  background:
+    linear-gradient(
+      135deg,
+      #f59e0b,
+      #d97706
+    );
+}
+
+.score-circle.high {
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #b91c1c
+    );
+}
+
+.risk-label {
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  margin-bottom: 12px;
+
+  color: #0f172a;
+}
+
+.score-summary {
+
+  color: #64748b;
+
+  line-height: 1.9;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   REPORT SECTIONS
+========================================= */
+
+.report-section {
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 30px;
+
+  margin-bottom: 22px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(15,23,42,0.05);
+}
+
+.report-section h2 {
+
+  font-size: 2rem;
+
+  margin-bottom: 24px;
+
+  color: #0f172a;
+
+  letter-spacing: -1px;
+}
+
+
+/* =========================================
+   RISK ITEMS
+========================================= */
+
+.risk-item {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 18px 20px;
+
+  border-radius: 18px;
+
+  margin-bottom: 14px;
+
+  line-height: 1.75;
+
+  font-size: 15px;
+
+  font-weight: 500;
+}
+
+.risk-icon {
+
+  font-size: 18px;
+
+  flex-shrink: 0;
+
+  margin-top: 2px;
+}
+
+.risk-item.critical {
+
+  background: #fef2f2;
+
+  border-left:
+    5px solid #dc2626;
+
+  color: #7f1d1d;
+}
+
+.risk-item.moderate {
+
+  background: #fff7ed;
+
+  border-left:
+    5px solid #f59e0b;
+
+  color: #92400e;
+}
+
+
+/* =========================================
+   RECOMMENDATIONS
+========================================= */
+
+.recommendation-item {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 18px 20px;
+
+  border-radius: 18px;
+
+  margin-bottom: 14px;
+
+  line-height: 1.75;
+
+  background: #f8fafc;
+
+  color: #334155;
+
+  border:
+    1px solid #e2e8f0;
+}
+
+.recommendation-check {
+
+  color: #16a34a;
+
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   ACTION BAR
+========================================= */
+
+.action-bar {
+
+  display: flex;
+
+  gap: 16px;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  margin-top: 34px;
+}
+
+.action-bar button {
+
+  min-width: 220px;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-state {
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 80px 30px;
+
+  text-align: center;
+
+  color: #64748b;
+
+  box-shadow:
+    0 10px 30px
+    rgba(15,23,42,0.05);
+}
+
+.empty-state h2 {
+
+  color: #0f172a;
+
+  margin-bottom: 12px;
+}
+
+
+/* =========================================
+   DISCLAIMER
+========================================= */
+
+.report-disclaimer {
+
+  margin-top: 34px;
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+
+  padding-bottom: 40px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .report-wrapper {
+
+    padding: 0 12px;
+  }
+
+  .report-hero {
+
+    padding:
+      40px 22px 85px;
+  }
+
+  .report-title {
+
+    font-size: 2.5rem;
+
+    letter-spacing: -1px;
+  }
+
+  .report-subtitle {
+
+    font-size: 0.95rem;
+  }
+
+  .score-card {
+
+    margin:
+      -50px auto 24px;
+
+    padding:
+      28px 22px;
+
+    max-width: 100%;
+  }
+
+  .score-circle {
+
+    width: 130px;
+    height: 130px;
+
+    font-size: 30px;
+  }
+
+  .risk-label {
+
+    font-size: 22px;
+  }
+
+  .report-section {
+
+    padding: 24px;
+  }
+
+  .report-section h2 {
+
+    font-size: 1.6rem;
+  }
+
+  .action-bar {
+
+    flex-direction: column;
+  }
+
+  .action-bar button {
+
+    width: 100%;
+  }
+}
