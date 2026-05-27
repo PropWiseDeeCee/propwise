@@ -61,5 +61,37 @@ function initDropdowns() {
   });
 }
 
+/* =========================================
+   MOBILE NAVBAR
+========================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const toggle =
+      document.getElementById(
+        "mobileMenuToggle"
+      );
+
+    const wrapper =
+      document.getElementById(
+        "mobileNavWrapper"
+      );
+
+    if (!toggle || !wrapper) return;
+
+    toggle.addEventListener(
+      "click",
+      () => {
+
+        wrapper.classList.toggle(
+          "active"
+        );
+      }
+    );
+  }
+);
+
 window.toggleUserMenu = toggleUserMenu;
 window.initDropdowns = initDropdowns;

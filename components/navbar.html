@@ -23,172 +23,195 @@
 
     </div>
 
-    <!-- NAVIGATION -->
-    <nav class="nav-links">
 
-      <a href="index.html">
-        Home
-      </a>
+    <!-- MOBILE MENU BUTTON -->
+    <button
+      class="mobile-menu-toggle"
+      id="mobileMenuToggle"
+      aria-label="Toggle Menu"
+    >
 
-      <!-- TOOLS DROPDOWN -->
-      <div class="dropdown">
+      ☰
 
-        <button
-          type="button"
-          class="dropdown-toggle"
+    </button>
+
+
+    <!-- MOBILE NAV WRAPPER -->
+    <div
+      class="mobile-nav-wrapper"
+      id="mobileNavWrapper"
+    >
+
+      <!-- NAVIGATION -->
+      <nav class="nav-links">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <!-- TOOLS DROPDOWN -->
+        <div class="dropdown">
+
+          <button
+            type="button"
+            class="dropdown-toggle"
+          >
+
+            Tools
+
+            <span>
+              ▾
+            </span>
+
+          </button>
+
+          <div class="dropdown-menu">
+
+            <a
+              href="tools.html"
+              class="dropdown-item"
+            >
+              Agreement Analyzer
+            </a>
+
+            <a
+              href="compare.html"
+              class="dropdown-item"
+            >
+              Compare Property Costs
+            </a>
+
+            <a
+              href="calculator.html"
+              class="dropdown-item"
+            >
+              Property Purchase Planner
+            </a>
+
+          </div>
+
+        </div>
+
+        <a href="guides.html">
+          Guides
+        </a>
+
+        <a href="faq.html">
+          FAQ
+        </a>
+
+        <a href="about.html">
+          About
+        </a>
+
+      </nav>
+
+
+      <!-- NAV ACTIONS -->
+      <div class="nav-actions">
+
+        <!-- LOGIN / SIGNUP -->
+        <div
+          id="authButtons"
+          class="auth-buttons"
         >
 
-          Tools
-
-          <span>
-            ▾
-          </span>
-
-        </button>
-
-        <div class="dropdown-menu">
-
           <a
-            href="tools.html"
-            class="dropdown-item"
+            href="login.html"
+            class="btn btn-outline btn-sm"
           >
-            Agreement Analyzer
-          </a>
-
-           <a
-            href="compare.html"
-            class="dropdown-item"
-          >
-            Compare Property Costs
+            Login
           </a>
 
           <a
-            href="calculator.html"
-            class="dropdown-item"
+            href="signup.html"
+            class="btn btn-primary btn-sm"
           >
-            Property Purchase Planner
+            Sign Up
           </a>
 
         </div>
 
-      </div>
 
-      <a href="guides.html">
-        Guides
-      </a>
-
-      <a href="faq.html">
-        FAQ
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-
-    </nav>
-
-    <!-- NAV ACTIONS -->
-    <div class="nav-actions">
-
-      <!-- LOGIN / SIGNUP -->
-      <div
-        id="authButtons"
-        class="auth-buttons"
-      >
-
-        <a
-          href="login.html"
-          class="btn btn-outline btn-sm"
-        >
-          Login
-        </a>
-
-        <a
-          href="signup.html"
-          class="btn btn-primary btn-sm"
-        >
-          Sign Up
-        </a>
-
-      </div>
-
-      <!-- USER MENU -->
-      <div
-        id="profileSection"
-        class="dropdown dropdown-right"
-        style="display:none;"
-      >
-
-        <button
-  type="button"
-  class="profile-btn dropdown-toggle"
->
-
-  <div
-    class="profile-avatar"
-    id="profileAvatar"
-  >
-    U
-  </div>
-
-  <span class="profile-chevron">
-    ▾
-  </span>
-
-</button>
-
+        <!-- USER MENU -->
         <div
-          class="dropdown-menu"
-          id="userDropdown"
+          id="profileSection"
+          class="dropdown dropdown-right"
+          style="display:none;"
         >
-
-          <div class="dropdown-header">
-
-  <div class="dropdown-label">
-    Signed in as
-  </div>
-
-  <div
-    class="dropdown-subtitle"
-    id="profileEmail"
-  >
-    user@email.com
-  </div>
-
-</div>
-
-          <a
-            href="dashboard.html"
-            class="dropdown-item"
-          >
-            Dashboard
-          </a>
-
-          <a
-            href="dashboard.html"
-            class="dropdown-item"
-          >
-            Reports
-          </a>
-
-          <a
-            href="admin.html"
-            class="dropdown-item"
-            id="adminNavItem"
-            style="display:none;"
-          >
-            Admin
-          </a>
-
-          <div class="dropdown-divider"></div>
 
           <button
             type="button"
-            class="dropdown-item"
-            onclick="handleLogout()"
+            class="profile-btn dropdown-toggle"
           >
-            Logout
+
+            <div
+              class="profile-avatar"
+              id="profileAvatar"
+            >
+              U
+            </div>
+
+            <span class="profile-chevron">
+              ▾
+            </span>
+
           </button>
+
+          <div
+            class="dropdown-menu"
+            id="userDropdown"
+          >
+
+            <div class="dropdown-header">
+
+              <div class="dropdown-label">
+                Signed in as
+              </div>
+
+              <div
+                class="dropdown-subtitle"
+                id="profileEmail"
+              >
+                user@email.com
+              </div>
+
+            </div>
+
+            <a
+              href="dashboard.html"
+              class="dropdown-item"
+            >
+              Dashboard
+            </a>
+
+            <a
+              href="dashboard.html"
+              class="dropdown-item"
+            >
+              Reports
+            </a>
+
+            <a
+              href="admin.html"
+              class="dropdown-item"
+              id="adminNavItem"
+              style="display:none;"
+            >
+              Admin
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <button
+              type="button"
+              class="dropdown-item"
+              onclick="handleLogout()"
+            >
+              Logout
+            </button>
+
+          </div>
 
         </div>
 
