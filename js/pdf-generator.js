@@ -1209,6 +1209,28 @@ pageBreak: "auto",
       ],
 
       [
+  "GST",
+  pdfCurrency(data.gstA),
+  pdfCurrency(data.gstB)
+],
+
+[
+  "Stamp Duty + Registration",
+  pdfCurrency(
+    data.registrationFeeA
+  ),
+  pdfCurrency(
+    data.registrationFeeB
+  )
+],
+
+[
+  "Loan Amount",
+  pdfCurrency(data.aLoan),
+  pdfCurrency(data.bLoan)
+],
+
+      [
         "Monthly EMI",
         pdfCurrency(data.emiA || 0),
         pdfCurrency(data.emiB || 0)
@@ -1221,6 +1243,26 @@ pageBreak: "auto",
       ],
 
       [
+  "Annual Maintenance",
+  pdfCurrency(
+    data.aMaintenance
+  ),
+  pdfCurrency(
+    data.bMaintenance
+  )
+],
+
+[
+  "5Y Ownership Cost",
+  pdfCurrency(
+    data.ownershipCostA
+  ),
+  pdfCurrency(
+    data.ownershipCostB
+  )
+],
+
+      [
         "5Y Appreciation",
         pdfCurrency(data.futureValueA || 0),
         pdfCurrency(data.futureValueB || 0)
@@ -1228,23 +1270,27 @@ pageBreak: "auto",
     ]
   });
 
-  renderSectionTitle(
-    doc,
-    "Appreciation Projection",
-    Math.min(
-  doc.lastAutoTable.finalY + 16,
-  158
-)
-  );
+ doc.addPage();
 
-  renderChartImage(
-    doc,
-    "appreciationChart",
-    Math.min(
-  doc.lastAutoTable.finalY + 24,
-  165
-)
-  );
+renderWatermark(doc);
+
+renderPDFHeader(
+  doc,
+  "Appreciation Projection",
+  reportId
+);
+
+renderSectionTitle(
+  doc,
+  "5-Year Appreciation Projection",
+  60
+);
+
+renderChartImage(
+  doc,
+  "appreciationChart",
+  75
+);
 
   // PAGE 3
   doc.addPage();

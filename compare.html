@@ -78,6 +78,7 @@
 
 <!-- CORE JS -->
 <script src="js/core/config.js"></script>
+<script src="js/core/supabase-client.js"></script>
 <script src="js/core/path.js"></script>
 <script src="js/core/utils.js"></script>
 <script src="js/core/component-loader.js"></script>
@@ -91,6 +92,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- COMPARE -->
+ <script src="js/features/calculator/calculator-data.js"></script>
+ <script src="js/features/calculator/calculator-state-rules.js"></script>
+<script src="js/features/compare/compare-data.js"></script>
 <script src="js/features/compare/charts.js"></script>
 <script src="js/features/compare/compare-core.js"></script>
 
@@ -170,6 +174,90 @@
 
           </div>
 
+         <div class="form-group">
+
+  <label for="aState">
+    State
+  </label>
+
+  <select
+    class="form-input"
+    id="aState"
+  >
+    <option value="">
+      Select State
+    </option>
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="aCity">
+    City
+  </label>
+
+  <select
+    class="form-input"
+    id="aCity"
+  >
+    <option value="">
+      Select State First
+    </option>
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="aPropertyType">
+    Property Type
+  </label>
+
+  <select
+    class="form-input"
+    id="aPropertyType"
+  >
+
+    <option value="under_construction">
+      Under Construction
+    </option>
+
+    <option value="ready_to_move">
+      Ready To Move
+    </option>
+
+    <option value="resale">
+      Resale
+    </option>
+
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="aPropertyCategory">
+    Property Category
+  </label>
+
+  <select
+    class="form-input"
+    id="aPropertyCategory"
+  >
+
+    <option value="residential">
+      Residential
+    </option>
+
+    <option value="agricultural">
+      Agricultural
+    </option>
+
+  </select>
+
+</div>
+
           <div class="form-group">
 
             <label for="aBase">
@@ -186,85 +274,106 @@
 
           </div>
 
-          <div class="form-group">
+          <!-- SUPER AREA -->
+<div class="form-group">
 
-            <label for="aGst">
-              GST Charges
-            </label>
+  <label for="aSuperArea">
+    Super Area (sq.ft)
+  </label>
 
-            <input
-              class="form-input"
-              id="aGst"
-              type="text"
-              inputmode="numeric"
-              placeholder="GST amount"
-            >
+  <input
+    class="form-input"
+    id="aSuperArea"
+    type="text"
+    inputmode="numeric"
+    placeholder="1500"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- MONTHLY RENT -->
+<div class="form-group">
 
-            <label for="aRegistration">
-              Registration & Stamp Duty
-            </label>
+  <label for="aRent">
+    Expected Monthly Rent
+  </label>
 
-            <input
-              class="form-input"
-              id="aRegistration"
-              type="text"
-              inputmode="numeric"
-              placeholder="Registration cost"
-            >
+  <input
+    class="form-input"
+    id="aRent"
+    type="text"
+    inputmode="numeric"
+    placeholder="35000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- MAINTENANCE -->
+<div class="form-group">
 
-            <label for="aParking">
-              Parking Charges
-            </label>
+  <label for="aMaintenance">
+    Annual Maintenance
+  </label>
 
-            <input
-              class="form-input"
-              id="aParking"
-              type="text"
-              inputmode="numeric"
-              placeholder="Parking charges"
-            >
+  <input
+    class="form-input"
+    id="aMaintenance"
+    type="text"
+    inputmode="numeric"
+    placeholder="50000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- LOAN AMOUNT -->
+<div class="form-group">
 
-            <label for="aClubhouse">
-              Clubhouse Charges
-            </label>
+  <label for="aLoan">
+    Loan Amount
+  </label>
 
-            <input
-              class="form-input"
-              id="aClubhouse"
-              type="text"
-              inputmode="numeric"
-              placeholder="Clubhouse charges"
-            >
+  <input
+    class="form-input"
+    id="aLoan"
+    type="text"
+    inputmode="numeric"
+    placeholder="6000000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- INTEREST RATE -->
+<div class="form-group">
 
-            <label for="aMaintenance">
-              Maintenance Charges
-            </label>
+  <label for="aInterest">
+    Interest Rate (%)
+  </label>
 
-            <input
-              class="form-input"
-              id="aMaintenance"
-              type="text"
-              inputmode="numeric"
-              placeholder="Maintenance charges"
-            >
+  <input
+    class="form-input"
+    id="aInterest"
+    type="number"
+    step="0.01"
+    placeholder="8.5"
+  >
 
-          </div>
+</div>
+
+<!-- LOAN TENURE -->
+<div class="form-group">
+
+  <label for="aTenure">
+    Loan Tenure (Years)
+  </label>
+
+  <input
+    class="form-input"
+    id="aTenure"
+    type="number"
+    placeholder="20"
+  >
+
+</div>
 
         </div>
 
@@ -304,6 +413,90 @@
 
           <div class="form-group">
 
+  <label for="bState">
+    State
+  </label>
+
+  <select
+    class="form-input"
+    id="bState"
+  >
+    <option value="">
+      Select State
+    </option>
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="bCity">
+    City
+  </label>
+
+  <select
+    class="form-input"
+    id="bCity"
+  >
+    <option value="">
+      Select State First
+    </option>
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="bPropertyType">
+    Property Type
+  </label>
+
+  <select
+    class="form-input"
+    id="bPropertyType"
+  >
+
+    <option value="under_construction">
+      Under Construction
+    </option>
+
+    <option value="ready_to_move">
+      Ready To Move
+    </option>
+
+    <option value="resale">
+      Resale
+    </option>
+
+  </select>
+
+</div>
+
+<div class="form-group">
+
+  <label for="bPropertyCategory">
+    Property Category
+  </label>
+
+  <select
+    class="form-input"
+    id="bPropertyCategory"
+  >
+
+    <option value="residential">
+      Residential
+    </option>
+
+    <option value="agricultural">
+      Agricultural
+    </option>
+
+  </select>
+
+</div>
+
+          <div class="form-group">
+
             <label for="bBase">
               Base Property Price
             </label>
@@ -318,86 +511,106 @@
 
           </div>
 
-          <div class="form-group">
+          <!-- SUPER AREA -->
+<div class="form-group">
 
-            <label for="bGst">
-              GST Charges
-            </label>
+  <label for="bSuperArea">
+    Super Area (sq.ft)
+  </label>
 
-            <input
-              class="form-input"
-              id="bGst"
-              type="text"
-              inputmode="numeric"
-              placeholder="GST amount"
-            >
+  <input
+    class="form-input"
+    id="bSuperArea"
+    type="text"
+    inputmode="numeric"
+    placeholder="1500"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- MONTHLY RENT -->
+<div class="form-group">
 
-            <label for="bRegistration">
-              Registration & Stamp Duty
-            </label>
+  <label for="bRent">
+    Expected Monthly Rent
+  </label>
 
-            <input
-              class="form-input"
-              id="bRegistration"
-              type="text"
-              inputmode="numeric"
-              placeholder="Registration cost"
-            >
+  <input
+    class="form-input"
+    id="bRent"
+    type="text"
+    inputmode="numeric"
+    placeholder="35000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- MAINTENANCE -->
+<div class="form-group">
 
-            <label for="bParking">
-              Parking Charges
-            </label>
+  <label for="bMaintenance">
+    Annual Maintenance
+  </label>
 
-            <input
-              class="form-input"
-              id="bParking"
-              type="text"
-              inputmode="numeric"
-              placeholder="Parking charges"
-            >
+  <input
+    class="form-input"
+    id="bMaintenance"
+    type="text"
+    inputmode="numeric"
+    placeholder="50000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- LOAN AMOUNT -->
+<div class="form-group">
 
-            <label for="bClubhouse">
-              Clubhouse Charges
-            </label>
+  <label for="bLoan">
+    Loan Amount
+  </label>
 
-            <input
-              class="form-input"
-              id="bClubhouse"
-              type="text"
-              inputmode="numeric"
-              placeholder="Clubhouse charges"
-            >
+  <input
+    class="form-input"
+    id="bLoan"
+    type="text"
+    inputmode="numeric"
+    placeholder="6000000"
+  >
 
-          </div>
+</div>
 
-          <div class="form-group">
+<!-- INTEREST RATE -->
+<div class="form-group">
 
-            <label for="bMaintenance">
-              Maintenance Charges
-            </label>
+  <label for="bInterest">
+    Interest Rate (%)
+  </label>
 
-            <input
-              class="form-input"
-              id="bMaintenance"
-              type="text"
-              inputmode="numeric"
-              placeholder="Maintenance charges"
-            >
+  <input
+    class="form-input"
+    id="bInterest"
+    type="number"
+    step="0.01"
+    placeholder="8.5"
+  >
 
-          </div>
+</div>
 
+<!-- LOAN TENURE -->
+<div class="form-group">
+
+  <label for="bTenure">
+    Loan Tenure (Years)
+  </label>
+
+  <input
+    class="form-input"
+    id="bTenure"
+    type="number"
+    placeholder="20"
+  >
+
+</div>
         </div>
 
       </div>
@@ -532,7 +745,16 @@ document.addEventListener(
 
     try {
 
-      // LOAD NAVBAR + FOOTER
+      // Supabase
+      window.initSupabase();
+
+      // Load calculator master data
+      await loadCalculatorRules();
+
+      // Populate A/B State-City dropdowns
+      await initCompareDropdowns();
+
+      // Navbar / Footer
       if (
         typeof loadSharedComponents ===
         "function"
@@ -541,7 +763,7 @@ document.addEventListener(
         await loadSharedComponents();
       }
 
-      // INIT DROPDOWNS
+      // Navbar dropdowns
       if (
         typeof initDropdowns ===
         "function"
