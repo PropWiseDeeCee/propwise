@@ -49,6 +49,7 @@
   <script src="js/core/analytics.js"></script>
 
   <!-- APP -->
+  <script src="js/features/calculator/calculator-data.js"></script>
   <script src="js/features/calculator/calculator-state-rules.js"></script>
   <script src="js/features/calculator/calculator-core.js"></script>
   <script src="js/features/calculator/calculator-ui.js"></script>
@@ -199,67 +200,10 @@
                 State
               </label>
 
-              <select id="state">
-
-                <option value="KA">
-                  Karnataka
-                </option>
-
-                <option value="AS">
-                  Assam
-                </option>
-
-                <option value="KL">
-                  Kerala
-                </option>
-
-                <option value="TN">
-                  Tamil Nadu
-                </option>
-
-                <option value="UP">
-                  Uttar Pradesh
-                </option>
-
-                <option value="HR">
-                  Haryana
-                </option>
-
-                <option value="MH">
-                  Maharashtra
-                </option>
-
-                <option value="GJ">
-                  Gujarat
-                </option>
-
-                <option value="AP">
-                  Andhra Pradesh
-                </option>
-
-                <option value="TS">
-                  Telangana
-                </option>
-
-                <option value="GA">
-                  Goa
-                </option>
-
-                <option value="WB">
-                  West Bengal
-                </option>
-
-                <option value="OD">
-                  Odisha
-                </option>
-
-                <option value="DL">
-                  Delhi
-                </option>
-
-                <option value="OTHER">
-                  Other States / UT
-                </option>
+              <select id="state" required>
+                <option value="">
+  Loading States...
+</option>
 
               </select>
 
@@ -272,11 +216,11 @@
                 City
               </label>
 
-              <input
-                id="city"
-                type="text"
-                placeholder="e.g. Bangalore"
-              >
+              <select id="city" required>
+                <option value="">
+                  Select State First
+                </option>
+              </select>
 
             </div>
 
@@ -287,7 +231,7 @@
                 Property Type
               </label>
 
-              <select id="propertyType">
+              <select id="propertyType" required>
 
                 <option value="under_construction">
                   Under Construction
@@ -561,7 +505,14 @@
   class="results-section"
 >
 
-  <div id="financialDashboard"></div>
+  <div id="financialDashboard">
+     <div class="empty-state">
+
+    Enter property details and
+    click Calculate Property Plan.
+
+  </div>
+  </div>
 
   <div class="calc-note">
 

@@ -146,51 +146,6 @@ function getAffordabilityLevel(
 }
 
 
-// =============================================
-// AFFORDABLE HOUSING CHECK
-// =============================================
-
-function isAffordableHousing({
-
-  propertyPrice,
-  sqft,
-  metro
-}) {
-
-  if (metro) {
-
-    return (
-
-      propertyPrice <=
-
-      AFFORDABLE_HOUSING_RULES
-        .metroMaxPrice
-
-      &&
-
-      sqft <=
-
-      AFFORDABLE_HOUSING_RULES
-        .metroMaxSqft
-    );
-  }
-
-  return (
-
-    propertyPrice <=
-
-    AFFORDABLE_HOUSING_RULES
-      .nonMetroMaxPrice
-
-    &&
-
-    sqft <=
-
-    AFFORDABLE_HOUSING_RULES
-      .nonMetroMaxSqft
-  );
-}
-
 
 // =============================================
 // MAIN PROPERTY CALCULATOR
@@ -224,24 +179,34 @@ function calculatePropertyFinancials(data) {
   // CITY RULES
   // =============================================
 
-  const stateRules =
+ const cityData =
 
-    PROPERTY_STATE_RULES[state]
+  CalculatorRules.cities.find(
 
-    ||
+    cityItem =>
 
-    PROPERTY_STATE_RULES.OTHER;
+      cityItem.state_code === state
 
-  const cityRules =
+      &&
 
-    stateRules.cities[city]
+      cityItem.city_name === city
 
-    ||
+  )
 
-    {
+  ||
 
-      metro: false
-    };
+  {
+
+    metro: false
+
+  };
+
+const cityRules = {
+
+  metro:
+    cityData.metro || false
+
+};
 
   // =============================================
   // AFFORDABLE HOUSING
@@ -353,9 +318,21 @@ function calculatePropertyFinancials(data) {
   // =============================================
 
   const loanAmount =
-    totalCost - downPayment;
 
-  const loanData =
+  Math.max(
+
+    totalCost - downPayment,
+
+    0
+
+  );
+
+const loanData =
+
+  loanAmount > 0
+
+    ?
+
     calculateLoan(
 
       loanAmount,
@@ -363,7 +340,20 @@ function calculatePropertyFinancials(data) {
       interestRate,
 
       tenureYears
-    );
+
+    )
+
+    :
+
+    {
+
+      emi: 0,
+
+      totalPayment: 0,
+
+      totalInterest: 0
+
+    };
 
   // =============================================
   // AFFORDABILITY

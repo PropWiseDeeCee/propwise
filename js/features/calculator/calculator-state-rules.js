@@ -1,694 +1,244 @@
 // =============================================
-// PROPWISE INDIA
-// ADVANCED PROPERTY RULE ENGINE
+// PROPWISE DATABASE RULE ENGINE
 // =============================================
 
 
 // =============================================
-// GST RULES
+// CONFIG HELPER
 // =============================================
 
-const GST_RULES = {
+function getConfigValue(
+  key,
+  defaultValue = 0
+) {
 
-  underConstruction: {
+  return Number(
 
-    standard: 0.05,
+    CalculatorRules.config[key]
 
-    affordable: 0.01
-  },
-
-  readyToMove: 0,
-
-  resale: 0
-};
+  ) || defaultValue;
+}
 
 
 // =============================================
-// AFFORDABLE HOUSING RULES
+// AFFORDABLE HOUSING
 // =============================================
 
-const AFFORDABLE_HOUSING_RULES = {
+function isAffordableHousing({
 
-  metroMaxPrice: 4500000,
+  propertyPrice,
+  sqft,
+  metro
 
-  nonMetroMaxPrice: 4500000,
+}) {
 
-  metroMaxSqft: 645,
+  const metroMaxPrice =
 
-  nonMetroMaxSqft: 968
-};
+    getConfigValue(
+      "metro_max_price",
+      4500000
+    );
 
+  const metroMaxSqft =
 
-// =============================================
-// INDIA PROPERTY RULE DATABASE
-// =============================================
+    getConfigValue(
+      "metro_max_sqft",
+      645
+    );
 
-const PROPERTY_STATE_RULES = {
+  const nonMetroMaxPrice =
 
-  // =============================================
-  // KARNATAKA
-  // =============================================
+    getConfigValue(
+      "non_metro_max_price",
+      4500000
+    );
 
-  KA: {
+  const nonMetroMaxSqft =
 
-    code: "KA",
+    getConfigValue(
+      "non_metro_max_sqft",
+      968
+    );
 
-    name: "Karnataka",
+  if (metro) {
 
-    authorityRules: {
+    return (
 
-      BBMP: {
+      propertyPrice <= metroMaxPrice
 
-        municipalSurcharge: 0.01,
+      &&
 
-        guidanceMultiplier: 1.15
-      },
+      sqft <= metroMaxSqft
 
-      BDA: {
-
-        municipalSurcharge: 0.008,
-
-        guidanceMultiplier: 1.10
-      }
-    },
-
-    cities: {
-
-      Bangalore: {
-
-        metro: true,
-
-        luxuryThreshold: 10000000,
-
-        authority: "BBMP",
-
-        premiumZoneFactor: 1.12,
-
-        parkingPremiumFactor: 1.15,
-
-        interiorCostPerSqft: 2400,
-
-        guidanceValueFactor: 1.18
-      },
-
-      Mysore: {
-
-        metro: false,
-
-        luxuryThreshold: 7000000,
-
-        authority: "BDA",
-
-        premiumZoneFactor: 1.03,
-
-        parkingPremiumFactor: 1.05,
-
-        interiorCostPerSqft: 1600,
-
-        guidanceValueFactor: 1.04
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.05,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.06,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.05,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: false,
-
-      discount: 0
-    }
-  },
-
-
-  // =============================================
-  // DELHI
-  // =============================================
-
-  DL: {
-
-    code: "DL",
-
-    name: "Delhi",
-
-    authorityRules: {
-
-      DDA: {
-
-        municipalSurcharge: 0.01,
-
-        guidanceMultiplier: 1.20
-      },
-
-      MCD: {
-
-        municipalSurcharge: 0.008,
-
-        guidanceMultiplier: 1.12
-      }
-    },
-
-    cities: {
-
-      "New Delhi": {
-
-        metro: true,
-
-        luxuryThreshold: 20000000,
-
-        authority: "DDA",
-
-        premiumZoneFactor: 1.25,
-
-        parkingPremiumFactor: 1.22,
-
-        interiorCostPerSqft: 3200,
-
-        guidanceValueFactor: 1.28
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.06,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.07,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.05,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: true,
-
-      discount: 0.01
-    }
-  },
-
-
-  // =============================================
-  // HARYANA
-  // =============================================
-
-  HR: {
-
-    code: "HR",
-
-    name: "Haryana",
-
-    authorityRules: {
-
-      HUDA: {
-
-        municipalSurcharge: 0.01,
-
-        guidanceMultiplier: 1.16
-      }
-    },
-
-    cities: {
-
-      Gurgaon: {
-
-        metro: true,
-
-        luxuryThreshold: 15000000,
-
-        authority: "HUDA",
-
-        premiumZoneFactor: 1.20,
-
-        parkingPremiumFactor: 1.18,
-
-        interiorCostPerSqft: 2800,
-
-        guidanceValueFactor: 1.22
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.06,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.07,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.05,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: true,
-
-      discount: 0.02
-    }
-  },
-
-
-  // =============================================
-  // MAHARASHTRA
-  // =============================================
-
-  MH: {
-
-    code: "MH",
-
-    name: "Maharashtra",
-
-    authorityRules: {
-
-      BMC: {
-
-        municipalSurcharge: 0.012,
-
-        guidanceMultiplier: 1.30
-      },
-
-      PMC: {
-
-        municipalSurcharge: 0.009,
-
-        guidanceMultiplier: 1.16
-      }
-    },
-
-    cities: {
-
-      Mumbai: {
-
-        metro: true,
-
-        luxuryThreshold: 25000000,
-
-        authority: "BMC",
-
-        premiumZoneFactor: 1.35,
-
-        parkingPremiumFactor: 1.30,
-
-        interiorCostPerSqft: 4500,
-
-        guidanceValueFactor: 1.40
-      },
-
-      Pune: {
-
-        metro: true,
-
-        luxuryThreshold: 14000000,
-
-        authority: "PMC",
-
-        premiumZoneFactor: 1.15,
-
-        parkingPremiumFactor: 1.12,
-
-        interiorCostPerSqft: 2400,
-
-        guidanceValueFactor: 1.18
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.06,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.07,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.05,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: true,
-
-      discount: 0.01
-    }
-  },
-
-
-  // =============================================
-  // TAMIL NADU
-  // =============================================
-
-  TN: {
-
-    code: "TN",
-
-    name: "Tamil Nadu",
-
-    authorityRules: {
-
-      CMDA: {
-
-        municipalSurcharge: 0.009,
-
-        guidanceMultiplier: 1.12
-      }
-    },
-
-    cities: {
-
-      Chennai: {
-
-        metro: true,
-
-        luxuryThreshold: 15000000,
-
-        authority: "CMDA",
-
-        premiumZoneFactor: 1.18,
-
-        parkingPremiumFactor: 1.12,
-
-        interiorCostPerSqft: 2600,
-
-        guidanceValueFactor: 1.20
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.07,
-
-        registration: 0.04
-      },
-
-      luxury: {
-
-        stampDuty: 0.08,
-
-        registration: 0.04
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.07,
-
-      registration: 0.04
-    },
-
-    womenConcession: {
-
-      enabled: false,
-
-      discount: 0
-    }
-  },
-
-
-  // =============================================
-  // TELANGANA
-  // =============================================
-
-  TS: {
-
-    code: "TS",
-
-    name: "Telangana",
-
-    authorityRules: {
-
-      GHMC: {
-
-        municipalSurcharge: 0.008,
-
-        guidanceMultiplier: 1.14
-      }
-    },
-
-    cities: {
-
-      Hyderabad: {
-
-        metro: true,
-
-        luxuryThreshold: 15000000,
-
-        authority: "GHMC",
-
-        premiumZoneFactor: 1.16,
-
-        parkingPremiumFactor: 1.14,
-
-        interiorCostPerSqft: 2400,
-
-        guidanceValueFactor: 1.18
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.04,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.05,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.04,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: false,
-
-      discount: 0
-    }
-  },
-
-
-  // =============================================
-  // UTTAR PRADESH
-  // =============================================
-
-  UP: {
-
-    code: "UP",
-
-    name: "Uttar Pradesh",
-
-    authorityRules: {
-
-      NOIDA: {
-
-        municipalSurcharge: 0.01,
-
-        guidanceMultiplier: 1.18
-      },
-
-      GNIDA: {
-
-        municipalSurcharge: 0.011,
-
-        guidanceMultiplier: 1.22
-      }
-    },
-
-    cities: {
-
-      Noida: {
-
-        metro: true,
-
-        luxuryThreshold: 14000000,
-
-        authority: "NOIDA",
-
-        premiumZoneFactor: 1.15,
-
-        parkingPremiumFactor: 1.14,
-
-        interiorCostPerSqft: 2200,
-
-        guidanceValueFactor: 1.20
-      },
-
-      "Greater Noida": {
-
-        metro: true,
-
-        luxuryThreshold: 12000000,
-
-        authority: "GNIDA",
-
-        premiumZoneFactor: 1.12,
-
-        parkingPremiumFactor: 1.10,
-
-        interiorCostPerSqft: 2000,
-
-        guidanceValueFactor: 1.14
-      }
-    },
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.07,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.08,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.06,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: true,
-
-      discount: 0.01
-    }
-  },
-
-
-  // =============================================
-  // OTHER STATES / UT
-  // =============================================
-
-  OTHER: {
-
-    code: "OTHER",
-
-    name: "Other States / UT",
-
-    authorityRules: {
-
-      DEFAULT: {
-
-        municipalSurcharge: 0.005,
-
-        guidanceMultiplier: 1.05
-      }
-    },
-
-    cities: {},
-
-    residential: {
-
-      standard: {
-
-        stampDuty: 0.06,
-
-        registration: 0.01
-      },
-
-      luxury: {
-
-        stampDuty: 0.07,
-
-        registration: 0.01
-      }
-    },
-
-    agricultural: {
-
-      stampDuty: 0.05,
-
-      registration: 0.01
-    },
-
-    womenConcession: {
-
-      enabled: false,
-
-      discount: 0
-    }
+    );
   }
-};
+
+  return (
+
+    propertyPrice <= nonMetroMaxPrice
+
+    &&
+
+    sqft <= nonMetroMaxSqft
+
+  );
+}
+
+
+// =============================================
+// STATE LOOKUP
+// =============================================
+
+function getStateData(stateCode) {
+
+  return CalculatorRules.states.find(
+
+    state =>
+
+      state.state_code ===
+      stateCode
+
+  );
+}
+
+
+// =============================================
+// CITY LOOKUP
+// =============================================
+
+function getCityData(
+
+  stateCode,
+  cityName
+
+) {
+
+  return CalculatorRules.cities.find(
+
+    city =>
+
+      city.state_code ===
+      stateCode
+
+      &&
+
+      city.city_name ===
+      cityName
+
+  );
+}
+
+
+// =============================================
+// AUTHORITY LOOKUP
+// =============================================
+
+function getAuthorityData(
+
+  stateCode,
+  authorityCode
+
+) {
+
+  return CalculatorRules.authorities.find(
+
+    authority =>
+
+      authority.state_code ===
+      stateCode
+
+      &&
+
+      authority.authority_code ===
+      authorityCode
+
+  );
+}
+
+
+// =============================================
+// WOMEN CONCESSION LOOKUP
+// =============================================
+
+function getWomenConcession(
+  stateCode
+) {
+
+  return CalculatorRules
+    .womenConcessions
+    .find(
+
+      item =>
+
+        item.state_code ===
+        stateCode
+
+    );
+}
+
+
+// =============================================
+// PROPERTY RULE LOOKUP
+// =============================================
+
+function getPropertyRule({
+
+  stateCode,
+  propertyCategory,
+  slabType
+
+}) {
+
+  return CalculatorRules
+    .propertyRules
+    .find(
+
+      rule =>
+
+        rule.state_code ===
+        stateCode
+
+        &&
+
+        rule.property_category ===
+        propertyCategory
+
+        &&
+
+        rule.slab_type ===
+        slabType
+
+    );
+}
+
+
+// =============================================
+// GST LOOKUP
+// =============================================
+
+function getGstRule({
+
+  propertyType,
+  affordableHousing
+
+}) {
+
+  return CalculatorRules
+    .gstRules
+    .find(
+
+      gst =>
+
+        gst.property_type ===
+        propertyType
+
+        &&
+
+        gst.affordable_housing ===
+        affordableHousing
+
+    );
+}
 
 
 // =============================================
@@ -708,21 +258,33 @@ function resolvePropertyRules({
 
 }) {
 
-  const stateRules =
+  // =============================================
+  // STATE
+  // =============================================
 
-    PROPERTY_STATE_RULES[state]
+  const stateData =
+
+    getStateData(state)
 
     ||
 
-    PROPERTY_STATE_RULES.OTHER;
+    {
+
+      state_name:
+        "Other States"
+
+    };
 
   // =============================================
-  // CITY RULES
+  // CITY
   // =============================================
 
-  const cityRules =
+  const cityData =
 
-    stateRules.cities[city]
+    getCityData(
+      state,
+      city
+    )
 
     ||
 
@@ -730,190 +292,274 @@ function resolvePropertyRules({
 
       metro: false,
 
-      authority: "DEFAULT",
+      authority_code:
+        "DEFAULT",
 
-      luxuryThreshold: 10000000,
+      luxury_threshold:
+        10000000,
 
-      premiumZoneFactor: 1,
+      premium_zone_factor:
+        1,
 
-      parkingPremiumFactor: 1,
+      parking_premium_factor:
+        1,
 
-      interiorCostPerSqft: 1800,
+      interior_cost_per_sqft:
+        1800,
 
-      guidanceValueFactor: 1
+      guidance_value_factor:
+        1
+
     };
 
   // =============================================
-  // AUTHORITY RULES
+  // AUTHORITY
   // =============================================
 
-  const authorityRules =
+  const authorityData =
 
-    stateRules.authorityRules[
-      cityRules.authority
-    ]
+    getAuthorityData(
 
-    ||
+      state,
 
-    stateRules.authorityRules.DEFAULT
+      cityData.authority_code
+
+    )
 
     ||
 
     {
 
-      municipalSurcharge: 0,
+      municipal_surcharge:
+        0,
 
-      guidanceMultiplier: 1
+      guidance_multiplier:
+        1
+
     };
-
-  // =============================================
-  // PROPERTY CATEGORY RULES
-  // =============================================
-
-  let categoryRules;
-
-  if (
-    propertyCategory ===
-    "agricultural"
-  ) {
-
-    categoryRules =
-      stateRules.agricultural;
-  }
-
-  else {
-
-    const isLuxury =
-
-      propertyPrice >=
-      cityRules.luxuryThreshold;
-
-    categoryRules =
-
-      isLuxury
-
-        ?
-
-        stateRules
-          .residential
-          .luxury
-
-        :
-
-        stateRules
-          .residential
-          .standard;
-  }
 
   // =============================================
   // WOMEN CONCESSION
   // =============================================
 
+  const womenConcession =
+
+    getWomenConcession(
+      state
+    );
+
+  // =============================================
+  // LUXURY CHECK
+  // =============================================
+
+  const isLuxury =
+
+    propertyPrice >=
+
+    (
+      cityData
+        .luxury_threshold
+      || 10000000
+    );
+
+  // =============================================
+  // PROPERTY RULE
+  // =============================================
+
+  const slabType =
+
+    propertyCategory ===
+    "agricultural"
+
+      ? "standard"
+
+      : isLuxury
+
+        ? "luxury"
+
+        : "standard";
+
+  const propertyRule =
+
+    getPropertyRule({
+
+      stateCode: state,
+
+      propertyCategory,
+
+      slabType
+
+    })
+
+    ||
+
+    {
+
+      stamp_duty: 0.05,
+
+      registration: 0.01
+
+    };
+
+  // =============================================
+  // STAMP DUTY
+  // =============================================
+
   let stampDuty =
-    categoryRules.stampDuty;
+
+    Number(
+      propertyRule.stamp_duty
+    ) || 0;
 
   if (
 
-    buyerGender === "female"
+    buyerGender ===
+    "female"
 
     &&
 
-    stateRules
-      .womenConcession
-      .enabled
+    womenConcession
+      ?.enabled
 
   ) {
 
     stampDuty -=
 
-      stateRules
-        .womenConcession
-        .discount;
+      Number(
+        womenConcession.discount
+      ) || 0;
   }
 
   // =============================================
-  // GST LOGIC
+  // GST
   // =============================================
 
-  let gstRate = 0;
+  const gstRule =
 
-  if (
-    propertyType ===
-    "under_construction"
-  ) {
+    getGstRule({
 
-    gstRate =
+      propertyType,
 
-      isAffordableHousing
+      affordableHousing:
+        isAffordableHousing
 
-        ?
+    });
 
-        GST_RULES
-          .underConstruction
-          .affordable
+  const gstRate =
 
-        :
+    gstRule
 
-        GST_RULES
-          .underConstruction
-          .standard;
-  }
+      ? Number(
+          gstRule.gst_rate
+        )
+
+      : 0;
 
   // =============================================
-  // GUIDANCE VALUE LOGIC
+  // CALCULATIONS
   // =============================================
 
   const effectiveGuidanceFactor =
 
-    authorityRules.guidanceMultiplier *
+    (
+      authorityData
+        .guidance_multiplier
+      || 1
+    )
 
-    cityRules.guidanceValueFactor;
+    *
+
+    (
+      cityData
+        .guidance_value_factor
+      || 1
+    );
 
   const estimatedGuidanceValue =
 
     propertyPrice *
-    effectiveGuidanceFactor;
 
-  // =============================================
-  // MUNICIPAL SURCHARGE
-  // =============================================
+    effectiveGuidanceFactor;
 
   const municipalSurchargeRate =
 
-    authorityRules
-      .municipalSurcharge;
+    authorityData
+      .municipal_surcharge
 
-  // =============================================
-  // INTERIOR ESTIMATE
-  // =============================================
+    || 0;
 
   const estimatedInteriorCost =
 
     sqft *
-    cityRules.interiorCostPerSqft;
 
-  // =============================================
-  // PREMIUM ZONE ADJUSTMENT
-  // =============================================
+    (
+      cityData
+        .interior_cost_per_sqft
+      || 1800
+    );
 
   const premiumAdjustedValue =
 
     propertyPrice *
-    cityRules.premiumZoneFactor;
+
+    (
+      cityData
+        .premium_zone_factor
+      || 1
+    );
+
+  // =============================================
+  // RETURN
+  // =============================================
 
   return {
 
     stateName:
-      stateRules.name,
+      stateData.state_name,
 
-    cityRules,
+    cityRules: {
 
-    authorityRules,
+      metro:
+        cityData.metro,
+
+      authority:
+        cityData.authority_code,
+
+      luxuryThreshold:
+        cityData.luxury_threshold,
+
+      premiumZoneFactor:
+        cityData.premium_zone_factor,
+
+      parkingPremiumFactor:
+        cityData.parking_premium_factor,
+
+      interiorCostPerSqft:
+        cityData.interior_cost_per_sqft,
+
+      guidanceValueFactor:
+        cityData.guidance_value_factor
+
+    },
+
+    authorityRules: {
+
+      municipalSurcharge:
+        municipalSurchargeRate,
+
+      guidanceMultiplier:
+        authorityData
+          .guidance_multiplier || 1
+
+    },
 
     stampDuty,
 
     registration:
-      categoryRules.registration,
+
+      Number(
+        propertyRule.registration
+      ) || 0,
 
     gstRate,
 
@@ -927,26 +573,21 @@ function resolvePropertyRules({
 
     effectiveGuidanceFactor,
 
-    isLuxury:
+    isLuxury
 
-      propertyPrice >=
-      cityRules.luxuryThreshold
   };
 }
 
 
 // =============================================
-// GLOBAL EXPORTS
+// EXPORTS
 // =============================================
-
-window.PROPERTY_STATE_RULES =
-  PROPERTY_STATE_RULES;
 
 window.resolvePropertyRules =
   resolvePropertyRules;
 
-window.GST_RULES =
-  GST_RULES;
+window.isAffordableHousing =
+  isAffordableHousing;
 
-window.AFFORDABLE_HOUSING_RULES =
-  AFFORDABLE_HOUSING_RULES;
+window.getConfigValue =
+  getConfigValue;

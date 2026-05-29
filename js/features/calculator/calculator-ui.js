@@ -1,3 +1,65 @@
+async function populateStates() {
+
+  const stateSelect =
+    document.getElementById("state");
+
+  if (!stateSelect) return;
+
+  stateSelect.innerHTML =
+    '<option value="">Select State</option>';
+
+  CalculatorRules.states.forEach(
+    state => {
+
+      stateSelect.innerHTML += `
+
+        <option value="${state.state_code}">
+          ${state.state_name}
+        </option>
+
+      `;
+    }
+  );
+}
+
+function populateCities() {
+
+  const stateCode =
+    document.getElementById("state")
+      ?.value;
+
+  const citySelect =
+    document.getElementById("city");
+
+  if (!citySelect) return;
+
+  citySelect.innerHTML =
+    '<option value="">Select City</option>';
+
+  CalculatorRules.cities
+
+    .filter(city =>
+      city.state_code === stateCode
+    )
+
+    .sort((a, b) =>
+      a.city_name.localeCompare(
+        b.city_name
+      )
+    )
+
+    .forEach(city => {
+
+      citySelect.innerHTML += `
+
+        <option value="${city.city_name}">
+          ${city.city_name}
+        </option>
+
+      `;
+    });
+}
+
 // =============================================
 // PROPWISE CALCULATOR UI ENGINE
 // =============================================
@@ -755,16 +817,13 @@ function initCalculator() {
 
   const inputs =
     document.querySelectorAll(
-
       "input, select"
     );
 
   inputs.forEach(input => {
 
     input.addEventListener(
-
       "input",
-
       () => {
 
         input.classList.remove(
@@ -773,6 +832,15 @@ function initCalculator() {
       }
     );
   });
+
+  // NEW CODE
+  document
+    .getElementById("state")
+    ?.addEventListener(
+      "change",
+      populateCities
+    );
+
 }
 
 
@@ -784,7 +852,16 @@ document.addEventListener(
 
   "DOMContentLoaded",
 
-  initCalculator
+  async () => {
+
+    window.initSupabase();
+
+    await loadCalculatorRules();
+
+    await populateStates();
+
+    initCalculator();
+  }
 );
 
 
