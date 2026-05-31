@@ -48,6 +48,17 @@ function pdfCurrency(value) {
   return `Rs. ${amount.toLocaleString("en-IN")}`;
 }
 
+function pdfNumber(value) {
+
+  return Number(value || 0)
+    .toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits: 0
+      }
+    );
+}
+
 // =========================================
 // PDF HEADER
 // =========================================
@@ -327,7 +338,7 @@ function renderCoverHero(
   {
     aName,
     bName,
-    recommendation
+    recommended
   }
 ) {
 
@@ -421,7 +432,7 @@ function renderCoverHero(
   );
 
 const safeRecommendation =
-  recommendation || "Property A";
+  recommended || "Property A";
 
 const shortRecommendation =
   safeRecommendation.length > 18
@@ -1051,6 +1062,11 @@ async function downloadComparisonPDF(
 
   const reportId =
     `CMP-${Date.now()}`;
+  data.recommended =
+  data.recommended ||
+  data.winner ||
+  data.aName ||
+  "Property A";
 
   // PAGE 1
   renderWatermark(doc);
@@ -1096,10 +1112,32 @@ async function downloadComparisonPDF(
     112
   );
 
+  renderSummaryCard(
+  doc,
+  {
+    title: "Property A Score",
+    value: `${data.scoreA}/100`,
+    subtitle: data.gradeA
+  },
+  18,
+  150
+);
+
+renderSummaryCard(
+  doc,
+  {
+    title: "Property B Score",
+    value: `${data.scoreB}/100`,
+    subtitle: data.gradeB
+  },
+  110,
+  150
+);
+
   renderSectionTitle(
     doc,
     "Key Financial Metrics",
-    155
+    192
   );
 
   renderMetricsGrid(
@@ -1130,7 +1168,7 @@ async function downloadComparisonPDF(
         value: `${data.yieldB || 0}%`
       }
     ],
-    162
+    199
   );
 
   // PAGE 2
@@ -1204,8 +1242,8 @@ pageBreak: "auto",
 
       [
         "Price/Sq.ft",
-        pdfCurrency(data.priceSqftA || 0),
-        pdfCurrency(data.priceSqftB || 0)
+        `Rs. ${pdfNumber(data.priceSqftA)}`,
+        `Rs. ${pdfNumber(data.priceSqftB)}`
       ],
 
       [
@@ -1217,10 +1255,12 @@ pageBreak: "auto",
 [
   "Stamp Duty + Registration",
   pdfCurrency(
-    data.registrationFeeA
+    (data.stampDutyA || 0) +
+    (data.registrationFeeA || 0)
   ),
   pdfCurrency(
-    data.registrationFeeB
+    (data.stampDutyB || 0) +
+    (data.registrationFeeB || 0)
   )
 ],
 
@@ -1260,6 +1300,12 @@ pageBreak: "auto",
   pdfCurrency(
     data.ownershipCostB
   )
+],
+
+[
+  "Investment Score",
+  `${data.scoreA}/100 (${data.gradeA})`,
+  `${data.scoreB}/100 (${data.gradeB})`
 ],
 
       [
@@ -1303,15 +1349,36 @@ renderChartImage(
     reportId
   );
 
-  renderInsightBox(
-    doc,
-    "AI Recommendation",
-    data.recommendation ||
-    "Property comparison generated based on ownership cost, appreciation and rental yield assumptions.",
-    60
+const recommendationY = 60;
+
+const recommendationHeight =
+  24 + (
+    doc.splitTextToSize(
+      data.recommendation || "",
+      158
+    ).length * 6
   );
 
-  renderSummaryCard(
+const cardY =
+  recommendationY +
+  recommendationHeight +
+  20;
+
+const cardHeight = 30;
+
+let disclaimerY =
+  cardY +
+  cardHeight +
+  15;
+
+renderInsightBox(
+  doc,
+  `${data.recommendationStrength} (${data.confidenceLevel})`,
+  data.recommendation,
+  recommendationY
+);
+
+renderSummaryCard(
   doc,
   {
     title: "Recommendation",
@@ -1319,7 +1386,7 @@ renderChartImage(
     subtitle: "AI-selected option"
   },
   18,
-  120
+  cardY
 );
 
 renderSummaryCard(
@@ -1332,15 +1399,49 @@ renderSummaryCard(
     subtitle: "Estimated advantage"
   },
   110,
-  120
+  cardY
 );
 
-  renderInsightBox(
+const disclaimerText =
+  "This report is AI-assisted and intended for informational purposes only. PropWise India does not provide legal, financial or investment advice.";
+
+const disclaimerLines =
+  doc.splitTextToSize(
+    disclaimerText,
+    158
+  );
+
+const disclaimerHeight =
+  24 +
+  (disclaimerLines.length * 6);
+
+const footerSafeZone = 270;
+
+if (
+  disclaimerY +
+  disclaimerHeight >
+  footerSafeZone
+) {
+
+  doc.addPage();
+
+  renderWatermark(doc);
+
+  renderPDFHeader(
     doc,
     "Legal Disclaimer",
-    "This report is AI-assisted and intended for informational purposes only. PropWise India does not provide legal, financial or investment advice.",
-    170
+    reportId
   );
+
+  disclaimerY = 60;
+}
+
+renderInsightBox(
+  doc,
+  "Legal Disclaimer",
+  disclaimerText,
+  disclaimerY
+);
 
   // FOOTERS
   const totalPages =

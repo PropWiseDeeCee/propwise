@@ -398,6 +398,34 @@ const loanData =
 
     fiveYearEMI;
 
+  // =============================================
+// INVESTMENT SCORE
+// =============================================
+
+const appreciationPercent =
+  calculateAppreciationPercent(
+    basePrice
+  );
+
+const investmentScore =
+  calculateInvestmentScore({
+
+    ownershipCost:
+      fiveYearOwnershipCost,
+
+    emi:
+      loanData.emi,
+
+    rentalYield: 0,
+
+    appreciationPercent
+  });
+
+const investmentGrade =
+  getInvestmentGrade(
+    investmentScore
+  );
+
   return {
 
     stampDuty,
@@ -428,7 +456,12 @@ const loanData =
 
     ...loanData,
 
+       investmentScore,
+    investmentGrade,
+
     affordability
+
+     
   };
 }
 

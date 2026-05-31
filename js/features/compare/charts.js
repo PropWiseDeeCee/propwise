@@ -326,7 +326,13 @@ function renderAIRecommendation({
   yieldB,
 
   emiA,
-  emiB
+  emiB,
+
+  scoreA,
+  scoreB,
+
+  gradeA,
+  gradeB
 }) {
 
   const container =
@@ -358,6 +364,42 @@ function renderAIRecommendation({
       ? propertyA
       : propertyB;
 
+const scoreDifference =
+  Math.abs(
+    scoreA - scoreB
+  );
+
+let recommendationStrength;
+
+let confidenceLevel;
+
+if (scoreDifference >= 15) {
+
+  recommendationStrength =
+    "Strong Recommendation";
+
+  confidenceLevel =
+    "High Confidence";
+
+} else if (
+  scoreDifference >= 7
+) {
+
+  recommendationStrength =
+    "Moderate Recommendation";
+
+  confidenceLevel =
+    "Medium Confidence";
+
+} else {
+
+  recommendationStrength =
+    "Properties are financially comparable";
+
+  confidenceLevel =
+    "Low Confidence";
+}
+
   container.innerHTML = `
 
     <div class="smart-box">
@@ -377,16 +419,57 @@ function renderAIRecommendation({
         </div>
 
       </div>
+      <div class="smart-highlight">
+
+  ${recommendationStrength}
+
+  <br><br>
+
+  Confidence:
+  ${confidenceLevel}
+
+  <br><br>
+
+  Score Difference:
+  ${scoreDifference} points.
+
+  <br><br>
+
+Property A:
+${scoreA}/100
+(${gradeA})
+
+<br>
+
+Property B:
+${scoreB}/100
+(${gradeB})
+
+</div>
 
       <div class="smart-list">
 
         <div class="smart-item">
 
-          ✅ <strong>${winner}</strong>
-          appears financially stronger
-          based on ownership efficiency,
-          appreciation potential and
-          overall acquisition cost.
+        🏆 <strong>${winner}</strong>
+achieved the higher PropWise
+Investment Score after evaluating:
+
+<br><br>
+
+• 5-Year Ownership Cost
+
+<br>
+
+• Rental Yield Potential
+
+<br>
+
+• EMI Affordability
+
+<br>
+
+• Appreciation Potential
 
         </div>
 

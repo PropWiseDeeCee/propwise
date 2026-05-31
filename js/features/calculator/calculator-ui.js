@@ -173,6 +173,18 @@ function renderDashboard(result) {
             )}
           </div>
 
+          <div class="metric-card">
+
+  <div class="metric-label">
+    Investment Score
+  </div>
+
+  <div class="metric-value">
+    ${result.investmentScore}/100
+  </div>
+
+</div>
+
         </div>
 
       </div>
@@ -198,6 +210,8 @@ function renderDashboard(result) {
           ${result.affordability.ratio.toFixed(1)}%
 
         </div>
+
+
 
       </div>
 
@@ -325,6 +339,36 @@ function renderDashboard(result) {
     Guidance-value-based adjustments included.
 
   </div>
+
+  <div class="affordability-card">
+
+  <div class="affordability-title">
+    Investment Rating
+  </div>
+
+  <div class="
+    affordability-pill
+    ${
+      result.investmentScore >= 85
+        ? "safe"
+        : result.investmentScore >= 70
+        ? "moderate"
+        : "risky"
+    }
+  ">
+
+    ${result.investmentGrade}
+
+  </div>
+
+  <div class="affordability-text">
+
+    PropWise Score:
+    ${result.investmentScore}/100
+
+  </div>
+
+</div>
 
 </div>
 

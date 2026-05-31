@@ -527,17 +527,7 @@ const futureValueA =
 const futureValueB =
   calculateFutureValue(bBase);
 
-// WINNER
-
-const winner =
-  totalA < totalB
-    ? aName
-    : bName;
-
-const savings =
-  Math.abs(
-    totalA - totalB
-  );
+// OWNERSHIP COST
 
 const ownershipCostA =
 
@@ -554,6 +544,120 @@ const ownershipCostB =
   calculateFiveYearMaintenance(
     bMaintenance
   );
+
+// =========================================
+// INVESTMENT SCORE
+// =========================================
+
+const appreciationPercentA =
+
+  (
+    (
+      futureValueA -
+      aBase
+    ) /
+    aBase
+  ) * 100;
+
+const appreciationPercentB =
+
+  (
+    (
+      futureValueB -
+      bBase
+    ) /
+    bBase
+  ) * 100;
+
+const scoreA =
+  calculateInvestmentScore({
+
+    ownershipCost:
+      ownershipCostA,
+
+    emi:
+      emiA,
+
+    rentalYield:
+      Number(yieldA),
+
+    appreciationPercent:
+      appreciationPercentA
+  });
+
+const scoreB =
+  calculateInvestmentScore({
+
+    ownershipCost:
+      ownershipCostB,
+
+    emi:
+      emiB,
+
+    rentalYield:
+      Number(yieldB),
+
+    appreciationPercent:
+      appreciationPercentB
+  });
+
+const gradeA =
+  getInvestmentGrade(
+    scoreA
+  );
+
+const gradeB =
+  getInvestmentGrade(
+    scoreB
+  );
+
+const scoreDifference =
+  Math.abs(scoreA - scoreB);
+
+let recommendationStrength;
+
+let confidenceLevel;
+
+if (scoreDifference >= 15) {
+
+  recommendationStrength =
+    "Strong Recommendation";
+
+  confidenceLevel =
+    "High Confidence";
+
+} else if (scoreDifference >= 7) {
+
+  recommendationStrength =
+    "Moderate Recommendation";
+
+  confidenceLevel =
+    "Medium Confidence";
+
+} else {
+
+  recommendationStrength =
+    "Properties are financially comparable";
+
+  confidenceLevel =
+    "Low Confidence";
+}
+
+const winner =
+
+  scoreA >= scoreB
+
+    ? aName
+
+    : bName;
+
+const savings =
+  Math.abs(
+    ownershipCostA -
+    ownershipCostB
+  );
+
+  // WINNER
 
 // PDF + SAVE DATA
 
@@ -595,6 +699,12 @@ bLoan,
 aMaintenance,
 bMaintenance,
 
+scoreDifference,
+
+recommendationStrength,
+
+confidenceLevel,
+
 stampDutyA:
   aBase * rulesA.stampDuty,
 
@@ -617,10 +727,36 @@ fiveYearMaintenanceB:
     bMaintenance
   ),
 
+scoreA,
+scoreB,
+
+gradeA,
+gradeB,
+
   recommended: winner,
 
-  recommendation:
-    `${winner} appears financially stronger based on acquisition cost, rental yield, EMI burden and projected appreciation.`,
+  recommendation: `
+
+${winner} achieved the higher PropWise Investment Score.
+
+${aName}: ${scoreA}/100 (${gradeA})
+
+${bName}: ${scoreB}/100 (${gradeB})
+
+Score Difference:
+${Math.abs(scoreA - scoreB)} points
+
+Evaluation Factors:
+
+• 5-Year Ownership Cost
+
+• Rental Yield Potential
+
+• EMI Affordability
+
+• Appreciation Potential
+
+`,
 
   savings
 };
@@ -646,9 +782,35 @@ document.getElementById(
   <div class="winner-box">
 
     <h2>
-      Recommended:
-      ${winner}
-    </h2>
+  Recommended:
+  ${winner}
+</h2>
+
+<p>
+
+  Investment Scores
+
+  <br>
+
+  <strong>
+    ${aName}
+  </strong>
+
+  : ${scoreA}/100
+
+  (${gradeA})
+
+  <br>
+
+  <strong>
+    ${bName}
+  </strong>
+
+  : ${scoreB}/100
+
+  (${gradeB})
+
+</p>
 
     <p>
 
@@ -675,6 +837,24 @@ document.getElementById(
   <th>Metric</th>
   <th>${aName}</th>
   <th>${bName}</th>
+</tr>
+
+<tr>
+
+  <td>
+    Investment Score
+  </td>
+
+  <td>
+    ${scoreA}/100
+    (${gradeA})
+  </td>
+
+  <td>
+    ${scoreB}/100
+    (${gradeB})
+  </td>
+
 </tr>
 
 
@@ -814,7 +994,13 @@ renderAIRecommendation({
   yieldB,
 
   emiA,
-  emiB
+  emiB,
+
+  scoreA,
+  scoreB,
+
+  gradeA,
+  gradeB
 });
 
 
