@@ -154,10 +154,19 @@ function normalizeAnalysisResult(data = {}) {
       data.summary || "",
 
     critical:
-      data.critical || [],
+  data.critical ||
+  data.critical_risks ||
+  [],
 
-    moderate:
-      data.moderate || [],
+moderate:
+  data.moderate ||
+  data.moderate_risks ||
+  [],
+
+positive:
+  data.positive ||
+  data.positive_findings ||
+  [],
 
     positive:
       data.positive || [],

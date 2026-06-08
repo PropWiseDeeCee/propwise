@@ -3,7 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import fitz
 import docx
-import textract
+
+print("================================")
+print("PROPWISE BACKEND STARTED")
+print("================================")
 
 from analyzer import analyze_agreement
 
@@ -195,8 +198,10 @@ async def analyze(file: UploadFile = File(...)):
 
         # DOC
         elif filename.endswith(".doc"):
-
-            text = extract_text_doc(contents)
+            return {
+                "success": False,
+                "error": ".doc files temporarily unsupported. Use PDF or DOCX."
+        }
 
         # TXT
         elif filename.endswith(".txt"):
