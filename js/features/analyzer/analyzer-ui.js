@@ -143,13 +143,15 @@ const risk_level =
 
     window.latestAnalyzerResult = {
 
-      risk_score,
-      risk_level,
-      critical,
-      moderate,
-      recommendations,
-      text
-    };
+  ...result,
+
+  risk_score,
+  risk_level,
+  critical,
+  moderate,
+  recommendations,
+  text
+};
 
     // ==============================
     // RENDER
@@ -184,9 +186,7 @@ const risk_level =
             </strong>
 
             <p>
-              This agreement contains legal and financial risks.
-              Full report includes clause analysis,
-              recommendations and downloadable PDF.
+              ${summary}
             </p>
 
           </div>
@@ -226,6 +226,29 @@ const risk_level =
             </ul>
 
           </div>
+          ${
+  result.financial_obligations?.length
+    ? `
+      <div class="analysis-section-box">
+
+        <h3>
+          Financial Obligations
+        </h3>
+
+        <ul>
+          ${
+            result.financial_obligations
+              .map(item => `
+                <li>${item}</li>
+              `)
+              .join("")
+          }
+        </ul>
+
+      </div>
+    `
+    : ""
+}
 
         </div>
 
@@ -244,6 +267,29 @@ const risk_level =
           </ul>
 
         </div>
+        ${
+  result.negotiation_points?.length
+    ? `
+      <div class="recommendation-box">
+
+        <h3>
+          Negotiation Points
+        </h3>
+
+        <ul>
+          ${
+            result.negotiation_points
+              .map(item => `
+                <li>${item}</li>
+              `)
+              .join("")
+          }
+        </ul>
+
+      </div>
+    `
+    : ""
+}
 
         <div class="premium-lock-box">
 
@@ -289,6 +335,10 @@ const risk_level =
   } catch (error) {
 
     console.error(error);
+
+    const summary =
+    result.summary ||
+    "Agreement analyzed successfully.";
 
     resultDiv.innerHTML = `
 

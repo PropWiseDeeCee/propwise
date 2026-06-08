@@ -168,11 +168,26 @@ positive:
   data.positive_findings ||
   [],
 
-    positive:
-      data.positive || [],
+financial_obligations:
+  data.financial_obligations ||
+  [],
 
-    recommendations:
-      data.recommendations || [],
+hidden_costs:
+  data.hidden_costs ||
+  [],
+
+timeline_findings:
+  data.timeline_findings ||
+  [],
+
+negotiation_points:
+  data.negotiation_points ||
+  [],
+
+recommendations:
+  data.recommendations ||
+  data.negotiation_points ||
+  [],
 
     risk_score,
 
