@@ -1,4 +1,5 @@
 
+from unittest import result
 
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -225,6 +226,11 @@ Agreement clauses:
             .content
         )
 
+        print("================================")
+        print("AI CONTENT:")
+        print(content)
+        print("================================")
+
         # NULL SAFETY
         if not content:
 
@@ -271,6 +277,11 @@ Agreement clauses:
 
         result = json.loads(content)
 
+        print("================================")
+        print("PARSED RESULT:")
+        print(json.dumps(result, indent=2))
+        print("================================")
+
         if "score" in result and "risk_score" not in result:
             result["risk_score"] = result["score"]
 
@@ -279,6 +290,15 @@ Agreement clauses:
 
         if "moderate" in result and "moderate_risks" not in result:
             result["moderate_risks"] = result["moderate"]
+
+        score = result.get("risk_score", 50)
+
+        if score <= 30:
+            result["risk_level"] = "Low"
+        elif score <= 70:
+            result["risk_level"] = "Medium"
+        else:
+            result["risk_level"] = "High"
 
         # ==============================
         # SAFETY DEFAULTS
@@ -314,12 +334,12 @@ Agreement clauses:
         print("AI ANALYSIS ERROR:")
         print(str(e))
 
-    return {
-        "risk_score": 50,
-        "risk_level": "Medium",
-        "critical_risks": [],
-        "moderate_risks": [
-            f"Analysis failed: {str(e)}"
+        return {
+            "risk_score": 50,
+            "risk_level": "Medium",
+            "critical_risks": [],
+            "moderate_risks": [
+                f"Analysis failed: {str(e)}"
         ],
         "summary": "AI analysis could not be completed."
     }
