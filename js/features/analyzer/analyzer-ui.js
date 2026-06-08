@@ -106,6 +106,10 @@ async function analyzeAgreementHandler() {
 
     result = result || {};
 
+    const summary =
+  result.summary ||
+  "Agreement analyzed successfully.";
+
     const risk_score =
   result.risk_score ??
   calculateRiskScore(result);
@@ -334,28 +338,24 @@ const risk_level =
 
   } catch (error) {
 
-    console.error(error);
+  console.error(error);
 
-    const summary =
-    result.summary ||
-    "Agreement analyzed successfully.";
+  resultDiv.innerHTML = `
 
-    resultDiv.innerHTML = `
+    <div class="analysis-error-card">
 
-      <div class="analysis-error-card">
+      <h3>
+        Analysis Failed
+      </h3>
 
-        <h3>
-          Analysis Failed
-        </h3>
+      <p>
+        Unable to analyze agreement right now.
+        Please try again.
+      </p>
 
-        <p>
-          Unable to analyze agreement right now.
-          Please try again.
-        </p>
-
-      </div>
-    `;
-  }
+    </div>
+  `;
+}
 }
 
 function loadSampleAgreement() {

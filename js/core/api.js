@@ -349,11 +349,6 @@ async function isSuperAdmin() {
   return isAdminRole(profile?.role);
 }
 
-
-
-window.analyzeAgreement =
-  analyzeAgreement;
-
 window.signIn = signIn;
 
 window.signUp = signUp;

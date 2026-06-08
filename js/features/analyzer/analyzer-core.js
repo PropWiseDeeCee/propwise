@@ -176,6 +176,18 @@ hidden_costs:
   data.hidden_costs ||
   [],
 
+builder_friendly_clauses:
+  data.builder_friendly_clauses ||
+  [],
+
+buyer_friendly_clauses:
+  data.buyer_friendly_clauses ||
+  [],
+
+rera_findings:
+  data.rera_findings ||
+  [],
+
 timeline_findings:
   data.timeline_findings ||
   [],
