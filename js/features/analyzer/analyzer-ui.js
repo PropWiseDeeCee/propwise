@@ -106,6 +106,34 @@ async function analyzeAgreementHandler() {
 
     result = result || {};
 
+    const supabase =
+  window.getSupabaseClient?.();
+
+let isLoggedIn = false;
+
+try {
+
+  if (supabase) {
+
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    isLoggedIn = !!user;
+    console.log(
+  "User logged in:",
+  isLoggedIn
+);
+  }
+
+} catch (e) {
+
+  console.error(
+    "Auth check failed:",
+    e
+  );
+}
+
     const summary =
   result.summary ||
   "Agreement analyzed successfully.";
@@ -119,27 +147,43 @@ const risk_level =
   getRiskLevel(risk_score);
 
 
-    const critical =
-      result.critical || [];
+const critical =
+  result.critical ||
+  result.critical_risks ||
+  [];
 
-    const moderate =
-      result.moderate || [];
+const moderate =
+  result.moderate ||
+  result.moderate_risks ||
+  [];
 
-    const recommendations =
-      result.recommendations || [];
+const recommendations =
+  isLoggedIn
+    ? (result.recommendations || [])
+    : (
+        result.recommendations?.length
+          ? result.recommendations
+          : (result.negotiation_points || [])
+      );
 
     // ==============================
     // PREVIEW LIMITING
     // ==============================
 
-    const previewCritical =
-      critical.slice(0, 2);
+    const displayCritical =
+  isLoggedIn
+    ? critical
+    : critical.slice(0, 2);
 
-    const previewModerate =
-      moderate.slice(0, 2);
+const displayModerate =
+  isLoggedIn
+    ? moderate
+    : moderate.slice(0, 2);
 
-    const previewRecommendations =
-      recommendations.slice(0, 2);
+const displayRecommendations =
+  isLoggedIn
+    ? recommendations
+    : recommendations.slice(0, 2);
 
     // ==============================
     // SAVE FOR PDF
@@ -206,7 +250,7 @@ const risk_level =
             </h3>
 
             <ul>
-              ${previewCritical
+              ${displayCritical
                 .map(issue => `
                   <li>${issue}</li>
                 `)
@@ -222,7 +266,7 @@ const risk_level =
             </h3>
 
             <ul>
-              ${previewModerate
+              ${displayModerate
                 .map(issue => `
                   <li>${issue}</li>
                 `)
@@ -230,105 +274,252 @@ const risk_level =
             </ul>
 
           </div>
-          ${
-  result.financial_obligations?.length
-    ? `
-      <div class="analysis-section-box">
 
-        <h3>
-          Financial Obligations
-        </h3>
+        ${
+          isLoggedIn && result.financial_obligations?.length
+            ? `
+              <div class="analysis-section-box">
 
-        <ul>
-          ${
-            result.financial_obligations
-              .map(item => `
-                <li>${item}</li>
-              `)
-              .join("")
-          }
-        </ul>
+                <h3>
+                  Financial Obligations
+                </h3>
+
+                <ul>
+                  ${result.financial_obligations
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.hidden_costs?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Hidden Costs
+                </h3>
+
+                <ul>
+                  ${result.hidden_costs
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.rera_findings?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  RERA Findings
+                </h3>
+
+                <ul>
+                  ${result.rera_findings
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.timeline_findings?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Timeline Findings
+                </h3>
+
+                <ul>
+                  ${result.timeline_findings
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.builder_friendly_clauses?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Builder-Friendly Clauses
+                </h3>
+
+                <ul>
+                  ${result.builder_friendly_clauses
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.buyer_friendly_clauses?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Buyer-Friendly Clauses
+                </h3>
+
+                <ul>
+                  ${result.buyer_friendly_clauses
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn &&
+          (
+            result.positive_findings ||
+            result.positive ||
+            []
+          ).length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Positive Findings
+                </h3>
+
+                <ul>
+                  ${
+                    (
+                      result.positive_findings ||
+                      result.positive ||
+                      []
+                    )
+                      .map(item => `<li>${item}</li>`)
+                      .join("")
+                  }
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
 
       </div>
-    `
-    : ""
-}
 
-        </div>
-
-        <div class="recommendation-box">
-
-          <h3>
-            Recommendations
-          </h3>
-
-          <ul>
-            ${previewRecommendations
-              .map(issue => `
-                <li>${issue}</li>
-              `)
-              .join("")}
-          </ul>
-
-        </div>
-        ${
-  result.negotiation_points?.length
-    ? `
       <div class="recommendation-box">
 
         <h3>
-          Negotiation Points
+          Recommendations
         </h3>
 
         <ul>
-          ${
-            result.negotiation_points
-              .map(item => `
-                <li>${item}</li>
-              `)
-              .join("")
-          }
+          ${displayRecommendations
+            .map(issue => `
+              <li>${issue}</li>
+            `)
+            .join("")}
         </ul>
 
       </div>
-    `
-    : ""
-}
 
-        <div class="premium-lock-box">
+      ${
+        isLoggedIn &&
+        result.negotiation_points?.length
+          ? `
+            <div class="recommendation-box">
 
-          <h3>
-            Unlock Full AI Report
-          </h3>
+              <h3>
+                Negotiation Points
+              </h3>
 
-          <p>
-            View complete clause analysis,
-            legal risk explanations,
-            financial warnings and export detailed PDF report.
-          </p>
+              <ul>
+                ${result.negotiation_points
+                  .map(item => `
+                    <li>${item}</li>
+                  `)
+                  .join("")}
+              </ul>
 
-          <div class="premium-actions">
+            </div>
+          `
+          : ""
+      }
 
-            <button
-  class="primary-btn"
-  onclick="unlockFullReport()"
->
-  Login to View Full Report
-</button>
+      ${
+        isLoggedIn
+          ? `
+            <div class="premium-actions">
 
-<button
-  class="secondary-btn"
-  onclick="unlockFullReport()"
->
-  Login to Download PDF
-</button>
+              <button
+                class="primary-btn"
+                onclick="downloadAgreementReport()"
+              >
+                Download PDF Report
+              </button>
 
-          </div>
+            </div>
+          `
+          : `
+            <div class="premium-lock-box">
 
-        </div>
+              <h3>
+                Unlock Full AI Report
+              </h3>
 
-      </div>
-    `;
+              <p>
+                View complete clause analysis,
+                legal risk explanations,
+                financial warnings and export detailed PDF report.
+              </p>
+
+              <div class="premium-actions">
+
+                <button
+                  class="primary-btn"
+                  onclick="unlockFullReport()"
+                >
+                  Login to View Full Report
+                </button>
+
+                <button
+                  class="secondary-btn"
+                  onclick="unlockFullReport()"
+                >
+                  Login to Download PDF
+                </button>
+
+              </div>
+
+            </div>
+          `
+      }
+
+    </div>
+
+`;
+
 
     if (reportActions) {
 

@@ -69,7 +69,11 @@ const analysis =
 
 const findings = [
 
-  ...(analysis.critical || []).map(item => ({
+  ...(
+    analysis.critical ||
+    analysis.critical_risks ||
+    []
+  ).map(item => ({
 
     title: "Critical Risk",
 
@@ -79,11 +83,99 @@ const findings = [
 
   })),
 
-  ...(analysis.moderate || []).map(item => ({
+  ...(
+    analysis.moderate ||
+    analysis.moderate_risks ||
+    []
+  ).map(item => ({
 
     title: "Moderate Risk",
 
     severity: "Medium",
+
+    description: item
+
+  })),
+
+  ...(analysis.hidden_costs || []).map(item => ({
+
+    title: "Hidden Cost",
+
+    severity: "Medium",
+
+    description: item
+
+  })),
+
+  ...(analysis.financial_obligations || []).map(item => ({
+
+    title: "Financial Obligation",
+
+    severity: "Medium",
+
+    description: item
+
+  })),
+
+  ...(analysis.rera_findings || []).map(item => ({
+
+    title: "RERA Finding",
+
+    severity: "Info",
+
+    description: item
+
+  })),
+
+  ...(analysis.timeline_findings || []).map(item => ({
+
+    title: "Timeline Finding",
+
+    severity: "Medium",
+
+    description: item
+
+  })),
+
+  ...(analysis.builder_friendly_clauses || []).map(item => ({
+
+    title: "Builder-Friendly Clause",
+
+    severity: "Medium",
+
+    description: item
+
+  })),
+
+  ...(analysis.buyer_friendly_clauses || []).map(item => ({
+
+    title: "Buyer-Friendly Clause",
+
+    severity: "Positive",
+
+    description: item
+
+  })),
+
+  ...(
+    analysis.positive_findings ||
+    analysis.positive ||
+    []
+  ).map(item => ({
+
+    title: "Positive Finding",
+
+    severity: "Positive",
+
+    description: item
+
+  })),
+
+  ...(analysis.negotiation_points || []).map(item => ({
+
+    title: "Negotiation Point",
+
+    severity: "Action",
 
     description: item
 
