@@ -68,15 +68,10 @@ async function extractTextFromFile(file) {
 
 function calculateRiskScore(result) {
 
-  const critical =
-    (result.critical || []).length;
+  let score = 0;
 
-  const moderate =
-    (result.moderate || []).length;
-
-  let score =
-    (critical * 20) +
-    (moderate * 10);
+  score += (result.critical?.length || 0) * 10;
+  score += (result.moderate?.length || 0) * 5;
 
   return Math.min(score, 100);
 }

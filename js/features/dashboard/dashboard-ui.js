@@ -29,6 +29,39 @@ function getRiskClass(level = "") {
     .trim();
 }
 
+function getComparisonTitle(item = {}) {
+
+  const projectName =
+    item.project_name ||
+    item.name ||
+    item.title;
+
+  if (projectName) {
+
+    return projectName;
+  }
+
+  const result =
+    item.result ||
+    item.data ||
+    {};
+
+  const firstProperty =
+    result.aName ||
+    result.propertyA?.name;
+
+  const secondProperty =
+    result.bName ||
+    result.propertyB?.name;
+
+  if (firstProperty && secondProperty) {
+
+    return `${firstProperty} vs ${secondProperty}`;
+  }
+
+  return "Property Comparison";
+}
+
 
 // ==============================
 // LOAD DASHBOARD
@@ -92,7 +125,8 @@ async function loadDashboardStats() {
 
     // AGREEMENT REPORTS
     const {
-      count: reportCount
+      count: reportCount,
+      error: reportsError
     } = await supabase
       .from("agreement_reports")
       .select("*", {
@@ -103,7 +137,8 @@ async function loadDashboardStats() {
 
     // COMPARISONS
     const {
-      count: comparisonCount
+      count: comparisonCount,
+      error: comparisonsError
     } = await supabase
       .from("comparisons")
       .select("*", {
@@ -111,6 +146,16 @@ async function loadDashboardStats() {
         head: true
       })
       .eq("user_id", user.id);
+
+    if (reportsError) {
+
+      throw reportsError;
+    }
+
+    if (comparisonsError) {
+
+      throw comparisonsError;
+    }
 
     const reportsCountEl =
       document.getElementById(
@@ -270,7 +315,9 @@ async function loadAgreementReports() {
                 ${riskClass}
               ">
 
-                ${report.risk_level || "Medium"}
+                ${escapeHtml(
+                  report.risk_level || "Medium"
+                )}
 
               </div>
 
@@ -288,6 +335,18 @@ async function loadAgreementReports() {
 
                   ${report.risk_score || 0}/100
 
+                </strong>
+
+              </div>
+
+              <div class="metric-box">
+
+                <span>
+                  Status
+                </span>
+
+                <strong>
+                  Reviewed
                 </strong>
 
               </div>
@@ -438,9 +497,7 @@ async function loadComparisons() {
 
                 ${escapeHtml(
 
-                  item.project_name ||
-
-                  "Property Comparison"
+                  getComparisonTitle(item)
                 )}
 
               </h3>
@@ -454,6 +511,19 @@ async function loadComparisons() {
               </p>
 
             </div>
+
+          </div>
+
+          <div class="report-actions">
+
+            <button
+              class="secondary-btn"
+              onclick="location.href='compare.html'"
+            >
+
+              Compare Again
+
+            </button>
 
           </div>
 
@@ -548,19 +618,6 @@ async function viewAgreementReport(
     );
   }
 }
-
-
-// ==============================
-// AUTO INIT
-// ==============================
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    loadDashboard();
-  }
-);
 
 
 // ==============================

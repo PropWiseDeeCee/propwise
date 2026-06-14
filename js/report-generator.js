@@ -28,9 +28,6 @@ if (!analysis) {
   return;
 }
 
-const analysis =
-  JSON.parse(storedReport);
-
     // =========================
     // REPORT ID
     // =========================

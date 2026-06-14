@@ -476,9 +476,11 @@ const displayRecommendations =
               ${risk_score}/100
             </h2>
 
-            <div class="risk-pill ${risk_level.toLowerCase()}">
-              ${risk_level} 
-            </div>
+            <div class="risk-pill ${risk_level
+  .toLowerCase()
+  .replace(/\s+/g, "-")}">
+  ${risk_level}
+</div>
 
           </div>
 

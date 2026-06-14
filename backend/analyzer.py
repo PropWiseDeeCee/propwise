@@ -244,7 +244,7 @@ Agreement clauses:
             return {
         "risk_score": 50,
         "safety_score": 50,
-        "risk_level": "Medium",
+        "risk_level": "Medium Risk",
         "agreement_grade": "C",
         "critical_risks": [],
         "moderate_risks": [
@@ -272,7 +272,7 @@ Agreement clauses:
 
             return {
             "risk_score": 50,
-            "risk_level": "Medium",
+            "risk_level": "Medium Risk",
             "critical_risks": [],
             "moderate_risks": [
             "Unexpected AI response format"
@@ -386,8 +386,6 @@ def calculate_risk_score(result):
     len(result.get("rera_findings", [])),
     3
 ) * 2
-
-    score -= rera_bonus * 2
 
     score = max(0, min(score, 100))
 

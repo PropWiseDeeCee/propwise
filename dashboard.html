@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
 
   <title>
-Dashboard | Saved Reports & Comparisons | PropWise India
-</title>
+    Dashboard | Saved Reports & Comparisons | PropWise India
+  </title>
 
-<meta
-  name="description"
-  content="Access your saved property comparisons, agreement reports and analysis history on PropWise India."
-/>
+  <meta
+    name="description"
+    content="Access your saved property comparisons, agreement reports and analysis history on PropWise India."
+  >
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1C1BB2QKT"></script>
@@ -27,22 +27,20 @@ Dashboard | Saved Reports & Comparisons | PropWise India
     gtag('config', 'G-C1C1BB2QKT');
   </script>
 
-
   <!-- CSS -->
- <link rel="stylesheet" href="css/core/variables.css">
-<link rel="stylesheet" href="css/core/reset.css">
-<link rel="stylesheet" href="css/core/typography.css">
-<link rel="stylesheet" href="css/core/layout.css">
-<link rel="stylesheet" href="css/components/buttons.css">
-<link rel="stylesheet" href="css/components/cards.css">
-<link rel="stylesheet" href="css/components/navbar.css">
-<link rel="stylesheet" href="css/components/footer.css">
-<link rel="stylesheet" href="css/components/forms.css">
-<link rel="stylesheet" href="css/components/loaders.css">
-<link rel="stylesheet" href="css/components/dropdowns.css">
-<link rel="stylesheet" href="css/features/dashboard.css">
-
-<link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/core/variables.css">
+  <link rel="stylesheet" href="css/core/reset.css">
+  <link rel="stylesheet" href="css/core/typography.css">
+  <link rel="stylesheet" href="css/core/layout.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/footer.css">
+  <link rel="stylesheet" href="css/components/forms.css">
+  <link rel="stylesheet" href="css/components/loaders.css">
+  <link rel="stylesheet" href="css/components/dropdowns.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/features/dashboard.css">
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -57,212 +55,240 @@ Dashboard | Saved Reports & Comparisons | PropWise India
   <script src="js/core/analytics.js"></script>
 
   <!-- APP -->
-   
-   <script src="js/features/dashboard/dashboard-ui.js"></script>
+  <script src="js/features/dashboard/dashboard-ui.js"></script>
   <script defer src="js/core/bootstrap.js"></script>
-   <!-- Favicon -->
-<link rel="icon" type="image/png" href="/assets/favicon.png">
-<link rel="shortcut icon" href="/assets/favicon.ico">
-<link rel="apple-touch-icon" href="/assets/favicon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/favicon.png">
 </head>
 
 <body data-page="dashboard">
 
-<!-- NAVBAR -->
-<div id="navbar"></div>
+  <div id="navbar"></div>
 
-<!-- CONTENT -->
-<div class="container">
+  <main class="dashboard-section">
+    <div class="container">
 
-  <!-- HEADER -->
-  <div style="
-    text-align:center;
-    margin-bottom:40px;
-  ">
+      <section class="dashboard-hero" aria-labelledby="dashboardTitle">
+        <div>
+          <p class="dashboard-kicker">
+            Buyer workspace
+          </p>
 
-    <h1>
-      Your Dashboard
-    </h1>
+          <h1 id="dashboardTitle" class="dashboard-title">
+            Your property decision dashboard
+          </h1>
 
-    <p style="
-      color:#6b7280;
-      line-height:1.7;
-      max-width:700px;
-      margin:auto;
-    ">
+          <p class="dashboard-subtitle">
+            Start a new check, compare properties, or return to saved agreement reports and cost comparisons.
+          </p>
+        </div>
 
-      View your saved agreement reports,
-      comparisons, and property analysis history.
+        <div class="dashboard-hero-actions">
+          <a class="btn btn-primary" href="tools.html">
+            Analyze Agreement
+          </a>
 
-    </p>
+          <a class="btn btn-outline" href="compare.html">
+            Compare Properties
+          </a>
+        </div>
+      </section>
 
-  </div>
+      <section class="dashboard-stats" aria-label="Dashboard summary">
+        <article class="dashboard-stat-card">
+          <span class="stat-label">
+            Agreement Reports
+          </span>
 
-  <!-- REPORTS -->
-  <div class="card">
+          <strong id="reportsCount" class="stat-value">
+            0
+          </strong>
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      flex-wrap:wrap;
-      margin-bottom:20px;
-    ">
+          <span class="stat-note">
+            Saved legal risk checks
+          </span>
+        </article>
 
-      <div>
+        <article class="dashboard-stat-card">
+          <span class="stat-label">
+            Saved Comparisons
+          </span>
 
-        <h3>
-          Agreement Reports
-        </h3>
+          <strong id="comparisonsCount" class="stat-value">
+            0
+          </strong>
 
-        <p style="
-          color:#6b7280;
-          font-size:14px;
-          margin-top:6px;
-        ">
+          <span class="stat-note">
+            Property cost reviews
+          </span>
+        </article>
 
-          Review previously analyzed agreements
-          and detected risks.
+        <article class="dashboard-stat-card">
+          <span class="stat-label">
+            Available Tools
+          </span>
 
-        </p>
+          <strong class="stat-value">
+            3
+          </strong>
 
-      </div>
+          <span class="stat-note">
+            Analysis, compare, calculator
+          </span>
+        </article>
+      </section>
 
-      <button onclick="location.href='tools.html'">
-        Analyze New Agreement
-      </button>
+      <section class="dashboard-panel" aria-labelledby="featuresTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">
+              Features
+            </p>
+
+            <h2 id="featuresTitle">
+              Choose what you want to do next
+            </h2>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-action-card">
+            <div class="feature-icon" aria-hidden="true">
+              AG
+            </div>
+
+            <div class="feature-copy">
+              <h3>
+                Agreement risk analysis
+              </h3>
+
+              <p>
+                Upload a builder-buyer agreement and review clauses, risk level, and report history.
+              </p>
+            </div>
+
+            <a class="secondary-btn" href="tools.html">
+              Start Analysis
+            </a>
+          </article>
+
+          <article class="feature-action-card">
+            <div class="feature-icon feature-icon-accent" aria-hidden="true">
+              CP
+            </div>
+
+            <div class="feature-copy">
+              <h3>
+                Property cost comparison
+              </h3>
+
+              <p>
+                Compare two properties across acquisition cost, loan impact, maintenance, and investment score.
+              </p>
+            </div>
+
+            <a class="secondary-btn" href="compare.html">
+              Compare Now
+            </a>
+          </article>
+
+          <article class="feature-action-card">
+            <div class="feature-icon feature-icon-warning" aria-hidden="true">
+              CC
+            </div>
+
+            <div class="feature-copy">
+              <h3>
+                Cost calculator
+              </h3>
+
+              <p>
+                Estimate GST, stamp duty, registration, parking, maintenance, and other ownership charges.
+              </p>
+            </div>
+
+            <a class="secondary-btn" href="calculator.html">
+              Open Calculator
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="saved-work" aria-labelledby="savedWorkTitle">
+        <div class="section-heading saved-work-heading">
+          <div>
+            <p class="section-kicker">
+              Saved work
+            </p>
+
+            <h2 id="savedWorkTitle">
+              Reports and comparisons
+            </h2>
+          </div>
+
+          <p>
+            Pick up where you left off, with agreement reports first and property comparisons beside them.
+          </p>
+        </div>
+
+        <div class="saved-work-grid">
+          <article class="dashboard-panel saved-work-panel" aria-labelledby="reportsTitle">
+            <div class="saved-work-panel-header">
+              <div>
+                <h3 id="reportsTitle">
+                  Agreement Reports
+                </h3>
+
+                <p>
+                  Previously analyzed agreements and detected risks.
+                </p>
+              </div>
+
+              <a class="btn btn-primary btn-sm" href="tools.html">
+                New Report
+              </a>
+            </div>
+
+            <div id="reportsList" class="saved-list">
+              <div class="loading">
+                Loading reports...
+              </div>
+            </div>
+          </article>
+
+          <article class="dashboard-panel saved-work-panel" aria-labelledby="comparisonsTitle">
+            <div class="saved-work-panel-header">
+              <div>
+                <h3 id="comparisonsTitle">
+                  Saved Comparisons
+                </h3>
+
+                <p>
+                  Property comparisons and purchase-cost reviews.
+                </p>
+              </div>
+
+              <a class="btn btn-outline btn-sm" href="compare.html">
+                New Comparison
+              </a>
+            </div>
+
+            <div id="list" class="saved-list">
+              <div class="loading">
+                Loading comparisons...
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
 
     </div>
+  </main>
 
-    <div id="reportsList">
-
-      <p>
-        Loading reports...
-      </p>
-
-    </div>
-
-  </div>
-
-  <!-- SAVED COMPARISONS -->
-  <div class="card" style="margin-top:30px;">
-
-    <h3>
-      Saved Comparisons
-    </h3>
-
-    <p style="
-      color:#6b7280;
-      font-size:14px;
-      margin-top:6px;
-      margin-bottom:20px;
-    ">
-
-      Compare properties you previously reviewed.
-
-    </p>
-
-    <div id="list">
-
-      <p>
-        Loading comparisons...
-      </p>
-
-    </div>
-
-  </div>
-
-  <!-- QUICK ACTIONS -->
-  <div class="grid" style="margin-top:30px;">
-
-    <!-- ANALYZER -->
-    <div class="card">
-
-      <h4>
-        Analyze Agreement
-      </h4>
-
-      <p style="
-        font-size:13px;
-        color:#6b7280;
-        line-height:1.7;
-      ">
-
-        Upload builder agreements
-        and detect potential risks instantly.
-
-      </p>
-
-      <button onclick="location.href='tools.html'">
-
-        Go to Analyzer
-
-      </button>
-
-    </div>
-
-    <!-- COMPARE -->
-    <div class="card">
-
-      <h4>
-        Compare Properties
-      </h4>
-
-      <p style="
-        font-size:13px;
-        color:#6b7280;
-        line-height:1.7;
-      ">
-
-        Compare total property purchase costs.
-
-      </p>
-
-      <button onclick="location.href='compare.html'">
-
-        Compare Now
-
-      </button>
-
-    </div>
-
-    <!-- CALCULATOR -->
-    <div class="card">
-
-      <h4>
-        Cost Calculator
-      </h4>
-
-      <p style="
-        font-size:13px;
-        color:#6b7280;
-        line-height:1.7;
-      ">
-
-        Estimate registration,
-        GST, and additional costs.
-
-      </p>
-
-      <button onclick="location.href='calculator.html'">
-
-        Open Calculator
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- FOOTER -->
-<div id="footer"></div>
-
-</body>
-</html>
-</footer>
+  <div id="footer"></div>
 
 </body>
 </html>
