@@ -49,10 +49,18 @@ Return ONLY valid JSON.
 Schema:
 
 {
-  "risk_score": 0,
-  "risk_level": "Low|Medium|High",
   "summary": ""
 }
+
+IMPORTANT:
+
+Do NOT calculate risk score.
+Do NOT calculate risk level.
+
+Only identify findings.
+PropWise calculates risk scoring separately.
+
+Additional sections may be included ONLY if findings exist:
 
 Additional sections may be included ONLY if findings exist:
 
@@ -75,7 +83,6 @@ Rules:
 - Use agreement-specific findings only.
 - Each finding must be under 15 words.
 - Maximum 3 findings per section.
-- Standard RERA-compliant agreements are usually Medium risk.
 - Focus on practical buyer risks.
 - Output JSON only.
 """
@@ -236,7 +243,9 @@ Agreement clauses:
 
             return {
         "risk_score": 50,
+        "safety_score": 50,
         "risk_level": "Medium",
+        "agreement_grade": "C",
         "critical_risks": [],
         "moderate_risks": [
             "AI returned empty response"
@@ -277,6 +286,9 @@ Agreement clauses:
 
         result = json.loads(content)
 
+        if not isinstance(result, dict):
+            raise ValueError("AI did not return JSON object")
+
         print("================================")
         print("PARSED RESULT:")
         print(json.dumps(result, indent=2))
@@ -291,21 +303,21 @@ Agreement clauses:
         if "moderate" in result and "moderate_risks" not in result:
             result["moderate_risks"] = result["moderate"]
 
-        score = result.get("risk_score", 50)
+        risk_score = calculate_risk_score(result)
 
-        if score <= 30:
-            result["risk_level"] = "Low"
-        elif score <= 70:
-            result["risk_level"] = "Medium"
-        else:
-            result["risk_level"] = "High"
+        result["risk_score"] = risk_score
+        result["safety_score"] = calculate_safety_score(risk_score)
+        result["risk_level"] = get_risk_level(risk_score)
+        result["agreement_grade"] = get_agreement_grade(risk_score)
 
         # ==============================
         # SAFETY DEFAULTS
         # ==============================
 
         result.setdefault("risk_score", 50)
-        result.setdefault("risk_level", "Medium")
+        result.setdefault("safety_score", 50)
+        result.setdefault("risk_level", "Medium_Risk")
+        result.setdefault("agreement_grade", "C")
 
         result.setdefault("positive_findings", [])
 
@@ -328,18 +340,80 @@ Agreement clauses:
         result.setdefault("summary", "")
 
         return result
-
     except Exception as e:
-
         print("AI ANALYSIS ERROR:")
         print(str(e))
 
         return {
-            "risk_score": 50,
-            "risk_level": "Medium",
-            "critical_risks": [],
-            "moderate_risks": [
-                f"Analysis failed: {str(e)}"
-        ],
-        "summary": "AI analysis could not be completed."
-    }
+    "risk_score": 50,
+    "safety_score": 50,
+    "risk_level": "Medium Risk",
+    "agreement_grade": "C",
+    "critical_risks": [],
+    "moderate_risks": [
+        f"Analysis failed: {str(e)}"
+    ],
+    "financial_obligations": [],
+    "hidden_costs": [],
+    "builder_friendly_clauses": [],
+    "buyer_friendly_clauses": [],
+    "rera_findings": [],
+    "timeline_findings": [],
+    "project_structure_risks": [],
+    "negotiation_points": [],
+    "positive_findings": [],
+    "summary": "AI analysis could not be completed."
+}
+
+
+def calculate_risk_score(result):
+    score = 0
+
+    score += len(result.get("critical_risks", [])) * 18
+    score += len(result.get("moderate_risks", [])) * 8
+    score += len(result.get("hidden_costs", [])) * 6
+    score += len(result.get("builder_friendly_clauses", [])) * 5
+    score += len(result.get("project_structure_risks", [])) * 8
+    score += len(result.get("financial_obligations", [])) * 4
+
+    score -= len(result.get("buyer_friendly_clauses", [])) * 3
+    rera_bonus = min(
+        len(result.get("rera_findings", [])),
+        2
+    )
+
+    score -= rera_bonus * 2
+
+    score = max(0, min(score, 100))
+
+    return score
+
+
+def calculate_safety_score(risk_score):
+    return max(0, 100 - risk_score)
+
+
+def get_risk_level(score):
+    if score <= 20:
+        return "Very Safe"
+    elif score <= 40:
+        return "Low Risk"
+    elif score <= 60:
+        return "Medium Risk"
+    elif score <= 80:
+        return "High Risk"
+
+    return "Very High Risk"
+
+
+def get_agreement_grade(score):
+    if score <= 20:
+        return "A"
+    elif score <= 40:
+        return "B"
+    elif score <= 60:
+        return "C"
+    elif score <= 80:
+        return "D"
+
+    return "F"
