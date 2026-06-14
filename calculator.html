@@ -31,9 +31,9 @@
 <link rel="stylesheet" href="css/components/forms.css">
 <link rel="stylesheet" href="css/components/loaders.css">
 <link rel="stylesheet" href="css/components/dropdowns.css">
-<link rel="stylesheet" href="css/features/calculator.css">
 
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/features/calculator.css">
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -151,16 +151,29 @@
       <div class="calculator-left">
 
         <!-- PROPERTY DETAILS -->
-        <div class="calc-card">
+        <details class="calc-card calc-step" open>
 
-          <div class="calc-card-title">
-            Property Details
-          </div>
+          <summary class="calc-step-summary">
+            <span class="calc-step-number">
+              1
+            </span>
 
-          <div class="calc-card-sub">
-            Enter basic property and
-            location information.
-          </div>
+            <span class="calc-step-heading">
+              <span class="calc-card-title">
+                Property Details
+              </span>
+
+              <span class="calc-card-sub">
+                Price, size, location and buyer details.
+              </span>
+            </span>
+
+            <span class="calc-step-status">
+              Required
+            </span>
+          </summary>
+
+          <div class="calc-step-body">
 
           <div class="calc-grid">
 
@@ -294,20 +307,34 @@
 
           </div>
 
-        </div>
+          </div>
+
+        </details>
 
         <!-- LOAN DETAILS -->
-        <div class="calc-card">
+        <details class="calc-card calc-step" open>
 
-          <div class="calc-card-title">
-            Loan Details
-          </div>
+          <summary class="calc-step-summary">
+            <span class="calc-step-number">
+              2
+            </span>
 
-          <div class="calc-card-sub">
-            Estimate EMI,
-            total interest,
-            and affordability.
-          </div>
+            <span class="calc-step-heading">
+              <span class="calc-card-title">
+                Loan Details
+              </span>
+
+              <span class="calc-card-sub">
+                Down payment, EMI inputs and monthly affordability.
+              </span>
+            </span>
+
+            <span class="calc-step-status">
+              Required
+            </span>
+          </summary>
+
+          <div class="calc-step-body">
 
           <div class="calc-grid">
 
@@ -374,19 +401,34 @@
 
           </div>
 
-        </div>
+          </div>
+
+        </details>
 
         <!-- HIDDEN CHARGES -->
-        <div class="calc-card">
+        <details class="calc-card calc-step">
 
-          <div class="calc-card-title">
-            Additional Charges
-          </div>
+          <summary class="calc-step-summary">
+            <span class="calc-step-number">
+              3
+            </span>
 
-          <div class="calc-card-sub">
-            Include builder and
-            ownership-related expenses.
-          </div>
+            <span class="calc-step-heading">
+              <span class="calc-card-title">
+                Additional Charges
+              </span>
+
+              <span class="calc-card-sub">
+                Optional builder and ownership-related expenses.
+              </span>
+            </span>
+
+            <span class="calc-step-status">
+              Optional
+            </span>
+          </summary>
+
+          <div class="calc-step-body">
 
           <div class="calc-grid">
 
@@ -467,7 +509,9 @@
 
           </div>
 
-        </div>
+          </div>
+
+        </details>
 
         <div class="calculator-actions-wrapper">
 

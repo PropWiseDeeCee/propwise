@@ -585,6 +585,17 @@ function hideValidationMessage() {
   }
 }
 
+function openFieldSection(field) {
+
+  const section =
+    field?.closest("details");
+
+  if (section) {
+
+    section.open = true;
+  }
+}
+
 // =============================================
 // MAIN CALCULATOR
 // =============================================
@@ -641,6 +652,8 @@ requiredFields.forEach(field => {
     missingFields.push(field.label);
 
     el?.classList.add("input-error");
+
+    openFieldSection(el);
   }
 
   else {
@@ -655,6 +668,15 @@ if (missingFields.length > 0) {
 
     "Please complete all required fields."
   );
+
+  document
+    .querySelector(".input-error")
+    ?.scrollIntoView({
+
+      behavior: "smooth",
+
+      block: "center"
+    });
 
   return;
 }
@@ -841,6 +863,14 @@ if (resultsSection) {
   resultsSection.style.display =
     "none";
 }
+
+document
+  .querySelectorAll(".calc-step")
+  .forEach((section, index) => {
+
+    section.open =
+      index < 2;
+  });
 }
 
 // =============================================

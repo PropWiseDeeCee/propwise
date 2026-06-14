@@ -68,10 +68,8 @@
 <link rel="stylesheet" href="css/components/dropdowns.css">
 
 <!-- FEATURE -->
-<link rel="stylesheet" href="css/features/compare.css">
-
-<!-- GLOBAL -->
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/features/compare.css">
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -145,236 +143,235 @@
         <div class="property-card">
 
           <div class="property-header">
+            <div class="property-badge">
+              A
+            </div>
 
             <div>
-
               <h2 class="property-title">
                 Property A
               </h2>
 
               <p class="card-subtext">
-                Enter details for the first property.
+                Add the first option you want to compare.
               </p>
-
             </div>
-
           </div>
 
-          <div class="form-group">
+          <details class="compare-step" open>
+            <summary class="compare-step-summary">
+              <span>Basics</span>
+              <small>Location and property type</small>
+            </summary>
 
-            <label for="aName">
-              Property Name
-            </label>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="aName">
+                    Property Name
+                  </label>
 
-            <input
-              class="form-input"
-              id="aName"
-              type="text"
-              placeholder="Sobha Dream Acres"
-            >
+                  <input
+                    class="form-input"
+                    id="aName"
+                    type="text"
+                    placeholder="Sobha Dream Acres"
+                  >
+                </div>
 
-          </div>
+                <div class="form-group">
+                  <label for="aState">
+                    State
+                  </label>
 
-         <div class="form-group">
+                  <select
+                    class="form-input"
+                    id="aState"
+                  >
+                    <option value="">
+                      Select State
+                    </option>
+                  </select>
+                </div>
 
-  <label for="aState">
-    State
-  </label>
+                <div class="form-group">
+                  <label for="aCity">
+                    City
+                  </label>
 
-  <select
-    class="form-input"
-    id="aState"
-  >
-    <option value="">
-      Select State
-    </option>
-  </select>
+                  <select
+                    class="form-input"
+                    id="aCity"
+                  >
+                    <option value="">
+                      Select State First
+                    </option>
+                  </select>
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="aPropertyType">
+                    Property Type
+                  </label>
 
-<div class="form-group">
+                  <select
+                    class="form-input"
+                    id="aPropertyType"
+                  >
+                    <option value="under_construction">
+                      Under Construction
+                    </option>
 
-  <label for="aCity">
-    City
-  </label>
+                    <option value="ready_to_move">
+                      Ready To Move
+                    </option>
 
-  <select
-    class="form-input"
-    id="aCity"
-  >
-    <option value="">
-      Select State First
-    </option>
-  </select>
+                    <option value="resale">
+                      Resale
+                    </option>
+                  </select>
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="aPropertyCategory">
+                    Property Category
+                  </label>
 
-<div class="form-group">
+                  <select
+                    class="form-input"
+                    id="aPropertyCategory"
+                  >
+                    <option value="residential">
+                      Residential
+                    </option>
 
-  <label for="aPropertyType">
-    Property Type
-  </label>
+                    <option value="agricultural">
+                      Agricultural
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </details>
 
-  <select
-    class="form-input"
-    id="aPropertyType"
-  >
+          <details class="compare-step" open>
+            <summary class="compare-step-summary">
+              <span>Price & Returns</span>
+              <small>Purchase cost, area, rent and maintenance</small>
+            </summary>
 
-    <option value="under_construction">
-      Under Construction
-    </option>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="aBase">
+                    Base Property Price
+                  </label>
 
-    <option value="ready_to_move">
-      Ready To Move
-    </option>
+                  <input
+                    class="form-input"
+                    id="aBase"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="Property price"
+                  >
+                </div>
 
-    <option value="resale">
-      Resale
-    </option>
+                <div class="form-group">
+                  <label for="aSuperArea">
+                    Super Area (sq.ft)
+                  </label>
 
-  </select>
+                  <input
+                    class="form-input"
+                    id="aSuperArea"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="1500"
+                  >
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="aRent">
+                    Expected Monthly Rent
+                  </label>
 
-<div class="form-group">
+                  <input
+                    class="form-input"
+                    id="aRent"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="35000"
+                  >
+                </div>
 
-  <label for="aPropertyCategory">
-    Property Category
-  </label>
+                <div class="form-group">
+                  <label for="aMaintenance">
+                    Annual Maintenance
+                  </label>
 
-  <select
-    class="form-input"
-    id="aPropertyCategory"
-  >
+                  <input
+                    class="form-input"
+                    id="aMaintenance"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="50000"
+                  >
+                </div>
+              </div>
+            </div>
+          </details>
 
-    <option value="residential">
-      Residential
-    </option>
+          <details class="compare-step">
+            <summary class="compare-step-summary">
+              <span>Loan Assumptions</span>
+              <small>Optional EMI inputs</small>
+            </summary>
 
-    <option value="agricultural">
-      Agricultural
-    </option>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="aLoan">
+                    Loan Amount
+                  </label>
 
-  </select>
+                  <input
+                    class="form-input"
+                    id="aLoan"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="6000000"
+                  >
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="aInterest">
+                    Interest Rate (%)
+                  </label>
 
-          <div class="form-group">
+                  <input
+                    class="form-input"
+                    id="aInterest"
+                    type="number"
+                    step="0.01"
+                    placeholder="8.5"
+                  >
+                </div>
 
-            <label for="aBase">
-              Base Property Price
-            </label>
+                <div class="form-group">
+                  <label for="aTenure">
+                    Loan Tenure (Years)
+                  </label>
 
-            <input
-              class="form-input"
-              id="aBase"
-              type="text"
-              inputmode="numeric"
-              placeholder="Property price"
-            >
-
-          </div>
-
-          <!-- SUPER AREA -->
-<div class="form-group">
-
-  <label for="aSuperArea">
-    Super Area (sq.ft)
-  </label>
-
-  <input
-    class="form-input"
-    id="aSuperArea"
-    type="text"
-    inputmode="numeric"
-    placeholder="1500"
-  >
-
-</div>
-
-<!-- MONTHLY RENT -->
-<div class="form-group">
-
-  <label for="aRent">
-    Expected Monthly Rent
-  </label>
-
-  <input
-    class="form-input"
-    id="aRent"
-    type="text"
-    inputmode="numeric"
-    placeholder="35000"
-  >
-
-</div>
-
-<!-- MAINTENANCE -->
-<div class="form-group">
-
-  <label for="aMaintenance">
-    Annual Maintenance
-  </label>
-
-  <input
-    class="form-input"
-    id="aMaintenance"
-    type="text"
-    inputmode="numeric"
-    placeholder="50000"
-  >
-
-</div>
-
-<!-- LOAN AMOUNT -->
-<div class="form-group">
-
-  <label for="aLoan">
-    Loan Amount
-  </label>
-
-  <input
-    class="form-input"
-    id="aLoan"
-    type="text"
-    inputmode="numeric"
-    placeholder="6000000"
-  >
-
-</div>
-
-<!-- INTEREST RATE -->
-<div class="form-group">
-
-  <label for="aInterest">
-    Interest Rate (%)
-  </label>
-
-  <input
-    class="form-input"
-    id="aInterest"
-    type="number"
-    step="0.01"
-    placeholder="8.5"
-  >
-
-</div>
-
-<!-- LOAN TENURE -->
-<div class="form-group">
-
-  <label for="aTenure">
-    Loan Tenure (Years)
-  </label>
-
-  <input
-    class="form-input"
-    id="aTenure"
-    type="number"
-    placeholder="20"
-  >
-
-</div>
+                  <input
+                    class="form-input"
+                    id="aTenure"
+                    type="number"
+                    placeholder="20"
+                  >
+                </div>
+              </div>
+            </div>
+          </details>
 
         </div>
 
@@ -382,236 +379,236 @@
         <div class="property-card">
 
           <div class="property-header">
+            <div class="property-badge property-badge-alt">
+              B
+            </div>
 
             <div>
-
               <h2 class="property-title">
                 Property B
               </h2>
 
               <p class="card-subtext">
-                Enter details for the second property.
+                Add the second option using the same assumptions.
               </p>
-
             </div>
-
           </div>
 
-          <div class="form-group">
+          <details class="compare-step" open>
+            <summary class="compare-step-summary">
+              <span>Basics</span>
+              <small>Location and property type</small>
+            </summary>
 
-            <label for="bName">
-              Property Name
-            </label>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="bName">
+                    Property Name
+                  </label>
 
-            <input
-              class="form-input"
-              id="bName"
-              type="text"
-              placeholder="Prestige Lakeside Habitat"
-            >
+                  <input
+                    class="form-input"
+                    id="bName"
+                    type="text"
+                    placeholder="Prestige Lakeside Habitat"
+                  >
+                </div>
 
-          </div>
+                <div class="form-group">
+                  <label for="bState">
+                    State
+                  </label>
 
-          <div class="form-group">
+                  <select
+                    class="form-input"
+                    id="bState"
+                  >
+                    <option value="">
+                      Select State
+                    </option>
+                  </select>
+                </div>
 
-  <label for="bState">
-    State
-  </label>
+                <div class="form-group">
+                  <label for="bCity">
+                    City
+                  </label>
 
-  <select
-    class="form-input"
-    id="bState"
-  >
-    <option value="">
-      Select State
-    </option>
-  </select>
+                  <select
+                    class="form-input"
+                    id="bCity"
+                  >
+                    <option value="">
+                      Select State First
+                    </option>
+                  </select>
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="bPropertyType">
+                    Property Type
+                  </label>
 
-<div class="form-group">
+                  <select
+                    class="form-input"
+                    id="bPropertyType"
+                  >
+                    <option value="under_construction">
+                      Under Construction
+                    </option>
 
-  <label for="bCity">
-    City
-  </label>
+                    <option value="ready_to_move">
+                      Ready To Move
+                    </option>
 
-  <select
-    class="form-input"
-    id="bCity"
-  >
-    <option value="">
-      Select State First
-    </option>
-  </select>
+                    <option value="resale">
+                      Resale
+                    </option>
+                  </select>
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="bPropertyCategory">
+                    Property Category
+                  </label>
 
-<div class="form-group">
+                  <select
+                    class="form-input"
+                    id="bPropertyCategory"
+                  >
+                    <option value="residential">
+                      Residential
+                    </option>
 
-  <label for="bPropertyType">
-    Property Type
-  </label>
+                    <option value="agricultural">
+                      Agricultural
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </details>
 
-  <select
-    class="form-input"
-    id="bPropertyType"
-  >
+          <details class="compare-step" open>
+            <summary class="compare-step-summary">
+              <span>Price & Returns</span>
+              <small>Purchase cost, area, rent and maintenance</small>
+            </summary>
 
-    <option value="under_construction">
-      Under Construction
-    </option>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="bBase">
+                    Base Property Price
+                  </label>
 
-    <option value="ready_to_move">
-      Ready To Move
-    </option>
+                  <input
+                    class="form-input"
+                    id="bBase"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="Property price"
+                  >
+                </div>
 
-    <option value="resale">
-      Resale
-    </option>
+                <div class="form-group">
+                  <label for="bSuperArea">
+                    Super Area (sq.ft)
+                  </label>
 
-  </select>
+                  <input
+                    class="form-input"
+                    id="bSuperArea"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="1500"
+                  >
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="bRent">
+                    Expected Monthly Rent
+                  </label>
 
-<div class="form-group">
+                  <input
+                    class="form-input"
+                    id="bRent"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="35000"
+                  >
+                </div>
 
-  <label for="bPropertyCategory">
-    Property Category
-  </label>
+                <div class="form-group">
+                  <label for="bMaintenance">
+                    Annual Maintenance
+                  </label>
 
-  <select
-    class="form-input"
-    id="bPropertyCategory"
-  >
+                  <input
+                    class="form-input"
+                    id="bMaintenance"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="50000"
+                  >
+                </div>
+              </div>
+            </div>
+          </details>
 
-    <option value="residential">
-      Residential
-    </option>
+          <details class="compare-step">
+            <summary class="compare-step-summary">
+              <span>Loan Assumptions</span>
+              <small>Optional EMI inputs</small>
+            </summary>
 
-    <option value="agricultural">
-      Agricultural
-    </option>
+            <div class="compare-step-body">
+              <div class="compare-form-grid">
+                <div class="form-group">
+                  <label for="bLoan">
+                    Loan Amount
+                  </label>
 
-  </select>
+                  <input
+                    class="form-input"
+                    id="bLoan"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="6000000"
+                  >
+                </div>
 
-</div>
+                <div class="form-group">
+                  <label for="bInterest">
+                    Interest Rate (%)
+                  </label>
 
-          <div class="form-group">
+                  <input
+                    class="form-input"
+                    id="bInterest"
+                    type="number"
+                    step="0.01"
+                    placeholder="8.5"
+                  >
+                </div>
 
-            <label for="bBase">
-              Base Property Price
-            </label>
+                <div class="form-group">
+                  <label for="bTenure">
+                    Loan Tenure (Years)
+                  </label>
 
-            <input
-              class="form-input"
-              id="bBase"
-              type="text"
-              inputmode="numeric"
-              placeholder="Property price"
-            >
+                  <input
+                    class="form-input"
+                    id="bTenure"
+                    type="number"
+                    placeholder="20"
+                  >
+                </div>
+              </div>
+            </div>
+          </details>
 
-          </div>
-
-          <!-- SUPER AREA -->
-<div class="form-group">
-
-  <label for="bSuperArea">
-    Super Area (sq.ft)
-  </label>
-
-  <input
-    class="form-input"
-    id="bSuperArea"
-    type="text"
-    inputmode="numeric"
-    placeholder="1500"
-  >
-
-</div>
-
-<!-- MONTHLY RENT -->
-<div class="form-group">
-
-  <label for="bRent">
-    Expected Monthly Rent
-  </label>
-
-  <input
-    class="form-input"
-    id="bRent"
-    type="text"
-    inputmode="numeric"
-    placeholder="35000"
-  >
-
-</div>
-
-<!-- MAINTENANCE -->
-<div class="form-group">
-
-  <label for="bMaintenance">
-    Annual Maintenance
-  </label>
-
-  <input
-    class="form-input"
-    id="bMaintenance"
-    type="text"
-    inputmode="numeric"
-    placeholder="50000"
-  >
-
-</div>
-
-<!-- LOAN AMOUNT -->
-<div class="form-group">
-
-  <label for="bLoan">
-    Loan Amount
-  </label>
-
-  <input
-    class="form-input"
-    id="bLoan"
-    type="text"
-    inputmode="numeric"
-    placeholder="6000000"
-  >
-
-</div>
-
-<!-- INTEREST RATE -->
-<div class="form-group">
-
-  <label for="bInterest">
-    Interest Rate (%)
-  </label>
-
-  <input
-    class="form-input"
-    id="bInterest"
-    type="number"
-    step="0.01"
-    placeholder="8.5"
-  >
-
-</div>
-
-<!-- LOAN TENURE -->
-<div class="form-group">
-
-  <label for="bTenure">
-    Loan Tenure (Years)
-  </label>
-
-  <input
-    class="form-input"
-    id="bTenure"
-    type="number"
-    placeholder="20"
-  >
-
-</div>
         </div>
 
       </div>

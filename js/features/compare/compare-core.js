@@ -217,6 +217,8 @@ function showValidationError(id) {
   if (input) {
 
     input.classList.add("invalid");
+
+    openCompareSection(input);
   }
 
   if (error) {
@@ -235,11 +237,22 @@ function clearValidationErrors() {
     });
 
   document
-    .querySelectorAll("input")
+    .querySelectorAll("input, select")
     .forEach(input => {
 
       input.classList.remove("invalid");
     });
+}
+
+function openCompareSection(field) {
+
+  const section =
+    field?.closest("details");
+
+  if (section) {
+
+    section.open = true;
+  }
 }
 
 function validateComparisonInputs() {
@@ -303,6 +316,15 @@ if (!validateComparisonInputs()) {
 btn.disabled = false;
 btn.innerText =
   "Compare Properties";
+
+document
+  .querySelector(".form-input.invalid")
+  ?.scrollIntoView({
+
+    behavior: "smooth",
+
+    block: "center"
+  });
 
 return;
 
