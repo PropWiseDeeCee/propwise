@@ -316,7 +316,7 @@ Agreement clauses:
 
         result.setdefault("risk_score", 50)
         result.setdefault("safety_score", 50)
-        result.setdefault("risk_level", "Medium_Risk")
+        result.setdefault("risk_level", "Medium Risk")
         result.setdefault("agreement_grade", "C")
 
         result.setdefault("positive_findings", [])
@@ -369,18 +369,23 @@ Agreement clauses:
 def calculate_risk_score(result):
     score = 0
 
-    score += len(result.get("critical_risks", [])) * 18
-    score += len(result.get("moderate_risks", [])) * 8
-    score += len(result.get("hidden_costs", [])) * 6
-    score += len(result.get("builder_friendly_clauses", [])) * 5
-    score += len(result.get("project_structure_risks", [])) * 8
-    score += len(result.get("financial_obligations", [])) * 4
+    score += len(result.get("critical_risks", [])) * 10
+    score += len(result.get("moderate_risks", [])) * 5
 
-    score -= len(result.get("buyer_friendly_clauses", [])) * 3
-    rera_bonus = min(
-        len(result.get("rera_findings", [])),
-        2
-    )
+    score += len(result.get("builder_friendly_clauses", [])) * 4
+
+    score += len(result.get("hidden_costs", [])) * 2
+    score += len(result.get("financial_obligations", [])) * 2
+
+    score += len(result.get("project_structure_risks", [])) * 3
+    score += len(result.get("timeline_findings", [])) * 3
+
+    score -= len(result.get("buyer_friendly_clauses", [])) * 2
+
+    score -= min(
+    len(result.get("rera_findings", [])),
+    3
+) * 2
 
     score -= rera_bonus * 2
 

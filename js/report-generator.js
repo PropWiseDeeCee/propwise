@@ -16,35 +16,10 @@ async function downloadAgreementReport() {
     // =========================
 
     // TRY MULTIPLE STORAGE KEYS
-const storedReport =
+const analysis =
+  window.latestAnalyzerResult;
 
-  localStorage.getItem(
-    "agreementAnalysis"
-  )
-
-  ||
-
-  localStorage.getItem(
-    "agreementReport"
-  )
-
-  ||
-
-  sessionStorage.getItem(
-    "agreementAnalysis"
-  )
-
-  ||
-
-  sessionStorage.getItem(
-    "agreementReport"
-  );
-
-if (!storedReport) {
-
-  console.error(
-    "Agreement analysis not found in storage"
-  );
+if (!analysis) {
 
   alert(
     "Agreement analysis data not found. Please analyze the agreement again."

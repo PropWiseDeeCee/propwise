@@ -477,7 +477,7 @@ const displayRecommendations =
             </h2>
 
             <div class="risk-pill ${risk_level.toLowerCase()}">
-              ${risk_level} Risk
+              ${risk_level} 
             </div>
 
           </div>
@@ -514,21 +514,27 @@ const displayRecommendations =
 
           </div>
 
-          <div class="analysis-section-box moderate-box">
+          ${
+  displayModerate.length
+    ? `
+      <div class="analysis-section-box moderate-box">
 
-            <h3>
-              Moderate Risks
-            </h3>
+        <h3>
+          Moderate Risks
+        </h3>
 
-            <ul>
-              ${displayModerate
-                .map(issue => `
-                  <li>${issue}</li>
-                `)
-                .join("")}
-            </ul>
+        <ul>
+          ${displayModerate
+            .map(issue => `
+              <li>${issue}</li>
+            `)
+            .join("")}
+        </ul>
 
-          </div>
+      </div>
+    `
+    : ""
+}
 
         ${
           isLoggedIn && result.financial_obligations?.length
