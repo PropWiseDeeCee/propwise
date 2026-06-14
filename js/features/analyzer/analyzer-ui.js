@@ -1,6 +1,123 @@
+// ===============================
+// Overlay HTML Dynamically
+// ===============================
+
+function showAnalysisOverlay() {
+
+  document.body.insertAdjacentHTML(
+
+    "beforeend",
+
+    `
+      <div id="analysisOverlay">
+
+        <div class="analysis-overlay-card">
+
+          <div class="loading-spinner"></div>
+
+          <h2>
+            AI Reviewing Agreement
+          </h2>
+
+          <p id="analysisStatus">
+
+            Extracting agreement text...
+
+          </p>
+
+        </div>
+
+      </div>
+    `
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+  startAnalysisMessages();
+}
+
+function hideAnalysisOverlay() {
+
+  const overlay =
+    document.getElementById(
+      "analysisOverlay"
+    );
+
+  if (overlay) {
+
+    overlay.remove();
+  }
+
+  document.body.style.overflow =
+    "";
+}
+
+// ===============================
+// Add Progress Messages
+// ===============================
+
+let analysisMessageTimer;
+
+function startAnalysisMessages() {
+
+  const messages = [
+
+  "Extracting agreement text...",
+
+  "Identifying property and buyer details...",
+
+  "Reviewing financial obligations...",
+
+  "Checking hidden charges and fees...",
+
+  "Analyzing builder-friendly clauses...",
+
+  "Reviewing possession timelines...",
+
+  "Checking RERA references...",
+
+  "Calculating risk score...",
+
+  "Generating PropWise AI report..."
+];
+
+  let index = 0;
+
+  analysisMessageTimer =
+    setInterval(() => {
+
+      const status =
+        document.getElementById(
+          "analysisStatus"
+        );
+
+      if (!status) return;
+
+      index =
+        (index + 1) %
+        messages.length;
+
+      status.textContent =
+        messages[index];
+
+    }, 2500);
+}
+
+function stopAnalysisMessages() {
+
+  clearInterval(
+    analysisMessageTimer
+  );
+}
+
+
+
 // ==============================
 // ANALYZER UI
 // ==============================
+
+window.analysisInProgress = false;
 
 async function analyzeAgreementHandler() {
 
@@ -17,6 +134,96 @@ async function analyzeAgreementHandler() {
     document.getElementById("reportActions");
 
   if (!resultDiv) return;
+
+  const lastAnalysisTime =
+  Number(
+    localStorage.getItem(
+      "lastAnalysisTime"
+    )
+  );
+
+const cooldownMs =
+  5 * 60 * 1000;
+
+if (
+  lastAnalysisTime &&
+  Date.now() - lastAnalysisTime < cooldownMs
+) {
+
+  const remaining =
+    cooldownMs -
+    (Date.now() - lastAnalysisTime);
+
+  const minutes =
+    Math.floor(
+      remaining / 60000
+    );
+
+  const seconds =
+    Math.ceil(
+      (remaining % 60000) / 1000
+    );
+
+  resultDiv.innerHTML = `
+
+    <div class="analysis-cooldown-card">
+
+      <div class="cooldown-icon">
+        ⏳
+      </div>
+
+      <h3>
+        Analysis Cooldown Active
+      </h3>
+
+      <p>
+        To ensure fair usage and maintain service quality,
+        please wait before running another agreement analysis.
+      </p>
+
+      <div class="cooldown-timer">
+
+        ${minutes}m ${seconds}s
+
+      </div>
+
+    </div>
+
+  `;
+
+  resultDiv.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  return;
+}
+
+if (window.analysisInProgress) {
+
+  resultDiv.innerHTML = `
+
+    <div class="analysis-cooldown-card">
+
+      <div class="cooldown-icon">
+        🤖
+      </div>
+
+      <h3>
+        Analysis In Progress
+      </h3>
+
+      <p>
+        PropWise AI is currently reviewing your agreement.
+        Please wait for the analysis to complete.
+      </p>
+
+    </div>
+
+  `;
+
+  return;
+}
 
   let file = null;
   let text = "";
@@ -56,6 +263,10 @@ async function analyzeAgreementHandler() {
     // ==============================
     // LOADING UI
     // ==============================
+
+    window.analysisInProgress = true;
+
+    showAnalysisOverlay();
 
     resultDiv.innerHTML = `
 
@@ -105,6 +316,50 @@ async function analyzeAgreementHandler() {
     // ==============================
 
     result = result || {};
+
+    if (result.rate_limited) {
+
+  resultDiv.innerHTML = `
+
+    <div class="analysis-cooldown-card">
+
+      <div class="cooldown-icon">
+        ⏳
+      </div>
+
+      <h3>
+        Server Cooldown Active
+      </h3>
+
+      <p>
+        To ensure fair usage of AI resources,
+        please wait before running another agreement analysis.
+      </p>
+
+      <div class="cooldown-timer">
+
+        ${
+          Math.floor(
+            result.retry_after / 60
+          )
+        }m
+        ${
+          result.retry_after % 60
+        }s
+
+      </div>
+
+    </div>
+
+  `;
+
+  stopAnalysisMessages();
+  hideAnalysisOverlay();
+
+  window.analysisInProgress = false;
+
+  return;
+}
 
     const supabase =
   window.getSupabaseClient?.();
@@ -520,6 +775,16 @@ const displayRecommendations =
 
 `;
 
+localStorage.setItem(
+  "lastAnalysisTime",
+  Date.now()
+);
+
+stopAnalysisMessages();
+hideAnalysisOverlay();
+
+window.analysisInProgress = false;
+
 
     if (reportActions) {
 
@@ -528,6 +793,11 @@ const displayRecommendations =
     }
 
   } catch (error) {
+
+    stopAnalysisMessages();
+hideAnalysisOverlay();
+
+    window.analysisInProgress = false;
 
   console.error(error);
 

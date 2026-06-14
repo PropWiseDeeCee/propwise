@@ -1,4 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi import Request
+from fastapi.responses import JSONResponse
+import time
 from fastapi.middleware.cors import CORSMiddleware
 
 import fitz
@@ -34,6 +37,14 @@ app.add_middleware(
 # ==============================
 
 MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
+
+# ==============================
+# RATE LIMITING
+# ==============================
+
+RATE_LIMIT_SECONDS = 300  # 5 minutes
+
+analysis_tracker = {}
 
 
 # ==============================
@@ -154,7 +165,10 @@ def extract_text_txt(contents):
 # ==============================
 
 @app.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
+async def analyze(
+    request: Request,
+    file: UploadFile = File(...)
+):
 
     try:
 
@@ -163,11 +177,45 @@ async def analyze(file: UploadFile = File(...)):
         # ==============================
 
         if not file:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "success": False,
+                    "error": "No file provided"
+                }
+            )
 
-            return {
-                "success": False,
-                "error": "No file uploaded."
-            }
+        # ==============================
+        # RATE LIMIT CHECK
+        # ==============================
+
+        client_ip = request.headers.get(
+            "x-forwarded-for",
+            request.client.host
+        )
+
+        now = int(time.time())
+
+        if client_ip in analysis_tracker:
+
+            last_request = analysis_tracker[client_ip]
+
+            elapsed = now - last_request
+
+            if elapsed < RATE_LIMIT_SECONDS:
+
+                remaining = (
+                    RATE_LIMIT_SECONDS - elapsed
+                )
+
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "success": False,
+                        "error": "Rate limit exceeded",
+                        "retry_after": remaining
+                    }
+                )
 
         filename = file.filename.lower()
 
@@ -236,6 +284,8 @@ async def analyze(file: UploadFile = File(...)):
         # ==============================
 
         analysis = analyze_agreement(text)
+
+        analysis_tracker[client_ip] = now
 
         return {
             "success": True,

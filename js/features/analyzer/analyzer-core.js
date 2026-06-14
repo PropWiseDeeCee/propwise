@@ -277,12 +277,28 @@ async function analyzeAgreement(input) {
     // RESPONSE VALIDATION
     // ==============================
 
-    if (!response.ok) {
+    if (response.status === 429) {
 
-      throw new Error(
-        `Analysis failed: ${response.status}`
-      );
-    }
+  const errorData =
+    await response.json();
+
+  const error =
+    new Error(
+      "RATE_LIMIT_EXCEEDED"
+    );
+
+  error.retry_after =
+    errorData.retry_after || 300;
+
+  throw error;
+}
+
+if (!response.ok) {
+
+  throw new Error(
+    `Analysis failed: ${response.status}`
+  );
+}
 
     const responseData =
       await response.json();
@@ -307,6 +323,47 @@ async function analyzeAgreement(input) {
     return normalizeAnalysisResult(data);
 
   } catch (err) {
+
+     if (
+  err.message ===
+  "RATE_LIMIT_EXCEEDED"
+) {
+
+  const remaining =
+    err.retry_after || 300;
+
+  const minutes =
+    Math.floor(
+      remaining / 60
+    );
+
+  const seconds =
+    remaining % 60;
+
+  return {
+
+    rate_limited: true,
+
+    retry_after: remaining,
+
+    summary:
+      "Server cooldown active.",
+
+    critical: [],
+
+    moderate: [],
+
+    recommendations: [
+
+      `Please wait ${minutes}m ${seconds}s before starting another analysis.`
+    ],
+
+    risk_score: 0,
+
+    risk_level: "Low"
+  };
+}
+
 
     console.error(
       "Analyzer API failed:",

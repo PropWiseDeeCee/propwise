@@ -874,3 +874,73 @@
 
   flex: 1;
 }
+
+#analysisOverlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.95
+  );
+
+  z-index: 999999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.analysis-overlay-card {
+
+  text-align: center;
+
+  max-width: 500px;
+
+  padding: 30px;
+}
+
+.analysis-overlay-card h2 {
+
+  margin-top: 20px;
+}
+
+.analysis-cooldown-card {
+
+  background: #fff;
+
+  border-radius: 16px;
+
+  padding: 30px;
+
+  text-align: center;
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.08);
+
+  margin-top: 20px;
+}
+
+.cooldown-icon {
+
+  font-size: 42px;
+
+  margin-bottom: 12px;
+}
+
+.cooldown-timer {
+
+  margin-top: 16px;
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+  color: #e67e22;
+}
