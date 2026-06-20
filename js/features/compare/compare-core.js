@@ -1109,4 +1109,12 @@ function resetComparison() {
 
     destroyExistingChart();
   }
+
+  document
+    .querySelectorAll(".compare-step")
+    .forEach((section, index) => {
+
+      section.open =
+        index % 3 !== 2;
+    });
 }

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Property Strategy Advisor India |
+    Sell vs Keep Property Calculator |
+    PropWise India
+  </title>
+
+  <meta
+    name="description"
+    content="Analyze whether to keep, rent or sell your property using rental yield, appreciation, opportunity cost and wealth projection analysis across Indian cities."
+  >
+
+  <meta
+    name="keywords"
+    content="sell vs rent property, property strategy advisor, rental yield calculator india, property investment calculator, keep or sell property"
+  >
+
+  <meta
+    property="og:title"
+    content="Property Strategy Advisor India | PropWise India"
+  >
+
+  <meta
+    property="og:description"
+    content="Compare wealth outcomes of keeping, renting or selling your property."
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:url"
+    content="https://propwiseindia.com/property-strategy-advisor.html"
+  >
+
+  <link
+    rel="canonical"
+    href="https://propwiseindia.com/property-strategy-advisor.html"
+  >
+
+  <!-- Core Styles -->
+
+<link rel="stylesheet" href="css/core/variables.css">
+<link rel="stylesheet" href="css/core/reset.css">
+<link rel="stylesheet" href="css/core/typography.css">
+<link rel="stylesheet" href="css/core/layout.css">
+
+<link rel="stylesheet" href="css/components/buttons.css">
+<link rel="stylesheet" href="css/components/cards.css">
+<link rel="stylesheet" href="css/components/forms.css">
+<link rel="stylesheet" href="css/components/navbar.css">
+<link rel="stylesheet" href="css/components/footer.css">
+<link rel="stylesheet" href="css/components/dropdowns.css">
+
+<link rel="stylesheet" href="styles.css">
+
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+
+  <!-- Feature Styles -->
+
+  <link rel="stylesheet" href="css/features/calculator.css">
+  <link rel="stylesheet" href="css/features/compare.css">
+  <link rel="stylesheet" href="css/features/strategy.css">
+
+  <!-- Load Js -->
+
+<script src="js/core/config.js"></script>
+<script src="js/core/path.js"></script>
+<script src="js/core/dom.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/supabase-client.js"></script>
+<script src="js/core/component-loader.js"></script>
+<script src="js/core/dropdowns.js"></script>
+<script src="js/core/analytics.js"></script>
+
+  <!-- Chart.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Supabase -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
+  <!-- PDF -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+
+
+</head>
+
+<body data-page="strategy">
+
+  <!-- Navbar -->
+
+  <div id="navbar"></div>
+
+  <main class="container strategy-page">
+
+    <!-- ===================================== -->
+    <!-- HERO -->
+    <!-- ===================================== -->
+
+    <section class="hero-section strategy-header">
+
+      <h1 class="hero-title">
+        Property Strategy Advisor
+      </h1>
+
+      <p class="hero-sub">
+        Determine whether you should keep, rent or sell your property using projected wealth creation, rental yield, appreciation and investment return analysis tailored to your city.
+      </p>
+
+    </section>
+
+    <!-- ===================================== -->
+    <!-- STRATEGY FORM -->
+    <!-- ===================================== -->
+
+    <div class="calculator-layout">
+
+     <div class="calculator-left">
+
+    <form id="strategyForm">
+
+      <!-- ===================================== -->
+      <!-- PROPERTY DETAILS -->
+      <!-- ===================================== -->
+
+      <!-- PROPERTY DETAILS -->
+<details class="calc-card calc-step" open>
+
+  <summary class="calc-step-summary">
+
+    <span class="calc-step-number">
+      1
+    </span>
+
+    <span class="calc-step-heading">
+
+      <span class="calc-card-title">
+        Property Details
+      </span>
+
+      <span class="calc-card-sub">
+        Property value, purchase history and location.
+      </span>
+
+    </span>
+
+    <span class="calc-step-status">
+      Required
+    </span>
+
+  </summary>
+
+  <div class="calc-step-body">
+
+    <div class="calc-grid">
+
+      <div class="calc-field">
+
+        <label>
+          Current Property Value (₹)
+        </label>
+
+        <input
+          id="propertyValue"
+          type="number"
+          placeholder="e.g. 10000000"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Purchase Price (₹)
+        </label>
+
+        <input
+          id="purchasePrice"
+          type="number"
+          placeholder="e.g. 7500000"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Purchase Year
+        </label>
+
+        <input
+          id="purchaseYear"
+          type="number"
+          placeholder="e.g. 2018"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Outstanding Loan (₹)
+        </label>
+
+        <input
+          id="outstandingLoan"
+          type="number"
+          placeholder="e.g. 2500000"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          State
+        </label>
+
+        <select id="state">
+
+          <option value="">
+            Select State
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          City
+        </label>
+
+        <select id="city">
+
+          <option value="">
+            Select City
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</details>
+
+      <!-- ===================================== -->
+      <!-- RENTAL DETAILS -->
+      <!-- ===================================== -->
+
+      <!-- RENTAL DETAILS -->
+<details class="calc-card calc-step" open>
+
+  <summary class="calc-step-summary">
+
+    <span class="calc-step-number">
+      2
+    </span>
+
+    <span class="calc-step-heading">
+
+      <span class="calc-card-title">
+        Rental Details
+      </span>
+
+      <span class="calc-card-sub">
+        Rental income and annual ownership costs.
+      </span>
+
+    </span>
+
+    <span class="calc-step-status">
+      Required
+    </span>
+
+  </summary>
+
+  <div class="calc-step-body">
+
+    <div class="calc-grid">
+
+      <div class="calc-field">
+
+        <label>
+          Monthly Rent (₹)
+        </label>
+
+        <input
+          id="monthlyRent"
+          type="number"
+          placeholder="e.g. 35000"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Annual Maintenance (₹)
+        </label>
+
+        <input
+          id="annualMaintenance"
+          type="number"
+          placeholder="e.g. 60000"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Annual Property Tax (₹)
+        </label>
+
+        <input
+          id="annualPropertyTax"
+          type="number"
+          placeholder="e.g. 18000"
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+</details>
+
+    <!-- ===================================== -->
+      <!-- INVESTMENT ASSUMPTIONS -->
+      <!-- ===================================== -->
+
+     <!-- INVESTMENT ASSUMPTIONS -->
+<details class="calc-card calc-step" open>
+
+  <summary class="calc-step-summary">
+
+    <span class="calc-step-number">
+      3
+    </span>
+
+    <span class="calc-step-heading">
+
+      <span class="calc-card-title">
+        Investment Assumptions
+      </span>
+
+      <span class="calc-card-sub">
+        Future growth, inflation and return assumptions.
+      </span>
+
+    </span>
+
+    <span class="calc-step-status">
+      Required
+    </span>
+
+  </summary>
+
+  <div class="calc-step-body">
+
+    <div class="calc-grid">
+
+      <div class="calc-field">
+
+        <label>
+          Projection Period
+        </label>
+
+        <select id="projectionYears">
+
+          <option value="5">5 Years</option>
+          <option value="10" selected>10 Years</option>
+          <option value="15">15 Years</option>
+          <option value="20">20 Years</option>
+
+        </select>
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Property Appreciation (%)
+        </label>
+
+        <input
+          id="appreciationRate"
+          type="number"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Equity Return (%)
+        </label>
+
+        <input
+          id="equityReturnRate"
+          type="number"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Inflation (%)
+        </label>
+
+        <input
+          id="inflationRate"
+          type="number"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Rent Growth (%)
+        </label>
+
+        <input
+          id="rentGrowthRate"
+          type="number"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="calc-field">
+
+        <label>
+          Vacancy Rate (%)
+        </label>
+
+        <input
+          id="vacancyRate"
+          type="number"
+          step="0.1"
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+</details>
+
+      <!-- ===================================== -->
+      <!-- ACTION BUTTONS -->
+      <!-- ===================================== -->
+
+      <div class="calculator-actions">
+
+        <button
+          id="resetStrategyBtn"
+          type="button"
+          class="btn btn-secondary"
+        >
+          Reset
+        </button>
+
+        <button
+          id="analyzeStrategyBtn"
+          type="button"
+          class="btn btn-primary"
+        >
+          Analyze Strategy
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+    <!-- ===================================== -->
+    <!-- RESULTS -->
+    <!-- ===================================== -->
+
+    <section
+      id="resultCard"
+      class="strategy-results"
+      style="display:none;"
+    >
+
+      <!-- Dynamic Dashboard -->
+
+      <div id="strategyResults"></div>
+
+      <!-- ================================= -->
+      <!-- WEALTH COMPARISON -->
+      <!-- ================================= -->
+
+      <div class="wealth-comparison">
+
+        <div class="wealth-card">
+
+          <div class="wealth-card-title">
+
+            Keep Property Strategy
+
+          </div>
+
+          <div class="wealth-card-subtitle">
+
+            Wealth generated through
+            appreciation, rental income,
+            and long-term ownership.
+
+          </div>
+
+        </div>
+
+        <div class="wealth-card">
+
+          <div class="wealth-card-title">
+
+            Sell & Invest Strategy
+
+          </div>
+
+          <div class="wealth-card-subtitle">
+
+            Wealth generated by selling
+            the property and investing
+            sale proceeds in financial assets.
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================================= -->
+      <!-- CHARTS -->
+      <!-- ================================= -->
+
+      <div class="strategy-chart-grid">
+
+        <div class="strategy-chart-card">
+
+          <h3>
+            Wealth Projection
+          </h3>
+
+          <canvas
+            id="strategyProjectionChart"
+          ></canvas>
+
+        </div>
+
+        <div class="strategy-chart-card">
+
+          <h3>
+            Keep Property Breakdown
+          </h3>
+
+          <canvas
+            id="strategyBreakdownChart"
+          ></canvas>
+
+        </div>
+
+      </div>
+
+      <!-- ================================= -->
+      <!-- STRATEGY INSIGHTS -->
+      <!-- ================================= -->
+
+      <div class="strategy-insights">
+
+        <div class="strategy-insight-card">
+
+          <h3
+            class="strategy-insight-title"
+          >
+            Rental Yield Analysis
+          </h3>
+
+          <p
+            class="strategy-insight-text"
+          >
+
+            Evaluate whether your
+            property's rental income
+            justifies continued ownership
+            compared to alternative
+            investments.
+
+          </p>
+
+        </div>
+
+        <div class="strategy-insight-card">
+
+          <h3
+            class="strategy-insight-title"
+          >
+            Market Strength
+          </h3>
+
+          <p
+            class="strategy-insight-text"
+          >
+
+            Market scoring incorporates
+            metro classification,
+            premium-zone factors,
+            guidance values and
+            city-specific appreciation
+            assumptions.
+
+          </p>
+
+        </div>
+
+        <div class="strategy-insight-card">
+
+          <h3
+            class="strategy-insight-title"
+          >
+            Opportunity Cost
+          </h3>
+
+          <p
+            class="strategy-insight-text"
+          >
+
+            Quantifies the difference
+            between retaining the property
+            and redeploying capital into
+            alternative investments.
+
+          </p>
+
+        </div>
+
+        <div class="strategy-insight-card">
+
+          <h3
+            class="strategy-insight-title"
+          >
+            Recommendation Logic
+          </h3>
+
+          <p
+            class="strategy-insight-text"
+          >
+
+            Recommendations are generated
+            using projected wealth,
+            rental yield,
+            appreciation potential,
+            and market strength indicators.
+
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- ================================= -->
+      <!-- AI RECOMMENDATION -->
+      <!-- ================================= -->
+
+      <div
+        id="strategyAiSection"
+        class="strategy-ai-section"
+      >
+
+        <div class="strategy-ai-card">
+
+          <h2
+            class="strategy-ai-title"
+          >
+
+            PropWise AI Recommendation
+
+          </h2>
+
+          <div
+            id="strategyAiContent"
+            class="strategy-ai-content"
+          >
+
+            Analyze a property strategy
+            to generate insights.
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================================= -->
+      <!-- PDF ACTIONS -->
+      <!-- ================================= -->
+
+      <div
+        class="strategy-report-actions"
+      >
+
+        <button
+          class="btn btn-primary"
+          onclick="
+            downloadStrategyReport(
+              window.latestStrategyData
+            )
+          "
+        >
+
+          Download Strategy Report
+
+        </button>
+
+      </div>
+
+    </section>
+
+          <!-- End Results Section -->
+
+    
+
+  </main>
+
+  <!-- ===================================== -->
+  <!-- FOOTER -->
+  <!-- ===================================== -->
+
+  <div id="footer"></div>
+
+  <!-- ===================================== -->
+  <!-- AUTH -->
+  <!-- ===================================== -->
+
+  <script src="js/core/auth.js"></script>
+
+  <!-- ===================================== -->
+  <!-- STRATEGY MODULE -->
+  <!-- ===================================== -->
+
+  <script src="js/features/strategy/strategy-data.js"></script>
+
+  <script src="js/features/strategy/strategy-core.js"></script>
+
+  <script src="js/features/strategy/strategy-charts.js"></script>
+
+  <script src="js/features/strategy/strategy-report.js"></script>
+
+  <script src="js/features/strategy/strategy-ui.js"></script>
+
+  <!-- ===================================== -->
+  <!-- BOOTSTRAP -->
+  <!-- ===================================== -->
+
+  <script src="js/core/bootstrap.js"></script>
+
+  <!-- ===================================== -->
+  <!-- STRUCTURED DATA -->
+  <!-- ===================================== -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Property Strategy Advisor",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "provider": {
+      "@type": "Organization",
+      "name": "PropWise India"
+    },
+    "description": "Analyze whether to keep, rent or sell a property using rental yield, appreciation and wealth projection analysis.",
+    "url": "https://propwiseindia.com/property-strategy-advisor.html"
+  }
+  </script>
+
+</body>
+
+</html>

@@ -66,7 +66,18 @@ async function initFeaturePage() {
       if (typeof loadReport === "function") {
         await loadReport();
       }
-    }
+    },
+    strategy: async () => {
+
+  if (
+    typeof initStrategyPage ===
+    "function"
+  ) {
+
+    await initStrategyPage();
+  }
+
+}
   };
 
   if (initializers[page]) {
