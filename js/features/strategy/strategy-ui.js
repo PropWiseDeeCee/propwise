@@ -332,6 +332,10 @@ async function analyzeStrategy() {
       "block";
 
     document.getElementById(
+  "strategyActions"
+).style.display = "flex";
+
+    document.getElementById(
       "resultCard"
     ).scrollIntoView({
 
@@ -516,6 +520,141 @@ localStorage.removeItem(
 }
 
 
+function restoreStrategyReport() {
+
+  try {
+
+    const savedReport =
+      localStorage.getItem(
+        "propwise_strategy_report"
+      );
+
+    if (!savedReport) {
+      return;
+    }
+
+    const reportData =
+      JSON.parse(savedReport);
+
+    if (
+      !reportData ||
+      !reportData.inputData ||
+      !reportData.result
+    ) {
+      return;
+    }
+
+    const input =
+      reportData.inputData;
+
+    setInputValue(
+      "propertyValue",
+      input.propertyValue
+    );
+
+    setInputValue(
+      "purchasePrice",
+      input.purchasePrice
+    );
+
+    setInputValue(
+      "purchaseYear",
+      input.purchaseYear
+    );
+
+    setInputValue(
+      "outstandingLoan",
+      input.outstandingLoan
+    );
+
+    setInputValue(
+      "monthlyRent",
+      input.monthlyRent
+    );
+
+    setInputValue(
+      "annualMaintenance",
+      input.annualMaintenance
+    );
+
+    setInputValue(
+      "annualPropertyTax",
+      input.annualPropertyTax
+    );
+
+    setInputValue(
+      "appreciationRate",
+      input.appreciationRate
+    );
+
+    setInputValue(
+      "equityReturnRate",
+      input.equityReturnRate
+    );
+
+    setInputValue(
+      "inflationRate",
+      input.inflationRate
+    );
+
+    setInputValue(
+      "rentGrowthRate",
+      input.rentGrowthRate
+    );
+
+    setInputValue(
+      "vacancyRate",
+      input.vacancyRate
+    );
+
+    document.getElementById(
+      "projectionYears"
+    ).value =
+      input.projectionYears;
+
+    document.getElementById("state").value =
+  input.state;
+
+populateStrategyCities(
+  "state",
+  "city"
+);
+
+document.getElementById("city").value =
+  input.city;
+
+loadStrategyDefaults();
+
+    window.latestStrategyData =
+      reportData;
+
+    renderStrategyDashboard(
+      reportData.result
+    );
+
+    renderStrategyCharts(
+      reportData.result,
+      reportData.inputData
+    );
+
+    document.getElementById(
+      "resultCard"
+    ).style.display =
+      "block";
+
+    document.getElementById(
+      "strategyActions"
+    ).style.display =
+      "flex";
+
+  } catch (err) {
+
+    console.error(
+      "Failed to restore strategy report",
+      err
+    );
+  }
+}
 
 
 // =============================================
@@ -526,19 +665,13 @@ async function initStrategyPage() {
 
   try {
 
-   if (
-  typeof initSupabase ===
-  "function"
-) {
-
-  initSupabase();
-}
-
     await loadStrategyRules();
 
     populateStrategyStates(
       "state"
     );
+
+    restoreStrategyReport();
 
     document
       .getElementById("state")
@@ -595,6 +728,127 @@ async function initStrategyPage() {
   }
 }
 
+// =============================================
+// LOGIN CHECK
+// =============================================
+
+async function requireStrategyLogin() {
+
+  const user =
+    await getUser();
+
+  if (user) {
+    return true;
+  }
+
+  localStorage.setItem(
+    "postLoginRedirect",
+    "property-strategy-advisor.html"
+  );
+
+  alert(
+    "Please login to download or save strategy reports."
+  );
+
+  window.location.href =
+    appPath("login.html");
+
+  return false;
+}
+
+// =============================================
+// DOWNLOAD REPORT
+// =============================================
+
+async function handleStrategyDownload() {
+
+  const allowed =
+    await requireStrategyLogin();
+
+  if (!allowed) {
+    return;
+  }
+
+  downloadStrategyReport(
+    window.latestStrategyData
+  );
+}
+
+window.handleStrategyDownload =
+  handleStrategyDownload;
+
+// =============================================
+// SAVE STRATEGY
+// =============================================  
+
+async function saveStrategy() {
+
+  const allowed =
+    await requireStrategyLogin();
+
+  if (!allowed) {
+    return;
+  }
+
+  const user =
+    await getUser();
+
+  if (
+    !user ||
+    !window.latestStrategyData
+  ) {
+    return;
+  }
+
+  const supabase =
+    requireSupabase();
+
+  const { error } =
+    await supabase
+
+      .from(
+        "property_strategies"
+      )
+
+      .insert([{
+
+        user_id:
+          user.id,
+
+        city:
+  window.latestStrategyData
+    .inputData
+    .city,
+
+strategy:
+  window.latestStrategyData
+    .result
+    .recommendation
+    ?.action,
+
+        result:
+          window.latestStrategyData
+
+      }]);
+
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "Failed to save strategy."
+    );
+
+    return;
+  }
+
+  alert(
+    "Strategy saved successfully."
+  );
+}
+
+window.saveStrategy =
+  saveStrategy;
 
 
 // =============================================
