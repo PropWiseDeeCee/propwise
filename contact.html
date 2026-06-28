@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Support Center | PropWise India
+    </title>
+
+    <meta
+        name="description"
+        content="Contact PropWise India for support, report bugs, request features, partnerships or general enquiries."
+    >
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="css/core/variables.css">
+    <link rel="stylesheet" href="css/core/reset.css">
+    <link rel="stylesheet" href="css/core/layout.css">
+    <link rel="stylesheet" href="css/core/typography.css">
+
+    <!-- Components -->
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/dropdowns.css">
+    <link rel="stylesheet" href="css/components/toast.css">
+
+    <!-- Page -->
+    <link rel="stylesheet" href="css/pages/contact.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+</head>
+
+<body data-page="contact">
+
+<div id="navbar"></div>
+
+<main class="support-page">
+
+<div class="container">
+
+<section class="support-hero">
+
+<span class="support-badge">
+
+Support
+
+</span>
+
+<h1>
+
+Support Center
+
+</h1>
+
+<p>
+
+Need help with PropWise?
+
+Whether you have a question,
+found a bug,
+want to request a feature
+or discuss a partnership,
+we'd love to hear from you.
+
+</p>
+
+</section>
+
+<section class="support-cards">
+
+<div class="support-card"
+data-category="General">
+
+<i data-lucide="mail"></i>
+
+<h3>
+
+General Support
+
+</h3>
+
+<p>
+
+Questions about PropWise,
+your account
+or our property tools.
+
+</p>
+
+</div>
+
+<div class="support-card"
+data-category="Bug Report">
+
+<i data-lucide="bug"></i>
+
+<h3>
+
+Report a Bug
+
+</h3>
+
+<p>
+
+Found something broken?
+
+Help us improve the platform.
+
+</p>
+
+</div>
+
+<div class="support-card"
+data-category="Feature Request">
+
+<i data-lucide="lightbulb"></i>
+
+<h3>
+
+Feature Request
+
+</h3>
+
+<p>
+
+Tell us what you'd like
+to see next.
+
+</p>
+
+</div>
+
+<div class="support-card"
+data-category="Partnership">
+
+<i data-lucide="handshake"></i>
+
+<h3>
+
+Partnership
+
+</h3>
+
+<p>
+
+Interested in working
+with PropWise?
+
+Let's talk.
+
+</p>
+
+</div>
+
+</section>
+
+<section class="support-content">
+
+<div
+id="loginRequiredCard"
+class="login-required-card"
+style="display:none;"
+>
+
+<h2>
+
+🔒 Login Required
+
+</h2>
+
+<p>
+
+Support tickets are available only to registered users.
+
+Signing in allows us to:
+
+</p>
+
+<ul>
+
+<li>Track your requests</li>
+
+<li>Prevent spam</li>
+
+<li>Notify you when your ticket is updated</li>
+
+<li>Keep your support history in one place</li>
+
+</ul>
+
+<a
+href="login.html"
+class="btn btn-primary"
+>
+
+Sign In
+
+</a>
+
+</div>
+
+<div class="support-form">
+
+<h2>
+
+Send us a Message
+
+</h2>
+
+<form id="contactForm">
+    <input
+type="text"
+id="website"
+name="website"
+autocomplete="off"
+style="display:none;"
+>
+
+<div
+class="logged-in-user"
+id="loggedInUser"
+style="display:none;"
+>
+
+<div class="user-avatar">
+
+<i data-lucide="user-circle-2"></i>
+
+</div>
+
+<div class="user-details">
+
+<h4 id="userName">
+
+Loading...
+
+</h4>
+
+<p id="userEmail">
+
+Loading...
+
+</p>
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Category
+
+</label>
+
+<select id="category">
+
+<option>General</option>
+
+<option>Bug Report</option>
+
+<option>Feature Request</option>
+
+<option>Partnership</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Subject
+
+</label>
+
+<input
+type="text"
+id="subject"
+placeholder="Subject"
+required
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+
+Message
+
+</label>
+
+<textarea
+id="message"
+rows="8"
+placeholder="How can we help?"
+required
+></textarea>
+
+</div>
+
+<button
+type="submit"
+class="btn btn-primary"
+id="submitButton"
+>
+
+<span id="submitButtonText">
+
+Create Support Ticket
+
+</span>
+
+</button>
+
+</form>
+
+</div>
+
+<div class="support-info">
+
+<div class="info-card">
+
+<i data-lucide="mail"></i>
+
+<h3>
+
+Email Support
+
+</h3>
+
+<p>
+
+Have a question or need assistance?
+
+Reach out to us anytime.
+
+</p>
+
+<a
+href="mailto:propwiseindia@gmail.com"
+class="support-link"
+>
+
+propwiseindia@gmail.com
+
+</a>
+
+</div>
+
+<div class="info-card">
+
+<i data-lucide="clock-3"></i>
+
+<h3>
+
+Response Time
+
+</h3>
+
+<p>
+
+We usually respond within
+
+<strong>24–48 business hours.</strong>
+
+</p>
+
+</div>
+
+<div class="info-card">
+
+<i data-lucide="calendar-days"></i>
+
+<h3>
+
+Support Hours
+
+</h3>
+
+<p>
+
+Monday – Friday
+
+<br>
+
+9:00 AM – 6:00 PM IST
+
+</p>
+
+</div>
+
+<div class="info-card">
+
+<i data-lucide="map-pin"></i>
+
+<h3>
+
+Location
+
+</h3>
+
+<p>
+
+PropWise India
+
+<br>
+
+Remote First 🇮🇳
+
+</p>
+
+</div>
+
+<div class="info-card">
+
+<i data-lucide="circle-help"></i>
+
+<h3>
+
+Before You Contact Us
+
+</h3>
+
+<p>
+
+You might find an answer
+immediately in our guides
+or frequently asked questions.
+
+</p>
+
+<div class="quick-links">
+
+<a href="faq.html">
+
+FAQ →
+
+</a>
+
+<a href="guides.html">
+
+Property Guides →
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="support-footer-cta">
+
+<div class="cta-card">
+
+<h2>
+
+We're Building PropWise Together
+
+</h2>
+
+<p>
+
+Every bug report,
+feature request
+and suggestion helps us build
+a better property platform
+for everyone.
+
+Thank you for being part of
+the journey.
+
+</p>
+
+<a
+href="tools.html"
+class="btn btn-outline"
+>
+
+Explore Our Tools
+
+</a>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+<div id="footer"></div>
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        try {
+
+            if (
+                typeof loadSharedComponents === "function"
+            ) {
+
+                await loadSharedComponents();
+
+            }
+
+            if (window.lucide) {
+
+                lucide.createIcons();
+
+            }
+
+        } catch (err) {
+
+            console.error(
+                "Support page failed:",
+                err
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+<script src="js/core/config.js"></script>
+<script src="js/core/path.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/component-loader.js"></script>
+<script src="js/core/dropdowns.js"></script>
+<script src="js/core/supabase-client.js"></script>
+<script src="js/core/api.js"></script>
+<script src="js/core/api-response.js"></script>
+<script src="js/components/toast.js"></script>
+<script src="js/services/ticket-service.js"></script>
+<script src="js/features/support/contact.js"></script>
+<script src="js/core/bootstrap.js"></script>
+
+</body>
+
+</html>

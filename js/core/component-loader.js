@@ -22,19 +22,15 @@ async function loadSharedComponents() {
 
       resolveComponentLinks(navbar);
 
-      if (
-  typeof initNavbarDropdown ===
-  "function"
-) {
-
-  initNavbarDropdown();
+      if (window.lucide) {
+  lucide.createIcons();
 }
 
-if (
-  typeof initMobileNavbar ===
-  "function"
-) {
+if (typeof initDropdowns === "function") {
+  initDropdowns();
+}
 
+if (typeof initMobileNavbar === "function") {
   initMobileNavbar();
 }
 

@@ -2,7 +2,9 @@
 
   <div class="nav-container">
 
-    <!-- LOGO -->
+    <!-- ==========================================================
+      BRAND
+    =========================================================== -->
     <div class="logo">
 
       <a
@@ -12,111 +14,347 @@
 
         <img
           src="assets/PropWiseLogo.png"
-          alt="PropWise Logo"
+          alt="PropWise India"
+          class="logo-image"
         >
 
-        <span class="brand-text">
-          PropWise India
-        </span>
+        <div class="brand-info">
+
+          <span class="brand-title">
+            PropWise India
+          </span>
+
+          <span class="brand-tagline">
+            AI-Powered Property Intelligence
+          </span>
+
+        </div>
 
       </a>
 
     </div>
 
+    <!-- ==========================================================
+      MOBILE MENU
+    =========================================================== -->
 
-    <!-- MOBILE MENU BUTTON -->
     <button
-      class="mobile-menu-toggle"
       id="mobileMenuToggle"
-      aria-label="Toggle Menu"
+      class="mobile-menu-toggle"
+      aria-label="Toggle Navigation"
+      type="button"
     >
 
-      ☰
+      <i data-lucide="menu"></i>
 
     </button>
 
+    <!-- ==========================================================
+      NAVIGATION WRAPPER
+    =========================================================== -->
 
-    <!-- MOBILE NAV WRAPPER -->
     <div
       class="mobile-nav-wrapper"
       id="mobileNavWrapper"
     >
 
-      <!-- NAVIGATION -->
       <nav class="nav-links">
 
-        <a href="index.html">
-          Home
+        <!-- HOME -->
+
+        <a
+          href="index.html"
+          class="nav-link"
+        >
+
+          <i data-lucide="home"></i>
+
+          <span>
+            Home
+          </span>
+
         </a>
 
-        <!-- TOOLS DROPDOWN -->
-        <div class="dropdown">
+        <!-- =====================================================
+          TOOLS
+        ====================================================== -->
+
+        <div class="dropdown nav-dropdown">
 
           <button
             type="button"
-            class="dropdown-toggle"
+            class="dropdown-toggle nav-link"
           >
 
-            Tools
+            <i data-lucide="layout-grid"></i>
 
             <span>
-              ▾
+              Tools
             </span>
+
+            <i
+              data-lucide="chevron-down"
+              class="dropdown-chevron"
+            ></i>
 
           </button>
 
-          <div class="dropdown-menu">
+          <div class="dropdown-menu tools-dropdown">
 
             <a
               href="tools.html"
               class="dropdown-item"
             >
-              Agreement Analyzer
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="shield-alert"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Agreement Analyzer
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Detect hidden risks,
+                  unfair clauses and
+                  builder-friendly terms.
+
+                </div>
+
+              </div>
+
             </a>
 
             <a
               href="compare.html"
               class="dropdown-item"
             >
-              Compare Property Costs
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="scale"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Compare Properties
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Compare total ownership
+                  costs before buying.
+
+                </div>
+
+              </div>
+
             </a>
 
             <a
               href="calculator.html"
               class="dropdown-item"
             >
-              Property Purchase Planner
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="calculator"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Purchase Planner
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Estimate registration,
+                  GST, EMI and affordability.
+
+                </div>
+
+              </div>
+
             </a>
+
             <a
               href="property-strategy-advisor.html"
               class="dropdown-item"
+            >
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="trending-up"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Strategy Advisor
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Decide whether to
+                  Keep, Rent or Sell.
+
+                </div>
+
+              </div>
+
+            </a>
+                      </div>
+
+        </div>
+
+        <!-- =====================================================
+          RESOURCES
+        ====================================================== -->
+
+        <div class="dropdown nav-dropdown">
+
+          <button
+            type="button"
+            class="dropdown-toggle nav-link"
           >
-              Property Strategy Advisor
+
+            <i data-lucide="book-open"></i>
+
+            <span>
+              Resources
+            </span>
+
+            <i
+              data-lucide="chevron-down"
+              class="dropdown-chevron"
+            ></i>
+
+          </button>
+
+          <div class="dropdown-menu resources-dropdown">
+
+            <a
+              href="guides.html"
+              class="dropdown-item"
+            >
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="book-text"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Guides
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Learn before you buy
+                  with expert property guides.
+
+                </div>
+
+              </div>
+
+            </a>
+
+            <a
+              href="faq.html"
+              class="dropdown-item"
+            >
+
+              <div class="dropdown-icon">
+
+                <i data-lucide="circle-help"></i>
+
+              </div>
+
+              <div class="dropdown-content">
+
+                <div class="dropdown-title">
+
+                  Frequently Asked Questions
+
+                </div>
+
+                <div class="dropdown-description">
+
+                  Quick answers about
+                  PropWise and its tools.
+
+                </div>
+
+              </div>
+
             </a>
 
           </div>
 
         </div>
 
-        <a href="guides.html">
-          Guides
+        <!-- ABOUT -->
+
+        <a
+          href="about.html"
+          class="nav-link"
+        >
+
+          <i data-lucide="info"></i>
+
+          <span>
+            About
+          </span>
+
         </a>
 
-        <a href="faq.html">
-          FAQ
-        </a>
+        <!-- CONTACT -->
 
-        <a href="about.html">
-          About
+        <a
+          href="contact.html"
+          class="nav-link"
+        >
+
+          <i data-lucide="mail"></i>
+
+          <span>
+            Contact
+          </span>
+
         </a>
 
       </nav>
 
+      <!-- ======================================================
+        RIGHT SIDE
+      ======================================================= -->
 
-      <!-- NAV ACTIONS -->
       <div class="nav-actions">
 
-        <!-- LOGIN / SIGNUP -->
+        <!-- LOGIN -->
+
         <div
           id="authButtons"
           class="auth-buttons"
@@ -138,8 +376,8 @@
 
         </div>
 
+        <!-- USER -->
 
-        <!-- USER MENU -->
         <div
           id="profileSection"
           class="dropdown dropdown-right"
@@ -158,7 +396,9 @@
               U
             </div>
 
-            <span class="profile-chevron">
+            <span
+              class="profile-chevron"
+            >
               ▾
             </span>
 
@@ -172,14 +412,18 @@
             <div class="dropdown-header">
 
               <div class="dropdown-label">
+
                 Signed in as
+
               </div>
 
               <div
-                class="dropdown-subtitle"
                 id="profileEmail"
+                class="dropdown-subtitle"
               >
+
                 user@email.com
+
               </div>
 
             </div>
@@ -200,8 +444,8 @@
 
             <a
               href="admin.html"
-              class="dropdown-item"
               id="adminNavItem"
+              class="dropdown-item"
               style="display:none;"
             >
               Admin
@@ -214,7 +458,9 @@
               class="dropdown-item"
               onclick="handleLogout()"
             >
+
               Logout
+
             </button>
 
           </div>

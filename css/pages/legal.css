@@ -1,57 +1,525 @@
-/* =========================================
+/* ==========================================================================
+   PROPWISE UI V2
    LEGAL PAGES
-========================================= */
+   PART 1 OF 2
+   ========================================================================== */
 
-.legal-page {
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
 
-  max-width: 900px;
+.legal-page{
 
-  margin: auto;
+    background:#f8fafc;
 
-  line-height: 1.8;
+    min-height:100vh;
 
-  padding:
-    var(--space-8) var(--space-6);
+    padding:60px 0 80px;
+
 }
 
+/* ==========================================================================
+   HERO
+   ========================================================================== */
 
-.legal-page h1 {
+.legal-hero{
 
-  margin-bottom: 10px;
+    text-align:center;
+
+    max-width:850px;
+
+    margin:0 auto 60px;
+
 }
 
+.legal-badge{
 
-.legal-page h2 {
+    display:inline-flex;
 
-  margin-top: 40px;
+    align-items:center;
 
-  margin-bottom: 12px;
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(37,99,235,.10);
+
+    color:var(--color-primary);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.05em;
+
 }
 
+.legal-hero h1{
 
-.legal-page ul {
+    margin:24px 0 20px;
 
-  padding-left: 22px;
+    font-size:3rem;
+
+    font-weight:800;
+
+    color:var(--color-text);
+
+    letter-spacing:-.03em;
+
 }
 
+.legal-hero p{
 
-.last-updated {
+    max-width:760px;
 
-  color: var(--color-text-muted);
+    margin:0 auto;
 
-  margin-bottom: 30px;
+    color:var(--color-text-muted);
+
+    font-size:1.08rem;
+
+    line-height:1.9;
+
 }
 
+.legal-updated{
 
-.legal-disclaimer-box {
+    margin-top:28px;
 
-  margin-top: 40px;
+    font-size:.92rem;
 
-  padding: 20px;
+    color:var(--color-text-light);
 
-  border-radius: var(--radius-lg);
+    font-weight:600;
 
-  background: var(--color-surface);
-
-  border: 1px solid var(--color-border);
 }
+
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
+
+.legal-layout{
+
+    display:grid;
+
+    grid-template-columns:280px 1fr;
+
+    gap:42px;
+
+    align-items:start;
+
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.legal-sidebar{
+
+    position:sticky;
+
+    top:110px;
+
+    background:#ffffff;
+
+    border:1px solid rgba(15,23,42,.08);
+
+    border-radius:20px;
+
+    padding:28px;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+
+}
+
+.legal-sidebar h3{
+
+    margin:0 0 20px;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+}
+
+.legal-sidebar nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.legal-sidebar a{
+
+    text-decoration:none;
+
+    color:var(--color-text-light);
+
+    padding:12px 16px;
+
+    border-radius:12px;
+
+    transition:all .2s ease;
+
+    font-weight:600;
+
+}
+
+.legal-sidebar a:hover{
+
+    background:rgba(37,99,235,.08);
+
+    color:var(--color-primary);
+
+}
+
+.legal-sidebar a.active{
+
+    background:rgba(37,99,235,.12);
+
+    color:var(--color-primary);
+
+}
+
+/* ==========================================================================
+   CONTENT
+   ========================================================================== */
+
+.legal-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:26px;
+
+}
+
+/* ==========================================================================
+   CARD
+   ========================================================================== */
+
+.legal-card{
+
+    background:#ffffff;
+
+    border:1px solid rgba(15,23,42,.08);
+
+    border-radius:22px;
+
+    padding:34px;
+
+    box-shadow:0 12px 28px rgba(15,23,42,.05);
+
+}
+
+.legal-number{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:rgba(37,99,235,.10);
+
+    color:var(--color-primary);
+
+    font-weight:700;
+
+    margin-bottom:18px;
+
+}
+
+.legal-card h2{
+
+    margin:0 0 18px;
+
+    font-size:1.45rem;
+
+    color:var(--color-text);
+
+}
+
+.legal-card p{
+
+    margin:0;
+
+    color:var(--color-text-muted);
+
+    line-height:1.9;
+
+    font-size:1rem;
+
+}
+
+/* ==========================================================================
+   ACTIONS
+   ========================================================================== */
+
+.legal-actions{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-top:28px;
+
+}
+
+/* ==========================================================================
+   HOVER EFFECTS
+   ========================================================================== */
+
+.legal-card{
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+.legal-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(37,99,235,.18);
+
+    box-shadow:
+        0 18px 40px rgba(15,23,42,.08);
+}
+
+.legal-number{
+
+    transition:
+        transform .22s ease,
+        background .22s ease;
+}
+
+.legal-card:hover .legal-number{
+
+    transform:scale(1.08);
+
+    background:rgba(37,99,235,.16);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.legal-actions .btn{
+
+    min-width:180px;
+
+    justify-content:center;
+}
+
+/* ==========================================================================
+   TABLET
+   ========================================================================== */
+
+@media (max-width:1100px){
+
+    .legal-layout{
+
+        grid-template-columns:1fr;
+
+        gap:32px;
+    }
+
+    .legal-sidebar{
+
+        position:relative;
+
+        top:auto;
+
+        width:100%;
+    }
+
+    .legal-sidebar nav{
+
+        flex-direction:row;
+
+        flex-wrap:wrap;
+    }
+
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width:768px){
+
+    .legal-page{
+
+        padding:40px 0 60px;
+    }
+
+    .legal-hero{
+
+        margin-bottom:40px;
+    }
+
+    .legal-hero h1{
+
+        font-size:2.2rem;
+
+        line-height:1.2;
+    }
+
+    .legal-hero p{
+
+        font-size:1rem;
+
+        line-height:1.8;
+    }
+
+    .legal-sidebar{
+
+        padding:22px;
+    }
+
+    .legal-sidebar nav{
+
+        flex-direction:column;
+    }
+
+    .legal-card{
+
+        padding:26px;
+    }
+
+    .legal-card h2{
+
+        font-size:1.25rem;
+    }
+
+    .legal-card p{
+
+        font-size:.95rem;
+
+        line-height:1.8;
+    }
+
+    .legal-actions{
+
+        flex-direction:column;
+    }
+
+    .legal-actions .btn{
+
+        width:100%;
+    }
+
+}
+
+/* ==========================================================================
+   SMALL MOBILE
+   ========================================================================== */
+
+@media (max-width:480px){
+
+    .legal-page{
+
+        padding:30px 0 50px;
+    }
+
+    .legal-hero h1{
+
+        font-size:1.9rem;
+    }
+
+    .legal-badge{
+
+        font-size:.72rem;
+
+        padding:7px 14px;
+    }
+
+    .legal-card{
+
+        padding:22px;
+    }
+
+    .legal-number{
+
+        width:40px;
+
+        height:40px;
+
+        font-size:.9rem;
+    }
+
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.legal-sidebar a:focus-visible,
+.legal-actions .btn:focus-visible{
+
+    outline:2px solid rgba(37,99,235,.35);
+
+    outline-offset:3px;
+}
+
+/* ==========================================================================
+   GLOBAL TRANSITIONS
+   ========================================================================== */
+
+.legal-page *{
+
+    transition:
+        color .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+
+@media print{
+
+    .legal-sidebar,
+    .legal-actions,
+    #navbar,
+    #footer{
+
+        display:none !important;
+    }
+
+    .legal-layout{
+
+        display:block;
+    }
+
+    .legal-card{
+
+        box-shadow:none;
+
+        border:1px solid #ddd;
+
+        page-break-inside:avoid;
+
+        margin-bottom:18px;
+    }
+
+}
+
+/* ==========================================================================
+   END
+   ========================================================================== */

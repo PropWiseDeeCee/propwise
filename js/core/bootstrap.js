@@ -77,7 +77,16 @@ async function initFeaturePage() {
     await initStrategyPage();
   }
 
-}
+},
+contact: async () => {
+
+    if (typeof loadContactPage === "function") {
+
+        await loadContactPage();
+
+    }
+
+},
   };
 
   if (initializers[page]) {
@@ -101,3 +110,5 @@ document.addEventListener(
 );
 
 window.initPage = initPage;
+
+
