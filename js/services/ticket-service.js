@@ -5,475 +5,385 @@
  * ============================================================================
  * Centralized service for Support Ticket operations.
  *
- * Uses the existing PropWise Supabase client.
+ * Hardened for partial page load, missing Supabase init, and empty runtime
+ * environments while preserving the existing PropWise API contract.
  * ============================================================================
  */
+
+const ApiResponseHelper = typeof ApiResponse !== "undefined"
+    ? ApiResponse
+    : {
+        success(data = null) {
+            return { success: true, data, error: null };
+        },
+        error(message = "Something went wrong.") {
+            return { success: false, data: null, error: message };
+        }
+    };
 
 class TicketService {
 
     constructor() {
-
         this.table = "support_tickets";
-
-        this.supabase = getSupabaseClient();
-
-        if (!this.supabase) {
-            this.supabase = initSupabase();
-        }
-
-        if (!this.supabase) {
-            throw new Error("Unable to initialize Supabase client.");
-        }
-
+        this.supabase = null;
+        this.refreshClient();
     }
 
-    /**
-     * ------------------------------------------------------------------------
-     * Returns authenticated user
-     * ------------------------------------------------------------------------
-     */
+    refreshClient() {
+        this.supabase =
+            (typeof getSupabaseClient === "function" ? getSupabaseClient() : null) ||
+            (typeof initSupabase === "function" ? initSupabase() : null);
+
+        return this.supabase;
+    }
+
+    getClient() {
+        if (!this.supabase) {
+            this.refreshClient();
+        }
+
+        return this.supabase || null;
+    }
+
+    normalizeError(error) {
+        if (!error) return "Support service failed.";
+        if (typeof error === "string") return error;
+        return error.message || "Support service failed.";
+    }
+
+    sanitizeText(value) {
+        return String(value ?? "")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    validateTicketData(ticketData = {}) {
+        if (!ticketData || typeof ticketData !== "object") {
+            return {
+                valid: false,
+                error: "Ticket payload is invalid."
+            };
+        }
+
+        const requiredFields = [
+            "user_id",
+            "category",
+            "subject",
+            "message"
+        ];
+
+        for (const field of requiredFields) {
+            if (!ticketData[field]) {
+                return {
+                    valid: false,
+                    error: `Missing required ticket field: ${field}`
+                };
+            }
+        }
+
+        return {
+            valid: true,
+            ticket: {
+                ...ticketData,
+                category: this.sanitizeText(ticketData.category),
+                subject: this.sanitizeText(ticketData.subject),
+                message: this.sanitizeText(ticketData.message),
+                name: this.sanitizeText(ticketData.name || ""),
+                email: this.sanitizeText(ticketData.email || "")
+            }
+        };
+    }
 
     async getCurrentUser() {
-
         try {
+            const client = this.getClient();
 
-            const {
-                data: { user },
-                error
-            } = await this.supabase.auth.getUser();
-
-            if (error) {
-                return ApiResponse.error(error.message);
+            if (!client || !client.auth) {
+                return ApiResponseHelper.error("Support service is unavailable.");
             }
 
-            return ApiResponse.success(user);
+            const { data: { user }, error } = await client.auth.getUser();
 
+            if (error) {
+                return ApiResponseHelper.error(this.normalizeError(error));
+            }
+
+            return ApiResponseHelper.success(user);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch (err) {
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Create Ticket
-     * ------------------------------------------------------------------------
-     */
 
     async createTicket(ticketData) {
-
         try {
+            const client = this.getClient();
 
-            const {
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable right now.");
+            }
 
-                data,
+            const validation = this.validateTicketData(ticketData);
+            if (!validation.valid) {
+                return ApiResponseHelper.error(validation.error);
+            }
 
-                error
+            const preparedTicket = {
+                ...validation.ticket,
+                current_page: this.getCurrentPage(),
+                source_url: typeof window !== "undefined" ? window.location.href : "",
+                client_info: this.getClientInfo()
+            };
 
-            } = await this.supabase
-
+            const { data, error } = await client
                 .from(this.table)
-
-                .insert(ticketData)
-
+                .insert(preparedTicket)
                 .select()
-
                 .single();
 
             if (error) {
-
-                console.error(error);
-
-                return ApiResponse.error(error.message);
-
+                console.error("Ticket creation failed:", error);
+                return ApiResponseHelper.error(this.normalizeError(error));
             }
 
-            return ApiResponse.success(data);
-
+            return ApiResponseHelper.success(data);
+        } catch (err) {
+            console.error("Ticket creation error:", err);
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch (err) {
-
-            console.error(err);
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
-
-    /**
-     * ------------------------------------------------------------------------
-     * My Tickets
-     * ------------------------------------------------------------------------
-     */
 
     async getMyTickets(userId) {
-
         try {
+            const client = this.getClient();
 
-            const {
-
-                data,
-
-                error
-
-            } = await this.supabase
-
-                .from(this.table)
-
-                .select("*")
-
-                .eq("user_id", userId)
-
-                .order("created_at", {
-
-                    ascending: false
-
-                });
-
-            if (error) {
-
-                return ApiResponse.error(error.message);
-
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
             }
 
-            return ApiResponse.success(data);
+            const { data, error } = await client
+                .from(this.table)
+                .select("*")
+                .eq("user_id", userId)
+                .order("created_at", { ascending: false });
 
+            if (error) {
+                return ApiResponseHelper.error(this.normalizeError(error));
+            }
+
+            return ApiResponseHelper.success(data);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch (err) {
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
 
-    /**
-     * ------------------------------------------------------------------------
-     * Ticket By ID
-     * ------------------------------------------------------------------------
-     */
-
     async getTicket(ticketId) {
-
         try {
+            const client = this.getClient();
 
-            const {
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
+            }
 
-                data,
-
-                error
-
-            } = await this.supabase
-
+            const { data, error } = await client
                 .from(this.table)
-
                 .select("*")
-
                 .eq("id", ticketId)
-
                 .single();
 
             if (error) {
-
-                return ApiResponse.error(error.message);
-
+                return ApiResponseHelper.error(this.normalizeError(error));
             }
 
-            return ApiResponse.success(data);
-
+            return ApiResponseHelper.success(data);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch (err) {
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
 
-    /**
-     * ------------------------------------------------------------------------
-     * Daily Limit Check
-     * ------------------------------------------------------------------------
-     */
-
-    async canCreateTicketToday(userId) {
-
+    async getAllTickets() {
         try {
+            const client = this.getClient();
 
-            const today = new Date();
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
+            }
 
-            today.setHours(0,0,0,0);
-
-            const {
-
-                count,
-
-                error
-
-            } = await this.supabase
-
+            const { data, error } = await client
                 .from(this.table)
-
-                .select("*", {
-
-                    count: "exact",
-
-                    head: true
-
-                })
-
-                .eq("user_id", userId)
-
-                .gte(
-
-                    "created_at",
-
-                    today.toISOString()
-
-                );
+                .select("*")
+                .order("created_at", { ascending: false });
 
             if (error) {
-
-                return ApiResponse.error(error.message);
-
+                return ApiResponseHelper.error(this.normalizeError(error));
             }
 
-            return ApiResponse.success(
-
-                count < 5
-
-            );
-
+            return ApiResponseHelper.success(data || []);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch(err){
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
 
-    /**
-     * ------------------------------------------------------------------------
-     * Duplicate Detection
-     * ------------------------------------------------------------------------
-     */
+    async updateTicketStatus(ticketId, status, adminNote = "") {
+        try {
+            const client = this.getClient();
+
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
+            }
+
+            const allowedStatuses = ["Open", "Pending", "Waiting for Info", "Closed"];
+            const nextStatus = status && allowedStatuses.includes(status)
+                ? status
+                : "Open";
+
+            const updatePayload = {
+                status: nextStatus
+            };
+
+            if (typeof adminNote === "string" && adminNote.trim()) {
+                updatePayload.admin_note = this.sanitizeText(adminNote);
+            }
+
+            const { data, error } = await client
+                .from(this.table)
+                .update(updatePayload)
+                .eq("id", ticketId)
+                .select()
+                .single();
+
+            if (error) {
+                return ApiResponseHelper.error(this.normalizeError(error));
+            }
+
+            return ApiResponseHelper.success(data);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
+        }
+    }
+
+    async canCreateTicketToday(userId) {
+        try {
+            const client = this.getClient();
+
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
+            }
+
+            if (!userId) {
+                return ApiResponseHelper.error("User session is required.");
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const { count, error } = await client
+                .from(this.table)
+                .select("*", { count: "exact", head: true })
+                .eq("user_id", userId)
+                .gte("created_at", today.toISOString());
+
+            if (error) {
+                return ApiResponseHelper.error(this.normalizeError(error));
+            }
+
+            return ApiResponseHelper.success(count < 5);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
+        }
+    }
 
     async isDuplicate(userId, subject, message) {
-
         try {
+            const client = this.getClient();
 
-            const since = new Date(
+            if (!client || !client.from) {
+                return ApiResponseHelper.error("Support service is unavailable.");
+            }
 
-                Date.now() - 10 * 60 * 1000
+            if (!userId || !subject || !message) {
+                return ApiResponseHelper.error("Duplicate check requires user, subject, and message.");
+            }
 
-            ).toISOString();
+            const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
 
-            const {
-
-                data,
-
-                error
-
-            } = await this.supabase
-
+            const { data, error } = await client
                 .from(this.table)
-
                 .select("id")
-
                 .eq("user_id", userId)
-
                 .eq("subject", subject)
-
                 .eq("message", message)
-
                 .gte("created_at", since)
-
                 .limit(1);
 
             if (error) {
-
-                return ApiResponse.error(error.message);
-
+                return ApiResponseHelper.error(this.normalizeError(error));
             }
 
-            return ApiResponse.success(
-
-                data.length > 0
-
-            );
-
+            return ApiResponseHelper.success(data.length > 0);
+        } catch (err) {
+            return ApiResponseHelper.error(this.normalizeError(err));
         }
-
-        catch(err){
-
-            return ApiResponse.error(err.message);
-
-        }
-
     }
-        /**
-     * ------------------------------------------------------------------------
-     * Client Information
-     * ------------------------------------------------------------------------
-     */
 
     getClientInfo() {
+        const nav = typeof navigator !== "undefined" ? navigator : {};
+        const screen = typeof window !== "undefined" ? window.screen : null;
 
         return {
-
             browser: this.getBrowserInfo(),
-
             os: this.getOperatingSystem(),
-
             device: this.getDeviceType(),
-
-            language: navigator.language,
-
-            timezone: Intl.DateTimeFormat()
-                .resolvedOptions()
-                .timeZone,
-
-            screen: `${window.screen.width}x${window.screen.height}`,
-
-            userAgent: navigator.userAgent
-
+            language: nav.language || "unknown",
+            timezone: (() => {
+                try {
+                    return Intl.DateTimeFormat().resolvedOptions().timeZone || "unknown";
+                } catch {
+                    return "unknown";
+                }
+            })(),
+            screen: screen ? `${screen.width}x${screen.height}` : "unknown",
+            userAgent: nav.userAgent || "unknown"
         };
-
     }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Current Page
-     * ------------------------------------------------------------------------
-     */
 
     getCurrentPage() {
-
-        return window.location.pathname
-            .split("/")
-            .pop();
-
-    }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Browser Detection
-     * ------------------------------------------------------------------------
-     */
-
-    getBrowserInfo() {
-
-        const ua = navigator.userAgent;
-
-        if (ua.includes("Edg"))
-            return "Microsoft Edge";
-
-        if (ua.includes("Chrome"))
-            return "Google Chrome";
-
-        if (ua.includes("Firefox"))
-            return "Mozilla Firefox";
-
-        if (
-            ua.includes("Safari") &&
-            !ua.includes("Chrome")
-        )
-            return "Safari";
-
-        return "Unknown";
-
-    }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Device Detection
-     * ------------------------------------------------------------------------
-     */
-
-    getDeviceType() {
-
-        const width = window.innerWidth;
-
-        if (width <= 768)
-            return "Mobile";
-
-        if (width <= 1024)
-            return "Tablet";
-
-        return "Desktop";
-
-    }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Operating System
-     * ------------------------------------------------------------------------
-     */
-
-    getOperatingSystem() {
-
-        const ua = navigator.userAgent;
-
-        if (ua.includes("Windows"))
-            return "Windows";
-
-        if (ua.includes("Mac"))
-            return "macOS";
-
-        if (ua.includes("Android"))
-            return "Android";
-
-        if (
-            ua.includes("iPhone") ||
-            ua.includes("iPad")
-        )
-            return "iOS";
-
-        if (ua.includes("Linux"))
-            return "Linux";
-
-        return "Unknown";
-
-    }
-
-    /**
-     * ------------------------------------------------------------------------
-     * Refresh Supabase Client
-     * ------------------------------------------------------------------------
-     */
-
-    refreshClient() {
-
-        this.supabase = getSupabaseClient();
-
-        if (!this.supabase) {
-
-            this.supabase = initSupabase();
-
+        if (typeof window === "undefined" || !window.location) {
+            return "unknown";
         }
 
-        return this.supabase;
-
+        return window.location.pathname.split("/").pop() || "unknown";
     }
 
+    getBrowserInfo() {
+        const ua = (typeof navigator !== "undefined" ? navigator.userAgent : "") || "";
+
+        if (ua.includes("Edg")) return "Microsoft Edge";
+        if (ua.includes("Chrome")) return "Google Chrome";
+        if (ua.includes("Firefox")) return "Mozilla Firefox";
+        if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+        return "Unknown";
+    }
+
+    getDeviceType() {
+        const width = typeof window !== "undefined" ? window.innerWidth : 0;
+
+        if (width <= 768) return "Mobile";
+        if (width <= 1024) return "Tablet";
+        return "Desktop";
+    }
+
+    getOperatingSystem() {
+        const ua = (typeof navigator !== "undefined" ? navigator.userAgent : "") || "";
+
+        if (ua.includes("Windows")) return "Windows";
+        if (ua.includes("Mac")) return "macOS";
+        if (ua.includes("Android")) return "Android";
+        if (ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+        if (ua.includes("Linux")) return "Linux";
+        return "Unknown";
+    }
 }
 
-/**
- * ============================================================================
- * Service Registration
- * ============================================================================
- */
-
 window.Services = window.Services || {};
-
 window.Services.ticket = new TicketService();
+window.TicketService = TicketService;

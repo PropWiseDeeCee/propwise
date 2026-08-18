@@ -367,11 +367,11 @@ Reach out to us anytime.
 </p>
 
 <a
-href="mailto:propwiseindia@gmail.com"
+href="mailto:propwiseindia.com@gmail.com"
 class="support-link"
 >
 
-propwiseindia@gmail.com
+propwiseindia.com@gmail.com
 
 </a>
 
@@ -478,6 +478,98 @@ Property Guides →
 </div>
 
 </div>
+
+</section>
+
+<div id="ticketDetailModal" class="ticket-detail-modal" aria-hidden="true">
+
+    <div class="ticket-detail-modal-backdrop" data-close-modal="true"></div>
+
+    <div class="ticket-detail-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="ticketDetailTitle">
+
+        <button type="button" class="ticket-detail-close" aria-label="Close ticket details">×</button>
+
+        <div class="ticket-detail-header">
+            <span id="ticketDetailBadge" class="ticket-meta-pill">Ticket</span>
+            <h3 id="ticketDetailTitle">Ticket details</h3>
+        </div>
+
+        <div class="ticket-detail-body">
+            <div class="ticket-detail-grid">
+                <div><strong>Status</strong><span id="ticketDetailStatus">-</span></div>
+                <div><strong>Category</strong><span id="ticketDetailCategory">-</span></div>
+                <div><strong>Priority</strong><span id="ticketDetailPriority">-</span></div>
+                <div><strong>Created</strong><span id="ticketDetailCreated">-</span></div>
+                <div><strong>Page</strong><span id="ticketDetailPage">-</span></div>
+                <div><strong>Email</strong><span id="ticketDetailEmail">-</span></div>
+            </div>
+
+            <div class="ticket-detail-message-block">
+                <strong>Message</strong>
+                <p id="ticketDetailMessage">-</p>
+            </div>
+
+            <div class="ticket-detail-source-block">
+                <strong>Origin</strong>
+                <p id="ticketDetailSource">-</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<section class="ticket-history-wrapper">
+
+    <div class="ticket-history-card">
+
+        <button
+            class="ticket-history-toggle"
+            type="button"
+            aria-expanded="false"
+        >
+            <span>My Support Tickets</span>
+            <span class="ticket-history-indicator">+</span>
+        </button>
+
+        <div class="ticket-history-content" style="display:none;">
+
+            <div class="ticket-history-toolbar">
+
+                <div class="ticket-history-summary" aria-label="Ticket summary counts">
+                    <span class="ticket-summary-pill" data-summary="All"><strong>0</strong> All</span>
+                    <span class="ticket-summary-pill" data-summary="Open"><strong>0</strong> Open</span>
+                    <span class="ticket-summary-pill" data-summary="Pending"><strong>0</strong> Pending</span>
+                    <span class="ticket-summary-pill" data-summary="Waiting for Info"><strong>0</strong> Waiting for Info</span>
+                    <span class="ticket-summary-pill" data-summary="Closed"><strong>0</strong> Closed</span>
+                </div>
+
+                <div class="ticket-history-filters" aria-label="Ticket filters">
+                    <button type="button" class="ticket-filter-btn active" data-status="All">All</button>
+                    <button type="button" class="ticket-filter-btn" data-status="Open">Open</button>
+                    <button type="button" class="ticket-filter-btn" data-status="Pending">Pending</button>
+                    <button type="button" class="ticket-filter-btn" data-status="Waiting for Info">Waiting for Info</button>
+                    <button type="button" class="ticket-filter-btn" data-status="Closed">Closed</button>
+                </div>
+
+                <label class="ticket-sort-wrap">
+                    <span>Sort</span>
+                    <select id="ticketSortSelect">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                        <option value="priority">Priority</option>
+                    </select>
+                </label>
+
+            </div>
+
+            <div id="ticketHistoryList" class="ticket-history-list">
+                <p class="ticket-history-empty">Loading your tickets...</p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
