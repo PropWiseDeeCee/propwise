@@ -292,6 +292,60 @@
   color: var(--color-text);
 }
 
+.field-help {
+
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.section-help {
+
+  margin-bottom: 0;
+}
+
+.calculated-field {
+
+  min-height: 50px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 8px 14px;
+
+  border: 1px dashed var(--color-border-strong);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface-alt);
+
+  color: var(--color-text);
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.calculated-field-note {
+
+  margin-top: 2px;
+
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+
+  font-weight: 400;
+}
+
 
 .calc-field input,
 .calc-field select {
@@ -525,6 +579,30 @@
   font-size: 14px;
 }
 
+.health-bar {
+
+  height: 10px;
+
+  margin: 16px 0;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-full);
+
+  background: rgba(255,255,255,0.12);
+}
+
+.health-bar span {
+
+  display: block;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  transition: width var(--transition-normal);
+}
+
 
 /* =========================================
    RESULT BREAKDOWN
@@ -580,6 +658,114 @@
   font-size: 15px;
 }
 
+.result-grid {
+
+  display: grid;
+
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+
+  gap: 18px;
+
+  margin-top: 24px;
+}
+
+.result-column {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.result-card {
+
+  padding: 22px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.06);
+}
+
+.result-card-title {
+
+  margin-bottom: 16px;
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.result-card .breakdown-list {
+
+  margin-top: 0;
+}
+
+.insight-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin: 0;
+
+  padding-left: 20px;
+
+  color: rgba(255,255,255,0.78);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.assumption-list {
+
+  display: grid;
+
+  gap: 10px;
+
+  color: rgba(255,255,255,0.7);
+
+  font-size: 13px;
+}
+
+.assumption-list span {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding-bottom: 9px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.assumption-list strong {
+
+  color: #ffffff;
+
+  text-align: right;
+}
+
+.assumption-note {
+
+  margin: 16px 0 0;
+
+  color: rgba(255,255,255,0.58);
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
 
 /* =========================================
    INFO NOTE
@@ -616,6 +802,11 @@
 
 
 @media (max-width: 768px) {
+
+  .result-grid {
+
+    grid-template-columns: 1fr;
+  }
 
   .calc-grid {
 

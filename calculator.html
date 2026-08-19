@@ -401,6 +401,46 @@
                 placeholder="e.g. 200000"
               >
 
+              <small class="field-help">
+                Use monthly take-home income for your household.
+              </small>
+
+            </div>
+
+            <!-- MONTHLY EXPENSES -->
+            <div class="calc-field">
+
+              <label>
+                Monthly Household Expenses (₹)
+              </label>
+
+              <input
+                id="monthlyExpenses"
+                type="number"
+                min="0"
+                placeholder="e.g. 80000"
+              >
+
+              <small class="field-help">
+                Exclude existing loan EMIs; include rent and regular bills.
+              </small>
+
+            </div>
+
+            <!-- EXISTING EMIS -->
+            <div class="calc-field">
+
+              <label>
+                Existing Monthly EMIs (₹)
+              </label>
+
+              <input
+                id="existingEmi"
+                type="number"
+                min="0"
+                value="0"
+              >
+
             </div>
 
           </div>
@@ -511,10 +551,132 @@
 
             </div>
 
-          </div>
+            <div class="calc-field">
+
+              <label>
+                Brokerage (₹)
+              </label>
+
+              <input
+                id="brokerage"
+                type="number"
+                min="0"
+                value="0"
+              >
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>
+                Loan Processing & Valuation (₹)
+              </label>
+
+              <input
+                id="loanProcessingFee"
+                type="number"
+                min="0"
+                value="0"
+              >
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>
+                Moving & Setup Costs (₹)
+              </label>
+
+              <input
+                id="movingCosts"
+                type="number"
+                min="0"
+                value="0"
+              >
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>Mortgage / MODT Charges (₹)</label>
+
+              <input id="mortgageCharges" type="number" min="0" value="0">
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>Society & Utility Deposits (₹)</label>
+
+              <input id="utilityDeposits" type="number" min="0" value="0">
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>First-year Property Tax (₹)</label>
+
+              <input id="firstYearPropertyTax" type="number" min="0" value="0">
+
+            </div>
+
+            <div class="calc-field">
+
+              <label>Annual Maintenance (₹)</label>
+
+              <input id="annualMaintenance" type="number" min="0" value="0">
+
+              <small class="field-help">Used for the five-year ownership estimate with 10% annual escalation.</small>
+
+            </div>
+
+            <div class="calc-field calc-field-full">
+
+              <label>
+                Estimated Interior Cost (₹ per sqft)
+              </label>
+
+              <div class="calculated-field">
+                <span id="interiorRatePreview">Calculated from city rules</span>
+                <span class="calculated-field-note">Applied to your property size and included in all-in cost.</span>
+              </div>
+
+            </div>
 
           </div>
 
+          </div>
+
+        </details>
+
+        <!-- INVESTMENT ASSUMPTIONS -->
+        <details class="calc-card calc-step">
+
+          <summary class="calc-step-summary">
+            <span class="calc-step-number">4</span>
+            <span class="calc-step-heading">
+              <span class="calc-card-title">Investment Assumptions</span>
+              <span class="calc-card-sub">Optional inputs for rent and future value planning.</span>
+            </span>
+            <span class="calc-step-status">Optional</span>
+          </summary>
+
+          <div class="calc-step-body">
+            <div class="calc-grid">
+              <div class="calc-field">
+                <label>Expected Monthly Rent (₹)</label>
+                <input id="expectedRent" type="number" min="0" value="0" placeholder="e.g. 35000">
+              </div>
+
+              <div class="calc-field">
+                <label>Expected Annual Appreciation (%)</label>
+                <input id="appreciationRate" type="number" min="0" max="30" step="0.5" value="6">
+              </div>
+            </div>
+            <p class="field-help section-help">
+              These are planning assumptions, not a guarantee of rent or price growth.
+            </p>
+          </div>
         </details>
 
         <div class="calculator-actions-wrapper">
@@ -565,17 +727,11 @@
 
   <div class="calc-note">
 
-    ✔ Includes state-wise registration estimates<br>
+    Estimates are for planning only. Government charges vary by authority, guidance value, exemptions, and transaction details.<br>
 
-    ✔ Supports city-level taxation logic<br>
+    We show the rule assumptions used so you can verify them before making a decision.<br>
 
-    ✔ Includes luxury slab handling<br>
-
-    ✔ Affordable housing GST support<br>
-
-    ✔ Agricultural & resale logic supported<br>
-
-    ✔ Final charges may vary by authority and guidance value
+    Interior, moving, brokerage, and financing costs are estimates and may not be included in your lender's loan.
 
   </div>
 

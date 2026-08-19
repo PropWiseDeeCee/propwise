@@ -93,357 +93,124 @@ function renderDashboard(result) {
 
   if (!dashboard) return;
 
+  const affordabilityColor =
+    result.affordability.className === "safe"
+      ? "#10b981"
+      : result.affordability.className === "moderate"
+      ? "#f59e0b"
+      : "#ef4444";
+
+  const insights = [];
+
+  if (result.affordableHousing) {
+    insights.push("Affordable housing GST rule applied.");
+  }
+
+  if (result.cityRules.metro) {
+    insights.push("Metro city rules applied.");
+  }
+
+  if (result.resolvedRules.isLuxury) {
+    insights.push("Luxury slab charges may apply.");
+  }
+
+  if (result.affordability.monthlySurplus < 0) {
+    insights.push("Your estimated monthly cash flow is negative after expenses and debt.");
+  } else if (result.affordability.monthlySurplus < result.emi) {
+    insights.push("Your monthly buffer is smaller than the new EMI. Keep an emergency reserve before committing.");
+  }
+
+  if (!insights.length) {
+    insights.push("Review the assumptions below with your lender, builder, or local authority.");
+  }
+
   dashboard.innerHTML = `
-
     <div class="summary-panel">
-
       <div class="summary-top">
-
-        <div class="summary-label">
-          Total Estimated Cost
-        </div>
-
-        <div class="summary-total">
-          ₹${formatCurrency(result.totalCost)}
-        </div>
-
+        <div class="summary-label">All-in planning cost</div>
+        <div class="summary-total">₹${formatCurrency(result.totalCost)}</div>
         <div class="summary-caption">
-
-          Includes registration,
-          stamp duty, GST,
-          interior estimate,
-          municipal charges,
-          and hidden costs.
-
+          Includes purchase charges, estimated interiors, and the optional costs entered below.
+          The loan estimate excludes interiors because lenders may not finance them.
         </div>
-
       </div>
 
       <div class="metrics-grid">
-
         <div class="metric-card">
-
-          <div class="metric-label">
-            Monthly EMI
-          </div>
-
-          <div class="metric-value">
-            ₹${formatCurrency(result.emi)}
-          </div>
-
+          <div class="metric-label">Purchase cost before interiors</div>
+          <div class="metric-value">₹${formatCurrency(result.purchaseCost)}</div>
         </div>
-
         <div class="metric-card">
-
-          <div class="metric-label">
-            Total Interest
-          </div>
-
-          <div class="metric-value">
-            ₹${formatCurrency(
-              result.totalInterest
-            )}
-          </div>
-
+          <div class="metric-label">Cash needed upfront</div>
+          <div class="metric-value">₹${formatCurrency(result.upfrontCash)}</div>
         </div>
-
         <div class="metric-card">
-
-          <div class="metric-label">
-            Upfront Cash
-          </div>
-
-          <div class="metric-value">
-            ₹${formatCurrency(
-              result.upfrontCash
-            )}
-          </div>
-
+          <div class="metric-label">Monthly EMI</div>
+          <div class="metric-value">₹${formatCurrency(result.emi)}</div>
         </div>
-
         <div class="metric-card">
-
-          <div class="metric-label">
-            5Y Ownership
-          </div>
-
-          <div class="metric-value">
-            ₹${formatCurrency(
-              result.fiveYearOwnershipCost
-            )}
-          </div>
-
-          <div class="metric-card">
-
-  <div class="metric-label">
-    Investment Score
-  </div>
-
-  <div class="metric-value">
-    ${result.investmentScore}/100
-  </div>
-
-</div>
-
+          <div class="metric-label">Monthly buffer after debt</div>
+          <div class="metric-value">₹${formatCurrency(result.affordability.monthlySurplus)}</div>
         </div>
-
       </div>
 
-      <div class="affordability-card">
+      <div class="result-grid">
+        <div class="result-column">
+          <div class="affordability-card">
+            <div class="affordability-title">Monthly affordability</div>
+            <div class="affordability-pill ${result.affordability.className}">${result.affordability.level}</div>
+            <div class="affordability-text">
+              Total debt uses ${result.affordability.ratio.toFixed(1)}% of monthly income.
+              New EMI uses ${result.affordability.emiRatio.toFixed(1)}%.
+            </div>
+            <div class="health-bar" aria-label="Debt to income ratio">
+              <span style="width:${Math.min(result.affordability.ratio, 100)}%; background:${affordabilityColor};"></span>
+            </div>
+            <div class="affordability-text">
+              Monthly buffer after household expenses and all EMIs:
+              <strong>₹${formatCurrency(result.affordability.monthlySurplus)}</strong>
+            </div>
+          </div>
 
-        <div class="affordability-title">
-          Affordability Analysis
+          <div class="result-card">
+            <div class="result-card-title">Where the money goes</div>
+            <div class="breakdown-list">
+              <div class="breakdown-item"><span class="breakdown-label">Property price</span><strong>₹${formatCurrency(result.totalCost - result.interiorEstimate - result.hiddenCharges - result.stampDuty - result.registration - result.gst - result.municipalSurcharge)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">Stamp duty</span><strong>₹${formatCurrency(result.stampDuty)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">Registration</span><strong>₹${formatCurrency(result.registration)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">GST</span><strong>₹${formatCurrency(result.gst)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">Municipal charges</span><strong>₹${formatCurrency(result.municipalSurcharge)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">Additional costs</span><strong>₹${formatCurrency(result.hiddenCharges)}</strong></div>
+              <div class="breakdown-item"><span class="breakdown-label">Interior estimate</span><strong>₹${formatCurrency(result.interiorEstimate)}</strong></div>
+            </div>
+          </div>
         </div>
 
-        <div class="
-          affordability-pill
-          ${result.affordability.className}
-        ">
+        <div class="result-column">
+          <div class="result-card chart-card">
+            <div class="result-card-title">Cost composition</div>
+            <div class="chart-wrapper"><canvas id="costBreakdownChart"></canvas></div>
+          </div>
 
-          ${result.affordability.level}
+          <div class="result-card">
+            <div class="result-card-title">What to review</div>
+            <ul class="insight-list">${insights.map(insight => `<li>${insight}</li>`).join("")}</ul>
+          </div>
 
+          <div class="result-card assumptions-card">
+            <div class="result-card-title">Calculation assumptions</div>
+            <div class="assumption-list">
+              <span>Interest rate <strong>${getInputValue("interestRate").toFixed(1)}%</strong></span>
+              <span>Loan tenure <strong>${getInputValue("tenureYears")} years</strong></span>
+              <span>Interior estimate <strong>₹${formatCurrency(result.interiorEstimate)}</strong></span>
+              <span>Expected rental yield <strong>${result.rentalYield.toFixed(1)}%</strong></span>
+              <span>Five-year maintenance <strong>₹${formatCurrency(result.fiveYearMaintenance)}</strong></span>
+              <span>Five-year ownership cost <strong>₹${formatCurrency(result.fiveYearOwnershipCost)}</strong></span>
+            </div>
+            <p class="assumption-note">Charges are estimates and may vary with guidance value, authority rules, exemptions, lender terms, and the agreement structure.</p>
+          </div>
         </div>
-
-        <div class="affordability-text">
-
-          EMI to income ratio:
-          ${result.affordability.ratio.toFixed(1)}%
-
-        </div>
-
-
-
       </div>
-
-      <div class="breakdown-list">
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            Stamp Duty
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.stampDuty
-            )}
-          </div>
-
-        </div>
-        <div class="affordability-card">
-
-  <div class="affordability-title">
-    Financial Health
-  </div>
-
-  <div
-    style="
-      width:100%;
-      height:12px;
-      background:rgba(255,255,255,0.08);
-      border-radius:999px;
-      overflow:hidden;
-      margin-bottom:14px;
-    "
-  >
-
-    <div
-      style="
-        width:${Math.min(result.affordability.ratio, 100)}%;
-        height:100%;
-        background:
-          ${
-            result.affordability.className === "safe"
-              ? "#10b981"
-              : result.affordability.className === "moderate"
-              ? "#f59e0b"
-              : "#ef4444"
-          };
-      "
-    ></div>
-
-  </div>
-
-  <div class="affordability-text">
-
-    Recommended EMI ratio:
-    below 35% of monthly income.
-
-  </div>
-
-</div>
-
-
-<div
-  style="
-    margin-top:24px;
-    background:rgba(255,255,255,0.04);
-    border-radius:18px;
-    padding:18px;
-  "
->
-
-  <div
-    style="
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:16px;
-    "
-  >
-    Cost Composition
-  </div>
-
-  <div class="chart-wrapper">
-
-  <canvas
-    id="costBreakdownChart"
-  ></canvas>
-
-</div>
-
-</div>
-
-
-<div class="affordability-card">
-
-  <div class="affordability-title">
-    Smart Insights
-  </div>
-
-  <div class="affordability-text">
-
-    ${
-      result.affordableHousing
-        ? "✓ Affordable housing GST benefit applied.<br><br>"
-        : ""
-    }
-
-    ${
-      result.affordability.level === "Risky"
-        ? "⚠ EMI burden is financially risky.<br><br>"
-        : ""
-    }
-
-    ${
-      result.cityRules.metro
-        ? "✓ Metro city property detected.<br><br>"
-        : ""
-    }
-
-    ${
-      result.resolvedRules.isLuxury
-        ? "⚠ Luxury slab charges applicable.<br><br>"
-        : ""
-    }
-
-    Guidance-value-based adjustments included.
-
-  </div>
-
-  <div class="affordability-card">
-
-  <div class="affordability-title">
-    Investment Rating
-  </div>
-
-  <div class="
-    affordability-pill
-    ${
-      result.investmentScore >= 85
-        ? "safe"
-        : result.investmentScore >= 70
-        ? "moderate"
-        : "risky"
-    }
-  ">
-
-    ${result.investmentGrade}
-
-  </div>
-
-  <div class="affordability-text">
-
-    PropWise Score:
-    ${result.investmentScore}/100
-
-  </div>
-
-</div>
-
-</div>
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            Registration
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.registration
-            )}
-          </div>
-
-        </div>
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            GST
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.gst
-            )}
-          </div>
-
-        </div>
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            Municipal Charges
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.municipalSurcharge
-            )}
-          </div>
-
-        </div>
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            Interior Estimate
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.interiorEstimate
-            )}
-          </div>
-
-        </div>
-
-        <div class="breakdown-item">
-
-          <div class="breakdown-label">
-            Hidden Charges
-          </div>
-
-          <div class="breakdown-value">
-            ₹${formatCurrency(
-              result.hiddenCharges
-            )}
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
   `;
 }
@@ -477,17 +244,19 @@ function renderCostBreakdownChart(result) {
 
       labels: [
 
-        "Base Price",
+        "Property Price",
 
         "Stamp Duty",
 
-        "GST",
-
         "Registration",
 
-        "Interior",
+        "GST",
 
-        "Hidden Charges"
+        "Municipal Charges",
+
+        "Additional Costs",
+
+        "Interiors"
       ],
 
       datasets: [
@@ -497,20 +266,24 @@ function renderCostBreakdownChart(result) {
           data: [
 
             result.totalCost
+              - result.interiorEstimate
               - result.hiddenCharges
               - result.stampDuty
               - result.registration
-              - result.gst,
+              - result.gst
+              - result.municipalSurcharge,
 
             result.stampDuty,
 
-            result.gst,
-
             result.registration,
 
-            result.interiorEstimate,
+            result.gst,
 
-            result.hiddenCharges
+            result.municipalSurcharge,
+
+            result.hiddenCharges,
+
+            result.interiorEstimate
           ],
 
           borderWidth: 0
@@ -620,6 +393,11 @@ function calculatePropertyPlan() {
   },
 
   {
+    id: "state",
+    label: "State"
+  },
+
+  {
     id: "downPayment",
     label: "Down Payment"
   },
@@ -627,6 +405,11 @@ function calculatePropertyPlan() {
   {
     id: "monthlyIncome",
     label: "Monthly Income"
+  },
+
+  {
+    id: "monthlyExpenses",
+    label: "Monthly Household Expenses"
   }
 ];
 
@@ -643,9 +426,10 @@ requiredFields.forEach(field => {
 
     !el.value ||
 
-    el.value.trim() === "" ||
+    (el.type === "number" && Number(el.value) < 0) ||
 
-    Number(el.value) <= 0
+    (el.id !== "monthlyExpenses" &&
+      el.type === "number" && Number(el.value) <= 0)
 
   ) {
 
@@ -755,6 +539,61 @@ const basePrice =
     legalCharges:
       getInputValue(
         "legalCharges"
+      ),
+
+    brokerage:
+      getInputValue(
+        "brokerage"
+      ),
+
+    loanProcessingFee:
+      getInputValue(
+        "loanProcessingFee"
+      ),
+
+    movingCosts:
+      getInputValue(
+        "movingCosts"
+      ),
+
+    mortgageCharges:
+      getInputValue(
+        "mortgageCharges"
+      ),
+
+    utilityDeposits:
+      getInputValue(
+        "utilityDeposits"
+      ),
+
+    firstYearPropertyTax:
+      getInputValue(
+        "firstYearPropertyTax"
+      ),
+
+    annualMaintenance:
+      getInputValue(
+        "annualMaintenance"
+      ),
+
+    monthlyExpenses:
+      getInputValue(
+        "monthlyExpenses"
+      ),
+
+    existingEmi:
+      getInputValue(
+        "existingEmi"
+      ),
+
+    expectedRent:
+      getInputValue(
+        "expectedRent"
+      ),
+
+    appreciationRate:
+      getInputValue(
+        "appreciationRate"
       )
   };
 
@@ -795,7 +634,7 @@ function resetCalculator() {
 
     document.querySelectorAll(
 
-      "input"
+      "input, select"
     );
 
   fields.forEach(field => {
@@ -828,6 +667,10 @@ else {
 
   field.value = "";
 }
+    }
+
+    if (field.tagName === "SELECT") {
+      field.selectedIndex = 0;
     }
 
     field.classList.remove(
@@ -871,6 +714,10 @@ document
     section.open =
       index < 2;
   });
+
+  populateCities();
+
+  updateInteriorRatePreview();
 }
 
 // =============================================
@@ -903,7 +750,14 @@ function initCalculator() {
         input.classList.remove(
           "input-error"
         );
+
+        saveCalculatorDraft();
       }
+    );
+
+    input.addEventListener(
+      "change",
+      saveCalculatorDraft
     );
   });
 
@@ -915,6 +769,83 @@ function initCalculator() {
       populateCities
     );
 
+  document
+    .getElementById("state")
+    ?.addEventListener(
+      "change",
+      updateInteriorRatePreview
+    );
+
+  document
+    .getElementById("city")
+    ?.addEventListener(
+      "change",
+      updateInteriorRatePreview
+    );
+
+}
+
+function saveCalculatorDraft() {
+
+  const draft = {};
+
+  document
+    .querySelectorAll("input, select")
+    .forEach(input => {
+      draft[input.id] = input.value;
+    });
+
+  localStorage.setItem(
+    "calculatorDraft",
+    JSON.stringify(draft)
+  );
+}
+
+async function restoreCalculatorDraft() {
+
+  const saved = localStorage.getItem("calculatorDraft");
+
+  if (!saved) return;
+
+  try {
+    const draft = JSON.parse(saved);
+    const state = document.getElementById("state");
+
+    if (state && draft.state) {
+      state.value = draft.state;
+      populateCities();
+    }
+
+    Object.keys(draft).forEach(id => {
+      const input = document.getElementById(id);
+
+      if (input && id !== "state") {
+        input.value = draft[id];
+      }
+    });
+
+    updateInteriorRatePreview();
+  } catch (error) {
+    localStorage.removeItem("calculatorDraft");
+  }
+}
+
+function updateInteriorRatePreview() {
+
+  const state = getInputText("state");
+  const city = getInputText("city");
+  const preview = document.getElementById("interiorRatePreview");
+
+  if (!preview) return;
+
+  const cityData = CalculatorRules.cities.find(item =>
+    item.state_code === state && item.city_name === city
+  );
+
+  const rate = cityData?.interior_cost_per_sqft || 1800;
+
+  preview.textContent =
+    `₹${formatCurrency(rate)} per sqft in the current estimate`;
 }
 
 
@@ -934,7 +865,11 @@ document.addEventListener(
 
     await populateStates();
 
+    await restoreCalculatorDraft();
+
     initCalculator();
+
+    updateInteriorRatePreview();
   }
 );
 

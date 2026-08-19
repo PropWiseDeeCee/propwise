@@ -231,32 +231,44 @@ class TicketService {
                 return ApiResponseHelper.error("Support service is unavailable.");
             }
 
+            if (!ticketId) {
+                return ApiResponseHelper.error("Ticket reference is missing.");
+            }
+
             const allowedStatuses = ["Open", "Pending", "Waiting for Info", "Closed"];
             const nextStatus = status && allowedStatuses.includes(status)
                 ? status
                 : "Open";
 
             const updatePayload = {
-                status: nextStatus
+                status: nextStatus,
+                updated_at: new Date().toISOString()
             };
 
-            if (typeof adminNote === "string" && adminNote.trim()) {
+            if (typeof adminNote === "string") {
                 updatePayload.admin_note = this.sanitizeText(adminNote);
             }
 
-            const { data, error } = await client
+            const query = client
                 .from(this.table)
                 .update(updatePayload)
-                .eq("id", ticketId)
-                .select()
-                .single();
+                .or(`id.eq.${ticketId},ticket_number.eq.${ticketId}`)
+                .select();
+
+            const { data, error } = await query;
 
             if (error) {
+                console.error("Ticket update failed:", error);
                 return ApiResponseHelper.error(this.normalizeError(error));
             }
 
-            return ApiResponseHelper.success(data);
+            if (!data || !data.length) {
+                return ApiResponseHelper.error("Ticket not found or update was rejected.");
+            }
+
+            return ApiResponseHelper.success(data[0]);
         } catch (err) {
+            console.error("Ticket update error:", err);
             return ApiResponseHelper.error(this.normalizeError(err));
         }
     }

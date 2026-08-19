@@ -14,13 +14,10 @@ function formatCurrency(value) {
     "en-IN",
 
     {
-
       maximumFractionDigits: 0
     }
-
   ).format(Math.round(value || 0));
 }
-
 
 // =============================================
 // EMI CALCULATION
@@ -34,6 +31,27 @@ function calculateLoan(
 
   tenureYears
 ) {
+
+  if (!loanAmount || !tenureYears || interestRate < 0) {
+
+    return {
+      emi: 0,
+      totalPayment: 0,
+      totalInterest: 0
+    };
+  }
+
+  if (interestRate === 0) {
+
+    const interestFreePayment =
+      loanAmount / (tenureYears * 12);
+
+    return {
+      emi: interestFreePayment,
+      totalPayment: loanAmount,
+      totalInterest: 0
+    };
+  }
 
   const monthlyRate =
     interestRate / 12 / 100;
@@ -93,7 +111,11 @@ function getAffordabilityLevel(
 
   emi,
 
-  monthlyIncome
+  monthlyIncome,
+
+  monthlyExpenses = 0,
+
+  existingEmi = 0
 ) {
 
   if (!monthlyIncome) {
@@ -104,12 +126,32 @@ function getAffordabilityLevel(
 
       className: "moderate",
 
-      ratio: 0
+      ratio: 0,
+
+      emiRatio: 0,
+
+      monthlySurplus: 0,
+
+      totalMonthlyDebt: existingEmi + emi
     };
   }
 
   const ratio =
-    (emi / monthlyIncome) * 100;
+    ((existingEmi + emi) / monthlyIncome) * 100;
+
+  const affordabilityData = {
+
+    ratio,
+
+    emiRatio:
+      (emi / monthlyIncome) * 100,
+
+    monthlySurplus:
+      monthlyIncome - monthlyExpenses - existingEmi - emi,
+
+    totalMonthlyDebt:
+      existingEmi + emi
+  };
 
   if (ratio <= 35) {
 
@@ -119,7 +161,7 @@ function getAffordabilityLevel(
 
       className: "safe",
 
-      ratio
+      ...affordabilityData
     };
   }
 
@@ -131,7 +173,7 @@ function getAffordabilityLevel(
 
       className: "moderate",
 
-      ratio
+      ...affordabilityData
     };
   }
 
@@ -141,7 +183,7 @@ function getAffordabilityLevel(
 
     className: "risky",
 
-    ratio
+    ...affordabilityData
   };
 }
 
@@ -171,14 +213,24 @@ function calculatePropertyFinancials(data) {
     floorRiseCharges,
     clubhouseCharges,
     maintenanceDeposit,
-    legalCharges
+    legalCharges,
+    brokerage = 0,
+    loanProcessingFee = 0,
+    movingCosts = 0,
+    mortgageCharges = 0,
+    utilityDeposits = 0,
+    firstYearPropertyTax = 0,
+    annualMaintenance = 0,
+    monthlyExpenses = 0,
+    existingEmi = 0,
+    expectedRent = 0,
+    appreciationRate = 6
 
   } = data;
 
   // =============================================
   // CITY RULES
   // =============================================
-
  const cityData =
 
   CalculatorRules.cities.find(
@@ -198,7 +250,6 @@ function calculatePropertyFinancials(data) {
   {
 
     metro: false
-
   };
 
 const cityRules = {
@@ -213,7 +264,6 @@ const cityRules = {
   // =============================================
 
   const affordableHousing =
-
     isAffordableHousing({
 
       propertyPrice: basePrice,
@@ -293,13 +343,25 @@ const cityRules = {
 
     maintenanceDeposit +
 
-    legalCharges;
+    legalCharges +
+
+    brokerage +
+
+    loanProcessingFee +
+
+    movingCosts +
+
+    mortgageCharges +
+
+    utilityDeposits +
+
+    firstYearPropertyTax;
 
   // =============================================
   // TOTAL PROPERTY COST
   // =============================================
 
-  const totalCost =
+  const purchaseCost =
 
     basePrice +
 
@@ -313,6 +375,12 @@ const cityRules = {
 
     hiddenCharges;
 
+  const totalCost =
+
+    purchaseCost +
+
+    interiorEstimate;
+
   // =============================================
   // LOAN
   // =============================================
@@ -321,7 +389,7 @@ const cityRules = {
 
   Math.max(
 
-    totalCost - downPayment,
+    purchaseCost - downPayment,
 
     0
 
@@ -364,7 +432,11 @@ const loanData =
 
       loanData.emi,
 
-      monthlyIncome
+      monthlyIncome,
+
+      monthlyExpenses,
+
+      existingEmi
     );
 
   // =============================================
@@ -383,7 +455,9 @@ const loanData =
 
     gst +
 
-    hiddenCharges;
+    hiddenCharges +
+
+    interiorEstimate;
 
   // =============================================
   // OWNERSHIP COST
@@ -392,11 +466,17 @@ const loanData =
   const fiveYearEMI =
     loanData.emi * 60;
 
+  const fiveYearMaintenance =
+    annualMaintenance *
+    (1 + 1.1 + Math.pow(1.1, 2) + Math.pow(1.1, 3) + Math.pow(1.1, 4));
+
   const fiveYearOwnershipCost =
 
     upfrontCash +
 
-    fiveYearEMI;
+    fiveYearEMI +
+
+    fiveYearMaintenance;
 
   // =============================================
 // INVESTMENT SCORE
@@ -404,8 +484,15 @@ const loanData =
 
 const appreciationPercent =
   calculateAppreciationPercent(
-    basePrice
+    basePrice,
+
+    appreciationRate || 6
   );
+
+const rentalYield =
+  expectedRent > 0
+    ? (expectedRent * 12 / basePrice) * 100
+    : 0;
 
 const investmentScore =
   calculateInvestmentScore({
@@ -416,7 +503,7 @@ const investmentScore =
     emi:
       loanData.emi,
 
-    rentalYield: 0,
+    rentalYield,
 
     appreciationPercent
   });
@@ -438,9 +525,13 @@ const investmentGrade =
 
     hiddenCharges,
 
+    fiveYearMaintenance,
+
     interiorEstimate,
 
     totalCost,
+
+    purchaseCost,
 
     loanAmount,
 
@@ -457,6 +548,11 @@ const investmentGrade =
     ...loanData,
 
        investmentScore,
+
+      rentalYield,
+
+      appreciationPercent,
+
     investmentGrade,
 
     affordability
