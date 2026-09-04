@@ -201,39 +201,66 @@ function calculateFutureValue(
 }
 
 // ==============================
-// VALIDATION
+// VALIDATION WITH ERROR MESSAGES
 // ==============================
 
-function showValidationError(id) {
+function showValidationError(id, message) {
 
   const input =
     document.getElementById(id);
 
-  const error =
+  if (!input) return;
+
+  input.classList.add("invalid");
+  input.style.borderColor = "#dc2626";
+
+  // Create or update error message
+  let errorDiv =
     document.getElementById(
-      `${id}Error`
+      `${id}ErrorMsg`
     );
 
-  if (input) {
+  if (!errorDiv) {
 
-    input.classList.add("invalid");
+    errorDiv =
+      document.createElement("div");
 
-    openCompareSection(input);
+    errorDiv.id = `${id}ErrorMsg`;
+    errorDiv.className = "form-error-message";
+    errorDiv.style.cssText = `
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+      font-weight: 500;
+    `;
+
+    input.parentNode.appendChild(
+      errorDiv
+    );
   }
 
-  if (error) {
+  errorDiv.textContent = message;
+  errorDiv.style.display = "block";
 
-    error.classList.add("show");
+  // Expand section
+  const section =
+    input?.closest("details");
+
+  if (section) {
+    section.open = true;
   }
 }
 
 function clearValidationErrors() {
 
   document
-    .querySelectorAll(".validation-error")
+    .querySelectorAll(
+      ".form-error-message"
+    )
     .forEach(error => {
 
-      error.classList.remove("show");
+      error.style.display = "none";
     });
 
   document
@@ -241,18 +268,8 @@ function clearValidationErrors() {
     .forEach(input => {
 
       input.classList.remove("invalid");
+      input.style.borderColor = "";
     });
-}
-
-function openCompareSection(field) {
-
-  const section =
-    field?.closest("details");
-
-  if (section) {
-
-    section.open = true;
-  }
 }
 
 function validateComparisonInputs() {
@@ -260,39 +277,47 @@ function validateComparisonInputs() {
   clearValidationErrors();
 
   let isValid = true;
+  const errors = [];
 
-const requiredFields = [
+  // Validation rules
+  const validations = [
+    { id: "aName", msg: "Property A name required" },
+    { id: "aState", msg: "Select state for Property A" },
+    { id: "aCity", msg: "Select city for Property A" },
+    { id: "aPropertyType", msg: "Select property type for Property A" },
+    { id: "aPropertyCategory", msg: "Select category for Property A" },
+    { id: "aBase", msg: "Enter property price for Property A" },
+    { id: "bName", msg: "Property B name required" },
+    { id: "bState", msg: "Select state for Property B" },
+    { id: "bCity", msg: "Select city for Property B" },
+    { id: "bPropertyType", msg: "Select property type for Property B" },
+    { id: "bPropertyCategory", msg: "Select category for Property B" },
+    { id: "bBase", msg: "Enter property price for Property B" }
+  ];
 
-  "aName",
-  "aState",
-  "aCity",
-  "aPropertyType",
-  "aPropertyCategory",
-  "aBase",
-
-  "bName",
-  "bState",
-  "bCity",
-  "bPropertyType",
-  "bPropertyCategory",
-  "bBase"
-];
-
-  requiredFields.forEach(id => {
+  validations.forEach(({ id, msg }) => {
 
     const input =
       document.getElementById(id);
 
     if (
       !input ||
-      !input.value.trim()
+      !input.value ||
+      !input.value.toString().trim()
     ) {
 
-      showValidationError(id);
-
+      showValidationError(id, msg);
+      errors.push(msg);
       isValid = false;
     }
   });
+
+  // Show toast with first error if any
+  if (errors.length > 0) {
+    if (typeof Toast !== "undefined") {
+      Toast.error(errors[0]);
+    }
+  }
 
   return isValid;
 }
@@ -303,34 +328,39 @@ const requiredFields = [
 
 async function compareAdvanced() {
 
-const btn =
-document.getElementById(
-"compareBtn"
-);
+  const btn =
+    document.getElementById(
+      "compareBtn"
+    );
 
-btn.disabled = true;
-btn.innerText = "Analyzing...";
+  btn.disabled = true;
+  btn.innerText = "Analyzing...";
 
-if (!validateComparisonInputs()) {
+  if (!validateComparisonInputs()) {
 
-btn.disabled = false;
-btn.innerText =
-  "Compare Properties";
+    btn.disabled = false;
+    btn.innerText =
+      "Compare Properties";
 
-document
-  .querySelector(".form-input.invalid")
-  ?.scrollIntoView({
+    // Scroll to first error
+    setTimeout(() => {
+      const invalidField =
+        document.querySelector(
+          ".form-input.invalid"
+        );
 
-    behavior: "smooth",
+      if (invalidField) {
+        invalidField.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }, 100);
 
-    block: "center"
-  });
+    return;
+  }
 
-return;
-
-}
-
-try {
+  try {
 
 
 // PROPERTY A
@@ -994,6 +1024,21 @@ renderAppreciationChart({
   bBase
 });
 
+// SCROLL TO RESULTS
+setTimeout(() => {
+  const resultCard =
+    document.getElementById(
+      "resultCard"
+    );
+
+  if (resultCard) {
+    resultCard.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}, 500);
+
 renderOwnershipProjection({
 
   aName,
@@ -1028,11 +1073,16 @@ renderAIRecommendation({
 
 } catch (err) {
 
-console.error(err);
+  console.error(
+    "Comparison error:",
+    err
+  );
 
-alert(
-  "Failed to compare properties"
-);
+  if (typeof Toast !== "undefined") {
+    Toast.error(
+      "Failed to compare properties"
+    );
+  }
 
 
 } finally {
@@ -1053,16 +1103,30 @@ btn.innerText =
 
 function saveComparison() {
 
-  localStorage.setItem(
-    "lastComparison",
-    JSON.stringify(
-      window.latestComparisonData || {}
-    )
-  );
+  if (!window.latestComparisonData) {
+    if (typeof Toast !== "undefined") {
+      Toast.warning("Please run a comparison first");
+    }
+    return;
+  }
 
-  alert(
-    "Comparison saved successfully"
-  );
+  try {
+    localStorage.setItem(
+      "lastComparison",
+      JSON.stringify(
+        window.latestComparisonData || {}
+      )
+    );
+
+    if (typeof Toast !== "undefined") {
+      Toast.success("Comparison saved successfully");
+    }
+  } catch (err) {
+    console.error("Save failed:", err);
+    if (typeof Toast !== "undefined") {
+      Toast.error("Failed to save comparison");
+    }
+  }
 }
 
 
@@ -1078,6 +1142,15 @@ function resetComparison() {
 
       input.value = "";
     });
+
+  document
+    .querySelectorAll("select")
+    .forEach(select => {
+
+      select.value = "";
+    });
+
+  clearValidationErrors();
 
   localStorage.removeItem(
     "compareDraft"
@@ -1117,4 +1190,8 @@ function resetComparison() {
       section.open =
         index % 3 !== 2;
     });
+
+  if (typeof Toast !== "undefined") {
+    Toast.info("Form reset successfully");
+  }
 }
