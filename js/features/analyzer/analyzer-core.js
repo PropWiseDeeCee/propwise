@@ -90,41 +90,95 @@ function getRiskLevel(score) {
 }
 
 // ==============================
-// BASIC CHECKS
+// OPTIMIZED PATTERN-BASED CHECKS
 // ==============================
 
 function runChecks(text) {
 
-  const lower =
-    text.toLowerCase();
+  const lower = text.toLowerCase();
+  const findings = { critical: [], moderate: [], positive: [] };
+  
+  // Patterns for efficient detection
+  const patterns = {
+    rera: /\brera\b/i,
+    parking: /\bparking|car\s*space|garage|vehicles?\s*allot|car\s*park/i,
+    delayPenalty: /delay.*penalty|penalty.*delay|possession.*delay/i,
+    forceClause: /force\s*majeure|act\s*of\s*god|unforeseeable/i,
+    defect: /defect|workmanship|quality\s*standard|structural/i,
+    maintenance: /maintenance\s*charges?|common\s*area|amc|building\s*fund/i,
+    registration: /registration\s*cost|stamp\s*duty|transfer|legal\s*fee|registration\s*fee/i,
+    payment: /payment\s*schedule|installment|down\s*payment|booking|amount|cost/i,
+    warranty: /warranty\s*period|defect\s*liability|defect\s*liability\s*period/i,
+    possession: /possession|handover|delivery|completion/i,
+    builder: /builder|developer|contractor|promoter/i,
+    buyer: /buyer|purchaser|owner|applicant/i,
+    cancellation: /cancellation|terminate|cancel|forfeiture|forfeit/i,
+    escalation: /escalation|price\s*variation|cost\s*variation|increase/i
+  };
 
-  const issues = [];
+  // Check RERA & Registration
+  const hasRERA = patterns.rera.test(lower);
+  const hasParking = patterns.parking.test(lower);
+  const hasRegistration = patterns.registration.test(lower);
 
-  if (!lower.includes("rera")) {
-
-    issues.push(
-      "RERA registration details missing"
-    );
+  if (!hasRERA) {
+    findings.critical.push("RERA registration details missing");
+  } else {
+    findings.positive.push("RERA compliance mentioned");
   }
 
-  if (
-    lower.includes("delay") &&
-    !lower.includes("penalty")
-  ) {
-
-    issues.push(
-      "Delay penalty clause missing"
-    );
+  if (!hasParking) {
+    findings.critical.push("Parking/car space clause undefined");
+  } else {
+    findings.positive.push("Parking allocation specified");
   }
 
-  if (!lower.includes("parking")) {
-
-    issues.push(
-      "Parking clause missing"
-    );
+  if (!hasRegistration) {
+    findings.moderate.push("Registration & legal fee clarity absent");
   }
 
-  return issues;
+  // Timeline & Possession Risks
+  if (patterns.possession.test(lower) && !patterns.delayPenalty.test(lower)) {
+    findings.critical.push("Possession delay penalties not mentioned");
+  }
+  
+  if (!patterns.forceClause.test(lower) && patterns.possession.test(lower)) {
+    findings.moderate.push("Force majeure clause missing");
+  }
+
+  // Financial Obligations
+  if (patterns.maintenance.test(lower)) {
+    findings.positive.push("Maintenance charges outlined");
+  } else if (patterns.payment.test(lower)) {
+    findings.moderate.push("Ongoing cost structure unclear");
+  }
+
+  if (patterns.escalation.test(lower)) {
+    findings.moderate.push("Price escalation clause present - review terms");
+  }
+
+  // Quality & Defects
+  if (patterns.warranty.test(lower)) {
+    findings.positive.push("Defect liability period defined");
+  } else if (patterns.defect.test(lower)) {
+    findings.moderate.push("Defect responsibility not clearly defined");
+  }
+
+  // Cancellation & Termination
+  if (patterns.cancellation.test(lower)) {
+    findings.positive.push("Termination clauses specified");
+  }
+
+  // Builder-Favorable Patterns
+  if (/builder.*not\s*liable|builder.*not\s*responsible|exemption.*builder/i.test(lower)) {
+    findings.moderate.push("Builder liability heavily restricted - buyer risk");
+  }
+
+  if (/time\s*not\s*essence|extension.*time|force\s*majeure.*possession/i.test(lower)) {
+    findings.moderate.push("Possession timelines have broad escape clauses");
+  }
+
+  return findings;
 }
 
 // ==============================
@@ -177,6 +231,10 @@ builder_friendly_clauses:
 
 buyer_friendly_clauses:
   data.buyer_friendly_clauses ||
+  [],
+
+project_structure_risks:
+  data.project_structure_risks ||
   [],
 
 rera_findings:
@@ -244,27 +302,22 @@ async function analyzeAgreement(input) {
 
     else {
 
+      const findings = runChecks(input);
+
       return normalizeAnalysisResult({
 
-        critical:
-          runChecks(input),
-
-        moderate: [],
-
-        positive: [],
+        critical: findings.critical,
+        moderate: findings.moderate,
+        positive: findings.positive,
 
         recommendations: [
-
-          "Consult legal expert before signing.",
-
-          "Verify builder approvals.",
-
-          "Check payment schedule carefully."
+          findings.critical.length > 0 ? "Address critical gaps before signing" : "Review moderate clauses carefully",
+          findings.moderate.length > 0 ? "Negotiate unfavorable terms" : "Verify all terms with legal counsel"
         ],
 
-        risk_score: 40,
+        risk_score: (findings.critical.length * 10) + (findings.moderate.length * 5),
 
-        risk_level: "Medium"
+        risk_level: findings.critical.length > 3 ? "High" : findings.critical.length > 0 ? "Medium" : "Low"
       });
     }
 
@@ -374,33 +427,25 @@ if (!response.ok) {
         ? input
         : "";
 
-    const issues =
-      runChecks(fallbackText);
+    const findings = runChecks(fallbackText);
 
     return normalizeAnalysisResult({
 
       summary:
-        "Basic local analysis completed.",
+        "Basic pattern analysis completed. For comprehensive AI review, upload via web interface.",
 
-      critical:
-        issues,
-
-      moderate: [],
-
-      positive: [],
+      critical: findings.critical,
+      moderate: findings.moderate,
+      positive: findings.positive,
 
       recommendations: [
-
-        "Consult legal expert before signing.",
-
-        "Verify RERA registration.",
-
-        "Review hidden charges carefully."
+        "Consult legal expert before signing",
+        "Review all clauses with qualified attorney"
       ],
 
-      risk_score: 45,
+      risk_score: (findings.critical.length * 10) + (findings.moderate.length * 5),
 
-      risk_level: "Medium"
+      risk_level: findings.critical.length > 3 ? "High" : findings.critical.length > 0 ? "Medium" : "Low"
     });
   }
 }

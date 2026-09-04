@@ -453,6 +453,9 @@ const displayRecommendations =
   critical,
   moderate,
   recommendations,
+  findings: typeof buildAgreementFindings === "function"
+    ? buildAgreementFindings(result)
+    : [],
   text
 };
 
@@ -649,6 +652,26 @@ const displayRecommendations =
 
                 <ul>
                   ${result.buyer_friendly_clauses
+                    .map(item => `<li>${item}</li>`)
+                    .join("")}
+                </ul>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          isLoggedIn && result.project_structure_risks?.length
+            ? `
+              <div class="analysis-section-box">
+
+                <h3>
+                  Project Structure Risks
+                </h3>
+
+                <ul>
+                  ${result.project_structure_risks
                     .map(item => `<li>${item}</li>`)
                     .join("")}
                 </ul>

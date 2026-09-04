@@ -627,6 +627,30 @@ ${
 }
 
 ${
+  parsed.project_structure_risks?.length
+    ? `
+      <div class="analysis-section-box">
+
+        <h3>
+          Project Structure Risks
+        </h3>
+
+        <ul>
+          ${parsed.project_structure_risks
+            .map(
+              (item) => `
+                <li>${item}</li>
+              `,
+            )
+            .join("")}
+        </ul>
+
+      </div>
+    `
+    : ""
+}
+
+${
   parsed.negotiation_points?.length
     ? `
       <div class="recommendation-box">
