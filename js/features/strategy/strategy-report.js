@@ -10,9 +10,7 @@ async function downloadStrategyReport(
 
     if (!reportData) {
 
-      alert(
-        "Please analyze a property strategy first."
-      );
+      Toast.error("Please analyze a property strategy first.");
 
       return;
     }
@@ -22,9 +20,7 @@ async function downloadStrategyReport(
       !window.jspdf.jsPDF
     ) {
 
-      alert(
-        "PDF library not loaded."
-      );
+      Toast.error("PDF library not loaded.");
 
       return;
     }
@@ -481,9 +477,7 @@ async function downloadStrategyReport(
 
     console.error(error);
 
-    alert(
-      "Failed to generate strategy report."
-    );
+    Toast.error("Failed to generate strategy report.");
   }
 }
 

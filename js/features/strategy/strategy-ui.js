@@ -108,6 +108,37 @@ function loadStrategyDefaults() {
 
 
 // =============================================
+// SHOW VALIDATION ERROR
+// =============================================
+
+function showStrategyValidationError(id, message) {
+  
+  const input = document.getElementById(id);
+  if (!input) return;
+
+  // Remove existing error message
+  const existingError = input.parentElement?.querySelector('.form-error-message');
+  if (existingError) {
+    existingError.remove();
+  }
+
+  // Create error message div
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'form-error-message';
+  errorDiv.textContent = message;
+  errorDiv.style.display = 'block';
+  
+  // Insert after input
+  input.parentElement?.appendChild(errorDiv);
+  
+  // Auto-scroll to the invalid section
+  const section = input.closest('.calc-step-body');
+  if (section) {
+    section.parentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// =============================================
 // VALIDATION
 // =============================================
 
@@ -143,6 +174,19 @@ function validateStrategyInputs() {
         "invalid"
       );
 
+      // Show field-specific error messages
+      const messages = {
+        "propertyValue": "Enter current property value",
+        "monthlyRent": "Enter monthly rent amount",
+        "state": "Select property state",
+        "city": "Select property city",
+        "projectionYears": "Select projection period"
+      };
+      
+      if (messages[id]) {
+        showStrategyValidationError(id, messages[id]);
+      }
+
       isValid = false;
 
     } else {
@@ -150,13 +194,18 @@ function validateStrategyInputs() {
       element.classList.remove(
         "invalid"
       );
+      
+      // Remove error message if exists
+      const errorMsg = element.parentElement?.querySelector('.form-error-message');
+      if (errorMsg) {
+        errorMsg.remove();
+      }
     }
 
   });
 
   return isValid;
 }
-
 
 // =============================================
 // BUILD INPUT MODEL
@@ -285,9 +334,7 @@ async function analyzeStrategy() {
       !validateStrategyInputs()
     ) {
 
-      alert(
-        "Please complete all required fields."
-      );
+      Toast.error("Please complete all required fields.");
 
       return;
     }
@@ -349,9 +396,7 @@ async function analyzeStrategy() {
 
     console.error(error);
 
-    alert(
-      "Failed to analyze strategy."
-    );
+    Toast.error("Failed to analyze strategy.");
   }
 
   finally {
@@ -746,9 +791,7 @@ async function requireStrategyLogin() {
     "property-strategy-advisor.html"
   );
 
-  alert(
-    "Please login to download or save strategy reports."
-  );
+  Toast.warning("Please login to download or save strategy reports.");
 
   window.location.href =
     appPath("login.html");
@@ -835,16 +878,12 @@ strategy:
 
     console.error(error);
 
-    alert(
-      "Failed to save strategy."
-    );
+    Toast.error("Failed to save strategy.");
 
     return;
   }
 
-  alert(
-    "Strategy saved successfully."
-  );
+  Toast.success("Strategy saved successfully.");
 }
 
 window.saveStrategy =

@@ -446,6 +446,19 @@
   background: rgba(239,68,68,0.05);
 }
 
+.form-error-message {
+
+  display: none;
+
+  margin-top: 6px;
+
+  color: #dc2626;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
 
 /* =========================================
    LOADING STATE
